@@ -5,7 +5,7 @@ import ContactForm from './ContactForm.astro';
 import { site } from '../data/site';
 import { homeText, type Lang } from '../data/home-i18n';
 
-const { lang = 'fr' } = Astro.props as { lang?: Lang };
+const lang = (Astro.currentLocale ?? 'fr') as Lang;
 const t = homeText[lang];
 const ar = lang === 'ar';
 const homeHref = (fr: string) => (ar ? '/ar/#logements' : fr);
