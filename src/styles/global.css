@@ -220,12 +220,56 @@ p {
   right: 0;
 }
 
-/* ---- Header scroll state ---- */
+/* ---- Header (transparent over hero; solid links after scroll) ---- */
 .site-header {
-  transition: box-shadow 0.4s ease, background 0.4s ease;
+  transition: background 0.35s ease, box-shadow 0.35s ease;
+}
+.site-header__link {
+  color: rgb(247 242 232 / 0.88);
+  transition: color 0.25s ease;
+}
+.site-header__link:hover,
+.site-header__link.is-active {
+  color: #fff;
+}
+.site-header__link::after {
+  background: var(--color-gold);
+}
+.site-header__lang {
+  color: rgb(247 242 232 / 0.8);
+  border-color: rgb(247 242 232 / 0.35);
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.site-header__lang:hover {
+  color: #fff;
+  border-color: rgb(247 242 232 / 0.7);
+}
+.site-header__burger {
+  background: #f7f2e8;
+  transition: background 0.25s ease;
 }
 .site-header.is-scrolled {
-  box-shadow: 0 12px 34px -18px rgba(0, 0, 0, 0.45);
+  background: rgb(255 255 255 / 0.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.35);
+}
+.site-header.is-scrolled .site-header__link {
+  color: rgb(0 45 45 / 0.7);
+}
+.site-header.is-scrolled .site-header__link:hover,
+.site-header.is-scrolled .site-header__link.is-active {
+  color: var(--color-forest, #002d2d);
+}
+.site-header.is-scrolled .site-header__lang {
+  color: rgb(0 45 45 / 0.55);
+  border-color: rgb(0 45 45 / 0.15);
+}
+.site-header.is-scrolled .site-header__lang:hover {
+  color: var(--color-forest, #002d2d);
+  border-color: rgb(0 45 45 / 0.35);
+}
+.site-header.is-scrolled .site-header__burger {
+  background: var(--color-forest, #002d2d);
 }
 
 /* ---- Panel / card hover lift ---- */
