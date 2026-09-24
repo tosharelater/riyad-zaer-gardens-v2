@@ -14,7 +14,8 @@ interface Props {
 
 const { title, description, noindex = false } = Astro.props;
 const lang = (Astro.props.lang ?? Astro.currentLocale ?? 'fr') as 'fr' | 'ar';
-const path = Astro.url.pathname.replace(/^\/ar(\/|$)/, '/');
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const path = (Astro.url.pathname.slice(baseUrl.length) || '/').replace(/^\/ar(\/|$)/, '/');
 ---
 <!doctype html>
 <html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
@@ -25,7 +26,7 @@ const path = Astro.url.pathname.replace(/^\/ar(\/|$)/, '/');
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {!noindex && (<><link rel="alternate" hreflang="fr" href={getRelativeLocaleUrl('fr', path)} /><link rel="alternate" hreflang="ar" href={getRelativeLocaleUrl('ar', path)} /></>)}
+    {!noindex && path === "/" && (<><link rel="alternate" hreflang="fr" href={getRelativeLocaleUrl('fr', path)} /><link rel="alternate" hreflang="ar" href={getRelativeLocaleUrl('ar', path)} /></>)}
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
