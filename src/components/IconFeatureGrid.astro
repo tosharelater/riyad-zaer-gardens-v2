@@ -1,0 +1,27 @@
+---
+import Icon from './Icon.astro';
+interface Item { icon: string; label: string }
+interface Props { items: Item[]; cols?: string; variant?: 'row' | 'centered' }
+const { items, cols = 'sm:grid-cols-2 lg:grid-cols-3', variant = 'row' } = Astro.props;
+---
+{variant === 'centered' ? (
+  <div class={`grid ${cols} gap-8`}>
+    {items.map((item) => (
+      <div class="feature-card group flex flex-col items-center text-center px-6 py-10 border border-forest/10 transition-colors duration-500 hover:border-gold hover:bg-forest">
+        <span class="icon-badge w-16 h-16 mb-5 transition-colors duration-500 group-hover:bg-gold group-hover:text-forest">
+          <Icon name={item.icon} class="w-6 h-6" />
+        </span>
+        <p class="font-display text-lg text-forest transition-colors duration-500 group-hover:text-cream">{item.label}</p>
+      </div>
+    ))}
+  </div>
+) : (
+  <div class={`grid ${cols} gap-6`}>
+    {items.map((item) => (
+      <div class="flex items-center gap-4 panel hoverable !p-5">
+        <span class="icon-badge"><Icon name={item.icon} class="w-5 h-5" /></span>
+        <p class="text-sm font-medium text-ink/80">{item.label}</p>
+      </div>
+    ))}
+  </div>
+)}

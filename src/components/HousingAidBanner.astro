@@ -1,0 +1,18 @@
+---
+import { site } from '../data/site';
+interface Props {
+  text?: string;
+}
+const {
+  text = "Riyad Zaer Gardens est éligible au programme d'aide au logement de l'État. Selon votre situation, le prix d'un appartement peut démarrer à 350 000 DH au lieu de 420 000 DH.",
+} = Astro.props;
+---
+<section class="bg-gold/15 border-y border-gold/30">
+  <div class="container-page py-12 md:py-14 grid md:grid-cols-[1.3fr_auto] gap-6 items-center">
+    <div>
+      <h2 class="font-display text-3xl md:text-4xl text-forest mb-3">Un projet éligible à l'aide au logement</h2>
+      <p class="text-ink/75 max-w-2xl">{text}</p>
+    </div>
+    <a href="/contact" class="btn btn-dark whitespace-nowrap">Vérifier mon éligibilité</a>
+  </div>
+</section>

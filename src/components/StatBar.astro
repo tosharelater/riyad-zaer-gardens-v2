@@ -1,0 +1,18 @@
+---
+import { site } from '../data/site';
+const stats = [
+  'Appartements F3 et F4',
+  site.surfaceRange,
+  `À partir de ${site.priceFrom}`,
+  "Éligible à l'aide au logement",
+  'Parking en sous-sol',
+  `Livraison prévue en ${site.delivery}`,
+];
+---
+<div class="bg-forest text-cream/85">
+  <div class="container-page grid grid-cols-2 md:grid-cols-6 gap-y-4 gap-x-6 py-6 text-xs md:text-sm text-center">
+    {stats.map((s) => (
+      <div class="border-t border-white/10 pt-3 md:border-0 md:pt-0">{s}</div>
+    ))}
+  </div>
+</div>

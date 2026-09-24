@@ -1,0 +1,16 @@
+---
+interface Item { title: string; body: string }
+interface Props { items: Item[]; startAt?: number }
+const { items, startAt = 1 } = Astro.props;
+---
+<div class="grid md:grid-cols-2 gap-x-10 gap-y-10">
+  {items.map((item, i) => (
+    <div class="flex gap-5">
+      <span class="font-accent text-2xl text-gold shrink-0">{String(startAt + i).padStart(2, '0')}</span>
+      <div>
+        <h3 class="font-display text-lg text-forest mb-2">{item.title}</h3>
+        <p class="text-sm text-ink/65 leading-relaxed">{item.body}</p>
+      </div>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,15 @@
+---
+const ways = [
+  { verb: 'Y vivre', body: 'Votre premier logement, prêt à habiter, dans un quartier calme et verdoyant à 20 minutes de Rabat.' },
+  { verb: 'Y investir', body: 'Un bien neuf à louer dans une zone qui se développe, avec un ticket d’entrée maîtrisé.' },
+  { verb: 'Y revenir', body: 'Un pied-à-terre au Maroc, livré fini et sécurisé, prêt à vous accueillir à chaque retour.' },
+];
+---
+<div class="grid md:grid-cols-3 gap-8">
+  {ways.map((w) => (
+    <div class="border-t-2 border-gold pt-6">
+      <p class="font-display text-3xl md:text-4xl text-forest mb-3">{w.verb}</p>
+      <p class="text-sm text-ink/65 leading-relaxed">{w.body}</p>
+    </div>
+  ))}
+</div>

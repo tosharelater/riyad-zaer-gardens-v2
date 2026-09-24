@@ -1,0 +1,17 @@
+---
+import { site } from '../data/site';
+import { homeText, type Lang } from '../data/home-i18n';
+const { lang = 'fr' } = Astro.props as { lang?: Lang };
+const m = homeText[lang].mobile;
+---
+<div class="fixed bottom-0 inset-x-0 z-50 md:hidden bg-forest text-cream border-t border-white/10 grid grid-cols-3">
+  <a href={`tel:${site.phoneTel}`} class="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium">
+    <span aria-hidden="true">☎</span> {m.call}
+  </a>
+  <a href={site.whatsapp} class="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium border-x border-white/10 text-gold">
+    <span aria-hidden="true">●</span> {m.wa}
+  </a>
+  <a href={m.cbHref} class="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium bg-gold text-forest">
+    <span aria-hidden="true">✆</span> {m.cb}
+  </a>
+</div>

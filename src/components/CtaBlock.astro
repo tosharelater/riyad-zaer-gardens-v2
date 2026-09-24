@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Parlons de votre projet',
+  text = 'Laissez-nous vos coordonnées. Un conseiller vous rappelle pour répondre à vos questions et vous transmettre la brochure du projet.',
+} = Astro.props;
+---
+<section class="section bg-forest text-cream relative overflow-hidden">
+  <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 26px 26px;"></div>
+  <div class="relative container-page grid lg:grid-cols-[1.3fr_auto] gap-14 items-center">
+    <div>
+      <h2 class="font-display text-3xl md:text-5xl mb-5 max-w-xl">{title}</h2>
+      <p class="max-w-lg text-cream/70">{text}</p>
+      <div class="flex flex-wrap items-center gap-4 mt-8">
+        <a href="/contact" class="btn btn-gold">Être rappelé</a>
+        <a href={site.whatsapp} class="btn btn-outline text-cream">Écrire sur WhatsApp</a>
+      </div>
+    </div>
+    <a href={`tel:${site.phoneTel}`} class="group flex items-center gap-5 lg:border-l lg:border-white/15 lg:pl-14 shrink-0">
+      <span class="icon-badge w-16 h-16 group-hover:bg-gold group-hover:text-forest transition-colors duration-500">
+        <Icon name="phone" class="w-6 h-6" />
+      </span>
+      <span>
+        <span class="block text-xs uppercase tracking-[0.2em] text-cream/50 mb-1">Appelez-nous</span>
+        <span class="block font-display text-3xl md:text-4xl text-gold group-hover:text-gold-soft transition-colors">{site.phone}</span>
+      </span>
+    </a>
+  </div>
+</section>

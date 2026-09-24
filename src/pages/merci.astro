@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+---
+<BaseLayout
+  title="Merci pour votre demande — Riyad Zaer Gardens"
+  description="Votre demande a bien été envoyée. Un conseiller Riyad Zaer Gardens vous rappelle prochainement."
+  noindex
+>
+  <section class="bg-forest text-cream min-h-[60vh] flex items-center">
+    <div class="container-page py-20 text-center max-w-xl mx-auto">
+      <p class="eyebrow justify-center flex mb-4">Demande envoyée</p>
+      <h1 class="font-display text-4xl md:text-6xl mb-6">Merci, votre demande est bien enregistrée</h1>
+      <p class="text-cream/75 mb-4">
+        Un conseiller vous rappelle au plus vite pour répondre à vos questions et vous transmettre la brochure du projet.
+      </p>
+      <p class="text-cream/75 mb-10">
+        Vous préférez ne pas attendre ? Appelez-nous directement au {site.phone}.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href={`tel:${site.phoneTel}`} class="btn btn-gold">Appeler maintenant</a>
+        <a href="/le-projet" class="btn btn-outline text-cream">Découvrir le projet</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

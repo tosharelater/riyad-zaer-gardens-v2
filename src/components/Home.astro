@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Accordion from './Accordion.astro';
+import ContactForm from './ContactForm.astro';
+import { site } from '../data/site';
+import { homeText, type Lang } from '../data/home-i18n';
+
+const { lang = 'fr' } = Astro.props as { lang?: Lang };
+const t = homeText[lang];
+const ar = lang === 'ar';
+const homeHref = (fr: string) => (ar ? '/ar/#logements' : fr);
+
+const homeImgs = ['/gallery/render-6.jpg', '/gallery/render-1.jpg', '/gallery/render-8.jpg'];
+const homeLinks = ['/appartements', '/appartements', '/fonds-de-commerce'];
+const wayImgs = ['/gallery/render-1.jpg', '/gallery/render-6.jpg', '/gallery/render-5.jpg'];
+const galleryImgs = ['/gallery/render-11.jpg', '/gallery/render-12.jpg', '/gallery/render-3.jpg', '/gallery/render-9.jpg', '/gallery/render-2.jpg'];
+const faq = t.faq.items.map(([q, a]) => ({ q, a }));
+---
+<BaseLayout title={t.htmlTitle} description={t.htmlDesc} lang={lang}>
+  <!-- Hero -->
+  <section data-hero class="hero relative min-h-[100svh] flex items-end overflow-hidden bg-forest text-white">
+    <div data-hero-bg class="absolute -inset-y-[10%] inset-x-0">
+      <img src="/gallery/render-4.jpg" alt={t.brand} class="hero-photo w-full h-full object-cover" />
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/30"></div>
+    <div data-hero-content class="relative container-page w-full pb-14 md:pb-20 grid md:grid-cols-2 gap-10 md:gap-16 items-end">
+      <div class="animate-fade-up">
+        <h1 class="text-5xl md:text-7xl font-medium tracking-tight leading-[1.05]">{t.brand}</h1>
+        <p class="font-accent text-3xl md:text-4xl text-gold mt-5">{t.hero.tagline}</p>
+      </div>
+      <div class="animate-fade-up" style="animation-delay:.2s">
+        <p class="text-lg md:text-xl italic text-white/90 max-w-lg">{t.hero.text}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={ar ? '#contact' : '/contact'} class="btn bg-white text-forest">{t.hero.b1}</a>
+          <a href={ar ? '#pourquoi' : '/le-projet'} class="btn btn-outline text-white">{t.hero.b2}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <section class="py-10 overflow-hidden border-b border-ink/10" aria-hidden="true">
+    <div data-marquee="left" class="whitespace-nowrap text-6xl md:text-8xl font-medium tracking-tight text-ink/10 will-change-transform">{t.marquee}</div>
+  </section>
+
+  <!-- Intro -->
+  <section class="section">
+    <div class="container-page grid lg:grid-cols-[1.25fr_1fr] gap-16 items-start">
+      <div>
+        <p class="text-gold text-lg font-medium mb-4">{t.intro.eyebrow}</p>
+        <h2 data-split class="text-4xl md:text-6xl font-medium text-ink leading-[1.1]">{t.intro.h2}</h2>
+        <p class="mt-8 text-lg leading-relaxed max-w-2xl">{t.intro.p1}</p>
+        <p class="mt-5 text-lg leading-relaxed max-w-2xl">{t.intro.p2}</p>
+      </div>
+      <dl class="grid grid-cols-2 gap-4">
+        {t.intro.figures.map(([v, l]) => (
+          <div class="bg-white rounded-3xl p-7">
+            <dt class="text-5xl font-medium text-forest tracking-tight" {...(v !== '2028' ? { 'data-count': v } : {})}>{v}</dt>
+            <dd class="mt-2 text-sm">{l}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Full-screen grow -->
+  <section data-grow class="relative h-screen overflow-hidden bg-forest">
+    <div data-grow-frame class="absolute inset-0">
+      <img src="/gallery/render-5.jpg" alt={t.grow.alt} loading="lazy" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/20"></div>
+    </div>
+    <div data-grow-text class="absolute inset-x-0 bottom-0 container-page pb-16 md:pb-24 text-white">
+      <p class="text-gold text-lg font-medium mb-3">{t.grow.eyebrow}</p>
+      <p class="text-4xl md:text-7xl font-medium leading-[1.05] max-w-4xl">{t.grow.text}</p>
+    </div>
+  </section>
+
+  <div class="h-24 md:h-36"></div>
+
+  <!-- Logements -->
+  <section id="logements" class="pb-24 md:pb-36 scroll-mt-24">
+    <div class="container-page">
+      <div class="flex flex-wrap items-end justify-between gap-6 mb-14">
+        <h2 data-split class="text-4xl md:text-6xl font-medium text-ink max-w-2xl leading-[1.1]">{t.homes.h2}</h2>
+        <a href={homeHref('/appartements')} class="btn btn-dark">{t.homes.all}</a>
+      </div>
+      <div data-stagger class="grid md:grid-cols-3 gap-6">
+        {t.homes.items.map(([tag, title, body], i) => (
+          <a href={homeHref(homeLinks[i])} class="group bg-white rounded-3xl overflow-hidden flex flex-col transition-shadow duration-500 hover:shadow-[0_30px_60px_-30px_rgba(0,0,0,0.3)]">
+            <div data-parallax class="overflow-hidden aspect-[4/3]">
+              <img src={homeImgs[i]} alt={tag} loading="lazy" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-8 flex flex-col gap-3 flex-1">
+              <span class="text-gold font-medium">{tag}</span>
+              <h3 class="text-2xl font-medium text-ink leading-snug">{title}</h3>
+              <p class="text-[0.95rem] leading-relaxed">{body}</p>
+              <span class="mt-auto pt-4 text-sm font-medium text-forest">{t.homes.more}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pourquoi ici -->
+  <section id="pourquoi" class="pb-24 md:pb-36 scroll-mt-24">
+    <div class="container-page">
+      <div data-scale class="bg-white rounded-[2rem] p-8 md:p-16 grid lg:grid-cols-[1fr_1.4fr] gap-14">
+        <div class="lg:sticky lg:top-32 lg:self-start">
+          <p class="text-gold text-lg font-medium mb-4">{t.why.eyebrow}</p>
+          <h2 data-split class="text-4xl md:text-5xl font-medium text-ink leading-[1.1]">{t.why.h2}</h2>
+          <p class="mt-6">{t.why.sub}</p>
+          <div data-parallax class="mt-10 rounded-3xl overflow-hidden aspect-[4/3] hidden lg:block"><img src="/gallery/render-12.jpg" alt={t.why.alt} loading="lazy" class="w-full h-full object-cover" /></div>
+        </div>
+        <ol class="divide-y divide-ink/10">
+          {t.why.items.map(([title, body], i) => (
+            <li class="py-7 first:pt-0 last:pb-0 grid grid-cols-[3rem_1fr] gap-4">
+              <span class="text-gold font-medium text-lg">0{i + 1}</span>
+              <div>
+                <h3 class="text-xl font-medium text-ink mb-2">{title}</h3>
+                <p class="text-[0.95rem] leading-relaxed">{body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galerie horizontale -->
+  <section data-hscroll class="pb-24 md:pb-0 md:h-screen md:flex md:flex-col md:justify-center overflow-hidden">
+    <div class="container-page mb-10 md:mb-12">
+      <p class="text-gold text-lg font-medium mb-4">{t.gallery.eyebrow}</p>
+      <h2 data-split class="text-4xl md:text-6xl font-medium text-ink max-w-3xl leading-[1.1]">{t.gallery.h2}</h2>
+    </div>
+    <div data-hscroll-track class="flex gap-6 px-6 md:px-12 overflow-x-auto md:overflow-visible w-full md:w-max pb-4">
+      {galleryImgs.map((src, i) => (
+        <figure class="shrink-0 w-[80vw] md:w-[38vw] max-w-[640px]">
+          <div class="rounded-3xl overflow-hidden aspect-[4/3]"><img src={src} alt={t.gallery.captions[i]} loading="lazy" class="w-full h-full object-cover" /></div>
+          <figcaption class="mt-4 text-sm">{t.gallery.captions[i]}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+
+  <!-- Processus -->
+  <section class="pb-24 md:pb-36">
+    <div class="container-page">
+      <p class="text-gold text-lg font-medium mb-4">{t.steps.eyebrow}</p>
+      <h2 data-split class="text-4xl md:text-6xl font-medium text-ink mb-14 max-w-3xl leading-[1.1]">{t.steps.h2}</h2>
+      <ol data-stagger class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {t.steps.items.map(([title, body], i) => (
+          <li class="bg-white rounded-3xl p-8 flex flex-col gap-4">
+            <span class="text-6xl font-medium text-ink/10 leading-none">0{i + 1}</span>
+            <h3 class="text-xl font-medium text-ink">{title}</h3>
+            <p class="text-[0.95rem] leading-relaxed">{body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Trois façons -->
+  <section class="pb-24 md:pb-36">
+    <div class="container-page">
+      <h2 data-split class="text-4xl md:text-6xl font-medium text-ink mb-14 max-w-3xl leading-[1.1]">{t.ways.h2}</h2>
+      <div data-stagger class="grid md:grid-cols-3 gap-6">
+        {t.ways.items.map(([title, body], i) => (
+          <div class="border-t border-ink/20 pt-8">
+            <div data-tilt class="rounded-3xl overflow-hidden aspect-[4/5] mb-8"><div data-parallax class="w-full h-full"><img src={wayImgs[i]} alt={title} loading="lazy" class="w-full h-full object-cover" /></div></div>
+            <h3 class="text-3xl font-medium text-ink mb-4">{title}</h3>
+            <p class="leading-relaxed">{body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="pb-24 md:pb-36 scroll-mt-24">
+    <div class="container-page">
+      <div data-scale class="bg-forest text-white rounded-[2rem] p-8 md:p-16 grid lg:grid-cols-[1fr_1.1fr] gap-14">
+        <div>
+          <p class="text-gold text-lg font-medium mb-4">{t.contact.eyebrow}</p>
+          <h2 data-split class="text-4xl md:text-5xl font-medium leading-[1.1]">{t.contact.h2}</h2>
+          <p class="mt-6 text-white/75 max-w-md">{t.contact.text}</p>
+          <a href={`tel:${site.phoneTel}`} dir="ltr" class="mt-10 inline-block text-3xl md:text-4xl font-medium text-gold">{site.phone}</a>
+          <div class="mt-6"><a href={site.whatsapp} class="btn btn-outline text-white">{t.contact.wa}</a></div>
+        </div>
+        <div class="text-ink"><ContactForm lang={lang} /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="pb-24 md:pb-36 scroll-mt-24">
+    <div class="container-page grid lg:grid-cols-[1fr_1.4fr] gap-14">
+      <div>
+        <p class="text-gold text-lg font-medium mb-4">{t.faq.eyebrow}</p>
+        <h2 data-split class="text-4xl md:text-5xl font-medium text-ink leading-[1.1]">{t.faq.h2}</h2>
+        {!ar && <a href="/faq" class="btn btn-dark mt-8">{t.faq.all}</a>}
+      </div>
+      <Accordion items={faq} />
+    </div>
+  </section>
+
+  <!-- Localisation -->
+  <section id="localisation" class="pb-24 md:pb-36 scroll-mt-24">
+    <div class="container-page">
+      <div class="bg-white rounded-[2rem] p-8 md:p-16 grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <p class="text-gold text-lg font-medium mb-4">{t.loc.eyebrow}</p>
+          <h2 data-split class="text-4xl md:text-5xl font-medium text-ink leading-[1.1]">{t.loc.h2}</h2>
+        </div>
+        <div>
+          <div data-parallax class="rounded-3xl overflow-hidden aspect-[16/10] mb-8"><img src="/gallery/render-8.jpg" alt={t.loc.alt} loading="lazy" class="w-full h-full object-cover" /></div>
+          <p class="leading-relaxed">{t.loc.text}</p>
+          {!ar && <a href="/localisation" class="btn btn-dark mt-7">{t.loc.btn}</a>}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../scripts/motion';
+</script>

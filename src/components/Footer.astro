@@ -1,0 +1,45 @@
+---
+import { site } from '../data/site';
+import { homeText, type Lang } from '../data/home-i18n';
+const { lang = 'fr' } = Astro.props as { lang?: Lang };
+const t = homeText[lang];
+const f = t.footer;
+---
+<footer class="bg-forest text-cream/80 pt-16 pb-8">
+  <div class="container-page grid gap-12 md:grid-cols-4">
+    <div>
+      <p class="font-display text-xl text-cream">{t.brand}</p>
+      <p class="text-xs uppercase tracking-[0.2em] text-gold mt-1">{t.by}</p>
+      <p class="mt-4 text-sm italic text-cream/60">{f.slogan}</p>
+      <p class="mt-3 text-sm leading-relaxed">{f.about}</p>
+    </div>
+    <div>
+      <p class="eyebrow mb-4">{f.project}</p>
+      <ul class="space-y-3 text-sm">
+        {f.projectLinks.map(([label, href]) => <li><a href={href} class="hover:text-gold transition-colors">{label}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow mb-4">{f.info}</p>
+      <ul class="space-y-3 text-sm">
+        {f.infoLinks.map(([label, href]) => <li><a href={href} class="hover:text-gold transition-colors">{label}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow mb-4">{f.reach}</p>
+      <ul class="space-y-3 text-sm">
+        <li><a href={`tel:${site.phoneTel}`} class="hover:text-gold transition-colors" dir="ltr">{site.phone}</a></li>
+        <li><a href={site.whatsapp} class="hover:text-gold transition-colors">{f.wa}</a></li>
+        <li>{f.address}</li>
+        <li>{site.domain}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-page mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-cream/50">
+    <p>{f.copy}</p>
+    <div class="flex gap-4">
+      <a href={f.legal[1]} class="hover:text-gold transition-colors">{f.legal[0]}</a>
+      <a href={f.privacy[1]} class="hover:text-gold transition-colors">{f.privacy[0]}</a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,183 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: klass = '' } = Astro.props;
+---
+<canvas id="flow-field" class={klass} aria-hidden="true"></canvas>
+
+<script>
+  const SimplexNoise = (function () {
+    const F2 = 0.5 * (Math.sqrt(3) - 1);
+    const G2 = (3 - Math.sqrt(3)) / 6;
+    const grad3 = [
+      [1, 1], [-1, 1], [1, -1], [-1, -1],
+      [1, 0], [-1, 0], [0, 1], [0, -1],
+    ];
+    function SimplexNoise(seed: number) {
+      // @ts-ignore
+      this.perm = new Uint8Array(512);
+      // @ts-ignore
+      this.permMod12 = new Uint8Array(512);
+      const p = new Uint8Array(256);
+      seed = seed || Math.random() * 65536;
+      for (let i = 0; i < 256; i++) p[i] = i;
+      for (let i = 255; i > 0; i--) {
+        seed = (seed * 16807) % 2147483647;
+        const j = seed % (i + 1);
+        const tmp = p[i]; p[i] = p[j]; p[j] = tmp;
+      }
+      for (let i = 0; i < 512; i++) {
+        // @ts-ignore
+        this.perm[i] = p[i & 255];
+        // @ts-ignore
+        this.permMod12[i] = this.perm[i] % 8;
+      }
+    }
+    // @ts-ignore
+    SimplexNoise.prototype.noise3D = function (xin: number, yin: number, zin: number) {
+      // Cheap pseudo-3D: blend two 2D noise samples over z
+      return this.noise2D(xin + zin * 0.7, yin - zin * 0.7);
+    };
+    // @ts-ignore
+    SimplexNoise.prototype.noise2D = function (xin: number, yin: number) {
+      const perm = this.perm, permMod12 = this.permMod12;
+      let n0, n1, n2;
+      const s = (xin + yin) * F2;
+      const i = Math.floor(xin + s), j = Math.floor(yin + s);
+      const t = (i + j) * G2;
+      const X0 = i - t, Y0 = j - t;
+      const x0 = xin - X0, y0 = yin - Y0;
+      let i1, j1;
+      if (x0 > y0) { i1 = 1; j1 = 0; } else { i1 = 0; j1 = 1; }
+      const x1 = x0 - i1 + G2, y1 = y0 - j1 + G2;
+      const x2 = x0 - 1 + 2 * G2, y2 = y0 - 1 + 2 * G2;
+      const ii = i & 255, jj = j & 255;
+      let t0 = 0.5 - x0 * x0 - y0 * y0;
+      if (t0 < 0) n0 = 0; else { t0 *= t0; const gi = permMod12[ii + perm[jj]] % 8; n0 = t0 * t0 * (grad3[gi][0] * x0 + grad3[gi][1] * y0); }
+      let t1 = 0.5 - x1 * x1 - y1 * y1;
+      if (t1 < 0) n1 = 0; else { t1 *= t1; const gi = permMod12[ii + i1 + perm[jj + j1]] % 8; n1 = t1 * t1 * (grad3[gi][0] * x1 + grad3[gi][1] * y1); }
+      let t2 = 0.5 - x2 * x2 - y2 * y2;
+      if (t2 < 0) n2 = 0; else { t2 *= t2; const gi = permMod12[ii + 1 + perm[jj + 1]] % 8; n2 = t2 * t2 * (grad3[gi][0] * x2 + grad3[gi][1] * y2); }
+      return 70 * (n0 + n1 + n2);
+    };
+    return SimplexNoise;
+  })();
+
+  const canvas = document.getElementById('flow-field') as HTMLCanvasElement | null;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (canvas && !reduceMotion) {
+    const ctx = canvas.getContext('2d')!;
+    // @ts-ignore
+    const noise = new SimplexNoise(7);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let W = 0, H = 0;
+
+    function resize() {
+      const rect = canvas!.getBoundingClientRect();
+      W = rect.width; H = rect.height;
+      canvas!.width = W * dpr;
+      canvas!.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const palette = [
+      { r: 200, g: 181, b: 104 }, // gold
+      { r: 217, g: 201, b: 135 }, // gold-soft
+      { r: 247, g: 242, b: 232 }, // cream
+      { r: 165, g: 148, b: 88 },  // deep gold
+    ];
+    function lerp(a: any, b: any, t: number) {
+      return { r: a.r + (b.r - a.r) * t, g: a.g + (b.g - a.g) * t, b: a.b + (b.b - a.b) * t };
+    }
+    function getColor(n: number) {
+      const t = (n + 1) * 0.5;
+      const idx = t * (palette.length - 1);
+      const i = Math.floor(idx), f = idx - i;
+      return lerp(palette[Math.min(i, palette.length - 1)], palette[Math.min(i + 1, palette.length - 1)], f);
+    }
+
+    const isSmall = window.innerWidth < 768;
+    const COUNT = isSmall ? 260 : 550;
+    const NOISE_SCALE = 0.0022;
+    const SPEED = 0.9;
+    const mouse = { x: -9999, y: -9999, active: false };
+
+    canvas.addEventListener('pointermove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+      mouse.active = true;
+    });
+    canvas.addEventListener('pointerleave', () => (mouse.active = false));
+
+    type P = { x: number; y: number; speed: number; alpha: number; size: number };
+    const particles: P[] = [];
+    function spawn(): P {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        speed: 0.4 + Math.random() * 1.0,
+        alpha: 0.2 + Math.random() * 0.5,
+        size: 0.6 + Math.random() * 1.3,
+      };
+    }
+    for (let i = 0; i < COUNT; i++) particles.push(spawn());
+
+    let time = 0;
+    let raf = 0;
+    function draw() {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = 'rgba(0,0,0,0.045)';
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+
+      time += 0.0007;
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        const nx = p.x * NOISE_SCALE, ny = p.y * NOISE_SCALE;
+        const angle = noise.noise3D(nx, ny, time) * Math.PI * 2;
+        const colorNoise = noise.noise3D(nx * 1.5 + 50, ny * 1.5 + 50, time * 0.5);
+
+        let vx = Math.cos(angle) * p.speed * SPEED;
+        let vy = Math.sin(angle) * p.speed * SPEED;
+
+        if (mouse.active) {
+          const dx = p.x - mouse.x, dy = p.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 140 && dist > 0) {
+            const force = (1 - dist / 140) * 2.2;
+            vx += (dx / dist) * force;
+            vy += (dy / dist) * force;
+          }
+        }
+
+        const px = p.x, py = p.y;
+        p.x += vx; p.y += vy;
+
+        const c = getColor(colorNoise);
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(p.x, p.y);
+        ctx.strokeStyle = `rgba(${c.r | 0},${c.g | 0},${c.b | 0},${p.alpha})`;
+        ctx.lineWidth = p.size;
+        ctx.stroke();
+
+        if (p.x < -20 || p.x > W + 20 || p.y < -20 || p.y > H + 20) {
+          p.x = Math.random() * W;
+          p.y = Math.random() * H;
+        }
+      }
+      raf = requestAnimationFrame(draw);
+    }
+    raf = requestAnimationFrame(draw);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) cancelAnimationFrame(raf);
+      else raf = requestAnimationFrame(draw);
+    });
+  }
+</script>

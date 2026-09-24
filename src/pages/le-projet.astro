@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import HousingAidBanner from '../components/HousingAidBanner.astro';
+import NumberedFeatures from '../components/NumberedFeatures.astro';
+import SpecTable from '../components/SpecTable.astro';
+import LinkCards from '../components/LinkCards.astro';
+import IconFeatureGrid from '../components/IconFeatureGrid.astro';
+import PhotoCollage from '../components/PhotoCollage.astro';
+import { site } from '../data/site';
+
+const conception = [
+  { title: 'Une implantation en angle', body: 'Le terrain donne sur trois voies : un axe principal au sud, une voie secondaire à l’ouest et une troisième au nord. Cela facilite les accès et donne au projet une vraie visibilité.' },
+  { title: 'Un cœur d’îlot végétalisé', body: 'Les immeubles s’organisent autour d’une cour centrale plantée. C’est un espace semi-privé, calme et sécurisé, réservé aux résidents.' },
+  { title: 'De la lumière et de l’air', body: 'La cour centrale fait circuler l’air et éclaire naturellement les logements et les circulations. Elle améliore le confort thermique, en particulier l’été.' },
+  { title: 'Un stationnement enterré', body: 'Deux niveaux de sous-sol accueillent le parking couvert et les locaux techniques. L’espace extérieur reste dégagé et rendu aux résidents.' },
+];
+
+const equipements = [
+  { icon: 'elevator', label: 'Ascenseur dans chaque immeuble' },
+  { icon: 'leaf', label: 'Cœur d’îlot végétalisé et aires de jeux' },
+  { icon: 'key', label: 'Parking couvert en sous-sol' },
+  { icon: 'shield', label: 'Résidence sécurisée' },
+  { icon: 'sparkle', label: 'Finitions modernes' },
+  { icon: 'store', label: 'Commerces en rez-de-chaussée' },
+];
+
+const missions = [
+  'La gestion des parties communes et des équipements collectifs',
+  'La maintenance des installations : éclairage, ascenseurs, portail, caméras',
+  'La supervision du service de gardiennage',
+  'Le contrôle et la gestion des accès à la résidence',
+  'Le suivi des contrats d’entretien et des interventions techniques',
+];
+
+const specs = [
+  { label: 'Promoteur', value: site.promoter },
+  { label: 'Architecte', value: site.architect },
+  { label: 'Localisation', value: site.location },
+  { label: 'Adresse', value: site.address },
+  { label: 'Standing', value: 'Moyen standing, finitions modernes' },
+  { label: 'Appartements', value: '120 logements, F3 et F4' },
+  { label: 'Surfaces des appartements', value: site.surfaceRange },
+  { label: 'Fonds de commerce', value: '49 locaux, de 13 à 30 m²' },
+  { label: 'Stationnement', value: 'Parking couvert sur deux niveaux de sous-sol' },
+  { label: 'Gestion', value: 'Société de syndic professionnelle' },
+  { label: 'Aide au logement', value: 'Projet éligible' },
+  { label: 'Livraison', value: `Prévue en ${site.delivery}` },
+];
+---
+<BaseLayout
+  title="Le projet Riyad Zaer Gardens — Aïn Aouda, Rabat"
+  description="Découvrez Riyad Zaer Gardens : 120 appartements et 49 commerces à Aïn Aouda, autour d'un cœur d'îlot végétalisé, avec parking en sous-sol. Livraison 2028."
+>
+  <section class="hero relative bg-forest text-cream overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="/gallery/render-4.jpg" alt="Cour intérieure Riyad Zaer Gardens" class="w-full h-full object-cover opacity-40" />
+      <div class="absolute inset-0 bg-gradient-to-t from-forest via-forest/80 to-forest/50"></div>
+    </div>
+    <div class="relative container-page py-24 md:py-32">
+      <Eyebrow label="Le projet" />
+      <h1 class="font-display text-4xl md:text-5xl mt-5 leading-tight max-w-2xl animate-fade-up">Riyad Zaer Gardens, un quartier neuf à {site.location}</h1>
+      <div class="divider-gold my-7 animate-fade-up" style="animation-delay:.15s"></div>
+      <p class="max-w-xl text-cream/75 animate-fade-up" style="animation-delay:.25s">
+        Un projet immobilier de moyen standing développé par {site.promoter}, sur l’Avenue Mohammed VI. La première tranche regroupe un îlot complet avec ses logements, sa cour plantée et ses commerces de proximité.
+      </p>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page">
+      <div class="max-w-2xl mb-16">
+        <Eyebrow index="01." label="Conception" />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-5">Un projet pensé avant d’être construit</h2>
+        <p class="text-ink/65">L’implantation, l’orientation et l’organisation des immeubles ont été étudiées pour le confort quotidien des résidents.</p>
+      </div>
+      <NumberedFeatures items={conception} />
+    </div>
+  </section>
+
+  <section class="section overflow-hidden">
+    <div class="container-page grid md:grid-cols-2 gap-16 md:gap-24 items-center">
+      <div class="md:pl-8">
+        <PhotoCollage
+          images={['/gallery/render-1.jpg', '/gallery/render-11.jpg', '/gallery/render-5.jpg']}
+          alt="Cour intérieure végétalisée Riyad Zaer Gardens"
+          badgeIcon="leaf"
+          badgeValue="100%"
+          badgeLabel="Cœur d'îlot vert"
+        />
+      </div>
+      <div>
+        <Eyebrow index="02." label="Cadre de vie" />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">Une cour plantée au cœur de la résidence</h2>
+        <p class="text-ink/70 leading-relaxed mb-4">
+          {site.location} offre ce que le centre de Rabat ne peut plus offrir : de l’espace, du calme et de la verdure. Riyad Zaer Gardens en fait son point de départ.
+        </p>
+        <p class="text-ink/70 leading-relaxed">
+          Les espaces verts ont été conçus comme un lieu de respiration au milieu des immeubles, avec des aires de jeux pour les enfants.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page">
+      <div class="max-w-2xl mx-auto text-center mb-16">
+        <Eyebrow index="03." label="Équipements" />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-5">Ce que comprend la résidence</h2>
+        <p class="text-ink/65">Les prestations ont été choisies pour le confort du quotidien, sans surcoût inutile.</p>
+      </div>
+      <IconFeatureGrid items={equipements} variant="centered" />
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page grid md:grid-cols-2 gap-16">
+      <div>
+        <Eyebrow index="04." label="Gestion" />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">Une résidence gérée par un syndic professionnel</h2>
+        <p class="text-ink/65 leading-relaxed">
+          La résidence sera confiée à une société de syndic professionnelle. Elle assure la gestion administrative, technique et sécuritaire de l’ensemble.
+        </p>
+      </div>
+      <div>
+        <p class="eyebrow mb-5">Ses missions</p>
+        <ul class="space-y-4">
+          {missions.map((m) => (
+            <li class="flex items-start gap-3 text-sm text-ink/70"><span class="text-gold mt-0.5">✓</span>{m}</li>
+          ))}
+        </ul>
+        <p class="mt-7 text-sm text-ink/50 italic">C’est ce qui permet à une résidence de rester agréable dans la durée, et pas seulement le jour de la livraison.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page max-w-3xl">
+      <Eyebrow index="05." label="Fiche technique" />
+      <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-10">La première tranche en détail</h2>
+      <SpecTable rows={specs} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-page max-w-2xl">
+      <Eyebrow index="06." label="À venir" />
+      <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">Une première tranche, puis les suivantes</h2>
+      <p class="text-ink/70 leading-relaxed mb-4">
+        Riyad Zaer Gardens est pensé pour se développer par étapes. La première tranche est lancée aujourd’hui ; les suivantes viendront compléter le quartier au fil du temps.
+      </p>
+      <p class="text-ink/70 leading-relaxed">
+        Acheter dans la première tranche, c’est arriver au début d’un quartier qui va se construire et s’animer autour de vous.
+      </p>
+    </div>
+  </section>
+
+  <HousingAidBanner text="Les surfaces et les prix des appartements ont été conçus dès l'origine pour répondre aux conditions du programme d'aide au logement. Selon votre situation, le prix d'un appartement peut démarrer à 350 000 DH au lieu de 420 000 DH." />
+
+  <LinkCards
+    cards={[
+      { title: 'Les appartements', text: 'F3 et F4, de 65 à 86 m²', href: '/appartements' },
+      { title: 'Les fonds de commerce', text: '49 locaux de 13 à 30 m²', href: '/fonds-de-commerce' },
+      { title: 'La localisation', text: `${site.location}, ${site.distance}`, href: '/localisation' },
+    ]}
+  />
+
+  <CtaBlock />
+</BaseLayout>

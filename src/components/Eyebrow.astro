@@ -1,0 +1,11 @@
+---
+interface Props {
+  index?: string;
+  label: string;
+}
+const { index, label } = Astro.props;
+---
+<p class="flex items-center gap-3 text-xl md:text-2xl font-medium text-gold">
+  {index && <span>{index}</span>}
+  {label}
+</p>

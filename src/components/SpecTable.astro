@@ -1,0 +1,15 @@
+---
+interface Row { label: string; value: string }
+interface Props { rows: Row[] }
+const { rows } = Astro.props;
+---
+<table class="spec-table">
+  <tbody>
+    {rows.map((r) => (
+      <tr>
+        <td>{r.label}</td>
+        <td>{r.value}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>

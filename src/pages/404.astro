@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page introuvable — Riyad Zaer Gardens" description="Cette page n'existe pas." noindex>
+  <section class="bg-forest text-cream min-h-[60vh] flex items-center">
+    <div class="container-page py-20 text-center max-w-xl mx-auto">
+      <p class="font-display text-6xl text-gold mb-6">404</p>
+      <h1 class="font-display text-4xl md:text-6xl mb-6">Cette page n'existe pas</h1>
+      <p class="text-cream/75 mb-10">
+        Le lien que vous avez suivi ne mène nulle part. Revenez à l'accueil ou découvrez directement les appartements disponibles.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="/" class="btn btn-gold">Retour à l'accueil</a>
+        <a href="/appartements" class="btn btn-outline text-cream">Voir les appartements</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

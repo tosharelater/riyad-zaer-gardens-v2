@@ -1,0 +1,33 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  images: [string, string, string];
+  alt: string;
+  badgeIcon?: string;
+  badgeValue?: string;
+  badgeLabel?: string;
+  onDark?: boolean;
+}
+const { images, alt, badgeIcon = 'leaf', badgeValue, badgeLabel, onDark = false } = Astro.props;
+---
+<div class="relative">
+  <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[420px] md:h-[520px]">
+    <img src={images[0]} alt={alt} class="w-full h-full object-cover" loading="lazy" />
+    <img src={images[2]} alt={alt} class="w-full h-full object-cover row-span-2" loading="lazy" />
+    <img src={images[1]} alt={alt} class="w-full h-full object-cover" loading="lazy" />
+  </div>
+  {badgeValue && (
+    <div
+      class:list={[
+        'absolute -bottom-8 -left-8 hidden sm:flex w-32 h-32 flex-col items-center justify-center text-center shadow-2xl',
+        onDark ? 'bg-gold text-forest' : 'frame-corners bg-forest text-cream',
+      ]}
+    >
+      <span class:list={['icon-badge mb-2', onDark && '!border-forest/40 !text-forest']}>
+        <Icon name={badgeIcon} class="w-4 h-4" />
+      </span>
+      <p class="font-display text-xl leading-none">{badgeValue}</p>
+      <p class:list={['text-[0.6rem] uppercase tracking-widest mt-1', onDark ? 'text-forest/60' : 'text-cream/50']}>{badgeLabel}</p>
+    </div>
+  )}
+</div>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import { site } from '../data/site';
+---
+<BaseLayout
+  title="La Manoussa, promoteur de Riyad Zaer Gardens"
+  description="La Manoussa est le promoteur de Riyad Zaer Gardens à Aïn Aouda : 9 immeubles, 120 appartements et 49 commerces, livraison prévue en 2028."
+>
+  <section class="bg-forest text-cream">
+    <div class="container-page py-16 md:py-20">
+      <Eyebrow label="Le promoteur" />
+      <h1 class="font-display text-4xl md:text-5xl mt-4 max-w-2xl leading-tight">{site.promoter}, promoteur de Riyad Zaer Gardens</h1>
+      <p class="mt-6 max-w-xl text-cream/75">
+        Riyad Zaer Gardens est développé par {site.promoter}, promoteur immobilier actif dans la région de Rabat. La conception architecturale du projet est signée <strong class="text-cream">{site.architect}</strong>.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-white">
+    <div class="container-page max-w-3xl">
+      <Eyebrow index="01." label="Notre approche" />
+      <h2 class="font-display text-3xl md:text-4xl text-forest mt-3 mb-5">Une approche factuelle</h2>
+      <p class="text-ink/70 leading-relaxed">
+        Ce qui rassure un acheteur, ce sont les projets livrés et les délais tenus. {site.promoter} conçoit chaque programme avec cette exigence : un emplacement choisi avec soin, une construction suivie de près, et une relation directe avec ses clients tout au long du projet.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24">
+    <div class="container-page max-w-3xl">
+      <Eyebrow index="02." label="Nos projets" />
+      <h2 class="font-display text-3xl md:text-4xl text-forest mt-3 mb-8">Nos projets</h2>
+      <a href="/le-projet" class="block border border-forest/10 p-6 hover:border-gold transition-colors">
+        <h3 class="font-display text-xl text-forest mb-2">Riyad Zaer Gardens</h3>
+        <p class="text-sm text-ink/65 leading-relaxed">
+          {site.buildings} immeubles, {site.apartments} appartements et {site.commercial} fonds de commerce à {site.location}, sur l’Avenue Mohammed VI. Livraison prévue en {site.delivery}.
+        </p>
+      </a>
+    </div>
+  </section>
+
+  <CtaBlock title="Une question sur le projet ?" text="Notre équipe commerciale répond à vos questions et vous accompagne dans votre projet d'achat." />
+</BaseLayout>

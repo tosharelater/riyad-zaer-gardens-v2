@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  icon?: string;
+  value: string;
+  label: string;
+  dark?: boolean;
+}
+const { icon = 'pin', value, label, dark = false } = Astro.props;
+---
+<div class:list={[
+  'frame-corners flex flex-col items-center justify-center text-center aspect-square p-10',
+  dark ? 'bg-forest text-cream' : 'bg-white text-forest',
+]}>
+  <span class="icon-badge mb-6"><Icon name={icon} class="w-6 h-6" /></span>
+  <p class="font-accent text-4xl md:text-5xl mb-2">{value}</p>
+  <p class:list={['text-xs uppercase tracking-[0.18em]', dark ? 'text-cream/50' : 'text-ink/45']}>{label}</p>
+</div>
