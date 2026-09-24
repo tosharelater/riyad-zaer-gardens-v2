@@ -1,14 +1,25 @@
 ---
 import Icon from './Icon.astro';
 import { site } from '../data/site';
+import { pick, type Lang } from '../data/i18n/helpers';
+import { ui } from '../data/i18n/ui';
+
 interface Props {
+  lang?: Lang;
   title?: string;
   text?: string;
 }
+const { lang = 'fr', ...rest } = Astro.props;
+const u = pick(ui, lang);
 const {
-  title = 'Parlons de votre projet',
-  text = 'Laissez-nous vos coordonnées. Un conseiller vous rappelle pour répondre à vos questions et vous transmettre la brochure du projet.',
-} = Astro.props;
+  title = u.etreRappele === 'Être rappelé' ? 'Parlons de votre projet' : 'لنتحدث عن مشروعكم',
+  text = u.etreRappele === 'Être rappelé'
+    ? 'Laissez-nous vos coordonnées. Un conseiller vous rappelle pour répondre à vos questions et vous transmettre la brochure du projet.'
+    : 'اتركوا لنا بياناتكم. يتصل بكم مستشار للإجابة عن أسئلتكم وإرسال كتيب المشروع.',
+} = rest as { title?: string; text?: string };
+
+const isAr = lang === 'ar';
+const contactHref = isAr ? '/ar/contact' : '/contact';
 ---
 <section class="section bg-forest text-cream relative overflow-hidden">
   <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 26px 26px;"></div>
@@ -17,8 +28,8 @@ const {
       <h2 class="font-display text-3xl md:text-5xl mb-5 max-w-xl">{title}</h2>
       <p class="max-w-lg text-cream/70">{text}</p>
       <div class="flex flex-wrap items-center gap-4 mt-8">
-        <a href="/contact" class="btn btn-gold">Être rappelé</a>
-        <a href={site.whatsapp} class="btn btn-outline text-cream">Écrire sur WhatsApp</a>
+        <a href={contactHref} class="btn btn-gold">{u.etreRappele}</a>
+        <a href={site.whatsapp} class="btn btn-outline text-cream">{u.whatsapp}</a>
       </div>
     </div>
     <a href={`tel:${site.phoneTel}`} class="group flex items-center gap-5 lg:border-l lg:border-white/15 lg:pl-14 shrink-0">
@@ -26,8 +37,8 @@ const {
         <Icon name="phone" class="w-6 h-6" />
       </span>
       <span>
-        <span class="block text-xs uppercase tracking-[0.2em] text-cream/50 mb-1">Appelez-nous</span>
-        <span class="block font-display text-3xl md:text-4xl text-gold group-hover:text-gold-soft transition-colors">{site.phone}</span>
+        <span class="block text-xs uppercase tracking-[0.2em] text-cream/50 mb-1">{u.appelezNous}</span>
+        <span class="block font-display text-3xl md:text-4xl text-gold group-hover:text-gold-soft transition-colors" dir="ltr">{site.phone}</span>
       </span>
     </a>
   </div>

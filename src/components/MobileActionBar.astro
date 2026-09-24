@@ -1,8 +1,12 @@
 ---
 import { site } from '../data/site';
-import { homeText, type Lang } from '../data/home-i18n';
+import { pick, type Lang } from '../data/i18n/helpers';
+
 const { lang = 'fr' } = Astro.props as { lang?: Lang };
-const m = homeText[lang].mobile;
+const m =
+  lang === 'ar'
+    ? { call: 'اتصال', wa: 'واتساب', cb: 'نتصل بكم', cbHref: '/ar/contact' }
+    : { call: 'Appeler', wa: 'WhatsApp', cb: 'Être rappelé', cbHref: '/contact' };
 ---
 <div class="fixed bottom-0 inset-x-0 z-50 md:hidden bg-forest text-cream border-t border-white/10 grid grid-cols-3">
   <a href={`tel:${site.phoneTel}`} class="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium">

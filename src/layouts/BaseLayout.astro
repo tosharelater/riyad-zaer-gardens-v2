@@ -4,18 +4,22 @@ import Footer from '../components/Footer.astro';
 import MobileActionBar from '../components/MobileActionBar.astro';
 import '../styles/global.css';
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import type { Lang } from '../data/i18n/helpers';
 
 interface Props {
   title: string;
   description: string;
   noindex?: boolean;
-  lang?: 'fr' | 'ar';
+  lang?: Lang;
 }
 
 const { title, description, noindex = false } = Astro.props;
-const lang = (Astro.props.lang ?? Astro.currentLocale ?? 'fr') as 'fr' | 'ar';
+const lang = (Astro.props.lang ?? Astro.currentLocale ?? 'fr') as Lang;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 const path = (Astro.url.pathname.slice(baseUrl.length) || '/').replace(/^\/ar(\/|$)/, '/');
+
+const frUrl = getRelativeLocaleUrl('fr', path);
+const arUrl = getRelativeLocaleUrl('ar', path);
 ---
 <!doctype html>
 <html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
@@ -26,7 +30,7 @@ const path = (Astro.url.pathname.slice(baseUrl.length) || '/').replace(/^\/ar(\/
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {!noindex && path === "/" && (<><link rel="alternate" hreflang="fr" href={getRelativeLocaleUrl('fr', path)} /><link rel="alternate" hreflang="ar" href={getRelativeLocaleUrl('ar', path)} /></>)}
+    {!noindex && (<><link rel="alternate" hreflang="fr" href={frUrl} /><link rel="alternate" hreflang="ar" href={arUrl} /></>)}
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

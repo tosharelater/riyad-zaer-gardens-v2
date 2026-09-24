@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Eyebrow from '../../../components/Eyebrow.astro';
+import CtaBlock from '../../../components/CtaBlock.astro';
+import { pick, type Lang } from '../../../data/i18n/helpers';
+import { misc, guides, type Guide } from '../../../data/i18n/misc';
+
+export function getStaticPaths() {
+  const langs: (Lang | undefined)[] = [undefined, 'ar'];
+  return langs.flatMap((lang) =>
+    guides[lang ?? 'fr'].map((g) => ({ params: { lang, slug: g.slug }, props: { guide: g as Guide, lang } }))
+  );
+}
+
+const { guide, lang = 'fr' } = Astro.props;
+const t = pick(misc, lang).guide;
+const locale = lang === 'ar' ? 'ar-MA' : 'fr-FR';
+const formatDate = (d: string) =>
+  new Date(d).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<BaseLayout title={`${guide.title} — Riyad Zaer Gardens`} description={guide.excerpt} lang={lang}>
+  <section class="bg-forest text-cream">
+    <div class="container-page py-16 md:py-20 max-w-2xl">
+      <Eyebrow label={pick(misc, lang).guides.eyebrow} />
+      <h1 class="font-display text-4xl md:text-6xl mt-4 leading-tight">{guide.title}</h1>
+      <p class="mt-4 text-sm text-cream/50">{t.published.replace('{date}', formatDate(guide.date))}</p>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24">
+    <div class="container-page max-w-2xl space-y-6 text-ink/75 leading-relaxed">
+      {guide.body.map((p) => <p>{p}</p>)}
+      <a href={guide.link.href} class="btn btn-dark mt-4">{guide.link.label}</a>
+    </div>
+  </section>
+
+  <CtaBlock lang={lang} />
+</BaseLayout>

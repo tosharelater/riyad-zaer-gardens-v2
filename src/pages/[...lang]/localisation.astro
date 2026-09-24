@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import CtaBlock from '../../components/CtaBlock.astro';
+import NumberedFeatures from '../../components/NumberedFeatures.astro';
+import LinkCards from '../../components/LinkCards.astro';
+import PhotoCollage from '../../components/PhotoCollage.astro';
+import { site } from '../../data/site';
+import { pick, type Lang } from '../../data/i18n/helpers';
+import { localisation } from '../../data/i18n/localisation';
+
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: 'ar' } }];
+}
+
+const lang = (Astro.currentLocale ?? 'fr') as Lang;
+const t = pick(localisation, lang);
+
+const fill = (s: string) =>
+  s
+    .replaceAll('{location}', site.location)
+    .replaceAll('{distance}', site.distance)
+    .replaceAll('{buildings}', String(site.buildings))
+    .replaceAll('{surfaceRange}', site.surfaceRange);
+
+const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=Avenue+Mohammed+VI+Ain+Aouda+Rabat';
+const contactHref = lang === 'ar' ? '/ar/contact' : '/contact';
+---
+<BaseLayout title={t.meta.title} description={t.meta.description} lang={lang}>
+  <section class="hero relative bg-forest text-cream overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="/gallery/render-11.jpg" alt={t.hero.alt} class="w-full h-full object-cover opacity-40" />
+      <div class="absolute inset-0 bg-gradient-to-t from-forest via-forest/80 to-forest/50"></div>
+    </div>
+    <div class="relative container-page py-24 md:py-32">
+      <Eyebrow label={t.hero.eyebrow} />
+      <h1 class="font-display text-4xl md:text-5xl mt-5 leading-tight max-w-2xl animate-fade-up">{fill(t.hero.h1)}</h1>
+      <div class="divider-gold my-7 animate-fade-up" style="animation-delay:.15s"></div>
+      <p class="max-w-xl text-cream/75 animate-fade-up" style="animation-delay:.25s">{fill(t.hero.p)}</p>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page">
+      <Eyebrow index="01." label={t.carte.eyebrow} />
+      <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-10">{t.carte.h2}</h2>
+      <div class="aspect-[16/8] w-full overflow-hidden frame-corners">
+        <iframe
+          title={t.carte.iframeTitle}
+          class="w-full h-full"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Avenue+Mohammed+VI,+Ain+Aouda,+Rabat&output=embed"
+        ></iframe>
+      </div>
+      <a href={mapsUrl} target="_blank" rel="noopener" class="btn btn-dark mt-8">{t.carte.maps}</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-page">
+      <div class="max-w-2xl mb-16">
+        <Eyebrow index="02." label={t.acces.eyebrow} />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-5">{t.acces.h2}</h2>
+      </div>
+      <NumberedFeatures items={t.acces.items} />
+    </div>
+  </section>
+
+  <section class="section bg-white overflow-hidden">
+    <div class="container-page grid md:grid-cols-2 gap-16 md:gap-24 items-center">
+      <div>
+        <Eyebrow index="03." label={t.quartier.eyebrow} />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">{fill(t.quartier.h2)}</h2>
+        <p class="text-ink/65 leading-relaxed mb-4">{fill(t.quartier.p1)}</p>
+        <p class="text-ink/65 leading-relaxed mb-7">{t.quartier.p2}</p>
+        <ul class="space-y-3 mb-6">
+          {t.quartier.already.map((a) => (
+            <li class="flex items-start gap-3 text-sm text-ink/70"><span class="text-gold mt-0.5">✓</span>{a}</li>
+          ))}
+        </ul>
+        <p class="text-sm text-ink/50 italic">{t.quartier.note}</p>
+      </div>
+      <div class="md:pr-8">
+        <PhotoCollage
+          images={['/gallery/render-6.jpg', '/gallery/render-4.jpg', '/gallery/render-11.jpg']}
+          alt={t.quartier.alt}
+          badgeIcon="pin"
+          badgeValue={t.quartier.badgeValue}
+          badgeLabel={t.quartier.badgeLabel}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page max-w-2xl">
+      <Eyebrow index="04." label={t.visite.eyebrow} />
+      <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">{t.visite.h2}</h2>
+      <p class="text-ink/70 leading-relaxed mb-8">{t.visite.p}</p>
+      <a href={contactHref} class="btn btn-dark">{t.visite.btn}</a>
+    </div>
+  </section>
+
+  <LinkCards
+    lang={lang}
+    cards={[
+      { title: fill(t.cards.projet[0]), text: fill(t.cards.projet[1]), href: lang === 'ar' ? '/ar/le-projet' : '/le-projet' },
+      { title: fill(t.cards.appartements[0]), text: fill(t.cards.appartements[1]), href: lang === 'ar' ? '/ar/appartements' : '/appartements' },
+    ]}
+  />
+
+  <CtaBlock lang={lang} />
+</BaseLayout>

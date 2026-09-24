@@ -1,23 +1,38 @@
 ---
-import { homeText, type Lang } from '../data/home-i18n';
-import { getRelativeLocaleUrl } from 'astro:i18n';
+import { pick, type Lang } from '../data/i18n/helpers';
+import { nav, switchTo, by } from '../data/i18n/links';
 
-const { lang = 'fr' } = Astro.props as { lang?: Lang };
-const t = homeText[lang];
-const nav = t.nav;
-const other = lang === 'ar' ? 'fr' : 'ar';
-const switchHref = getRelativeLocaleUrl(other, '');
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'fr' } = Astro.props;
+const navItems = pick(nav, lang);
+const sw = pick(switchTo, lang);
+const byText = pick(by, lang);
 const path = new URL(Astro.request.url).pathname.replace(/\/$/, '') || '/';
+const homeHref = lang === 'ar' ? '/ar/' : '/';
+
+/**
+ * Same-page language switch: swap the locale prefix of the current path.
+ * /le-projet -> /ar/le-projet ; /ar/le-projet -> /le-projet ; /ar/ -> /
+ */
+function switchHref(): string {
+  if (lang === 'ar') {
+    const stripped = path.replace(/^\/ar/, '') || '/';
+    return stripped === '/' ? '/' : stripped;
+  }
+  return path === '/' ? '/ar/' : `/ar${path}`;
+}
 ---
-<header class="fixed top-4 inset-x-0 z-50 px-4">
+<header class="fixed top-4 inset-x-0 z-50 px-4 site-header">
   <div class="mx-auto max-w-[1280px] bg-white rounded-full shadow-[0_10px_40px_-15px_rgba(0,0,0,0.35)] flex items-center justify-between ps-7 pe-2.5 py-2.5">
-    <a href={lang === "ar" ? "/ar/" : "/"} class="leading-none">
+    <a href={homeHref} class="leading-none">
       <span class="brand-mark block text-xl text-forest">{lang === 'ar' ? 'رياض زعير' : 'Riyad Zaer'} <span class="text-gold">{lang === 'ar' ? 'غاردنز' : 'Gardens'}</span></span>
-      <span class="block text-[0.6rem] tracking-[0.22em] uppercase text-ink/45 mt-1">{t.by}</span>
+      <span class="block text-[0.6rem] tracking-[0.22em] uppercase text-ink/45 mt-1">{byText}</span>
     </a>
 
     <nav class="hidden lg:flex items-center gap-9 text-sm text-ink/70">
-      {nav.map(([label, href]) => (
+      {navItems.map(([label, href]) => (
         <a href={href} class:list={['nav-link hover:text-forest transition-colors', path === href.replace(/\/$/, '') && !href.includes('#') && 'is-active text-forest font-medium']}>
           {label}
         </a>
@@ -25,11 +40,11 @@ const path = new URL(Astro.request.url).pathname.replace(/\/$/, '') || '/';
     </nav>
 
     <div class="hidden lg:flex items-center gap-3">
-      <a href={switchHref} class="text-xs text-ink/55 hover:text-forest border border-ink/15 rounded-full px-3 py-1.5">{t.switchTo.label}</a>
-      <a href={lang === 'ar' ? '/ar/#contact' : '/contact'} class="btn btn-dark !rounded-full !py-3.5 !px-6">{t.cta}</a>
+      <a href={switchHref()} class="text-xs text-ink/55 hover:text-forest border border-ink/15 rounded-full px-3 py-1.5">{sw.label}</a>
+      <a href={lang === 'ar' ? '/ar/contact' : '/contact'} class="btn btn-dark !rounded-full !py-3.5 !px-6">{lang === 'ar' ? 'نتصل بكم' : 'Être rappelé'}</a>
     </div>
 
-    <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-3 me-2" aria-label="Ouvrir le menu" aria-expanded="false">
+    <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-3 me-2" aria-label={lang === 'ar' ? 'فتح القائمة' : 'Ouvrir le menu'} aria-expanded="false">
       <span class="w-6 h-px bg-forest"></span>
       <span class="w-6 h-px bg-forest"></span>
       <span class="w-4 h-px bg-forest self-end"></span>
@@ -38,11 +53,11 @@ const path = new URL(Astro.request.url).pathname.replace(/\/$/, '') || '/';
 
   <div id="mobile-menu" class="hidden lg:hidden mx-auto max-w-[1280px] mt-2 bg-white rounded-3xl shadow-xl p-6">
     <nav class="flex flex-col">
-      {nav.map(([label, href]) => (
+      {navItems.map(([label, href]) => (
         <a href={href} class="py-3 border-b border-ink/10 text-ink/80">{label}</a>
       ))}
-      <a href={switchHref} class="py-3 border-b border-ink/10 text-ink/80">{t.switchTo.label}</a>
-      <a href={lang === 'ar' ? '/ar/#contact' : '/contact'} class="btn btn-dark !rounded-full mt-5 justify-center">{t.cta}</a>
+      <a href={switchHref()} class="py-3 border-b border-ink/10 text-ink/80">{sw.label}</a>
+      <a href={lang === 'ar' ? '/ar/contact' : '/contact'} class="btn btn-dark !rounded-full mt-5 justify-center">{lang === 'ar' ? 'نتصل بكم' : 'Être rappelé'}</a>
     </nav>
   </div>
 </header>

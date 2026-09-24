@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Eyebrow from '../../../components/Eyebrow.astro';
+import { pick, type Lang } from '../../../data/i18n/helpers';
+import { misc, guides } from '../../../data/i18n/misc';
+
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: 'ar' } }];
+}
+
+const lang = (Astro.currentLocale ?? 'fr') as Lang;
+const t = pick(misc, lang).guides;
+const items = pick(guides, lang);
+const locale = lang === 'ar' ? 'ar-MA' : 'fr-FR';
+const formatDate = (d: string) =>
+  new Date(d).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+const base = lang === 'ar' ? '/ar' : '';
+---
+<BaseLayout title={t.meta.title} description={t.meta.description} lang={lang}>
+  <section class="bg-forest text-cream">
+    <div class="container-page py-16 md:py-20">
+      <Eyebrow label={t.eyebrow} />
+      <h1 class="font-display text-4xl md:text-5xl mt-4 max-w-2xl leading-tight">{t.h1}</h1>
+      <p class="mt-6 max-w-xl text-cream/75">{t.p}</p>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24">
+    <div class="container-page grid md:grid-cols-2 gap-8">
+      {items.map((g) => (
+        <a href={`${base}/guides/${g.slug}`} class="group block border border-forest/10 p-7 hover:border-gold transition-colors">
+          <p class="text-xs text-ink/45 mb-3">{formatDate(g.date)}</p>
+          <h2 class="font-display text-xl text-forest mb-3 group-hover:text-canopy">{g.title}</h2>
+          <p class="text-sm text-ink/65 leading-relaxed mb-4">{g.excerpt}</p>
+          <span class="text-sm font-semibold text-gold">{lang === 'ar' ? 'اقرأوا ←' : 'Lire →'}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

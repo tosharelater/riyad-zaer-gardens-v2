@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import { pick, type Lang } from '../../data/i18n/helpers';
+import { misc } from '../../data/i18n/misc';
+
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: 'ar' } }];
+}
+
+const lang = (Astro.currentLocale ?? 'fr') as Lang;
+const t = pick(misc, lang).merci;
+const fill = (s: string) => s.replaceAll('{phone}', site.phone);
+const projetHref = lang === 'ar' ? '/ar/le-projet' : '/le-projet';
+---
+<BaseLayout title={t.meta.title} description={t.meta.description} lang={lang} noindex>
+  <section class="bg-forest text-cream min-h-[60vh] flex items-center">
+    <div class="container-page py-20 text-center max-w-xl mx-auto">
+      <p class="eyebrow justify-center flex mb-4">{t.eyebrow}</p>
+      <h1 class="font-display text-4xl md:text-6xl mb-6">{t.h1}</h1>
+      <p class="text-cream/75 mb-4">{t.p1}</p>
+      <p class="text-cream/75 mb-10">{fill(t.p2)}</p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href={`tel:${site.phoneTel}`} class="btn btn-gold">{t.call}</a>
+        <a href={projetHref} class="btn btn-outline text-cream">{t.project}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

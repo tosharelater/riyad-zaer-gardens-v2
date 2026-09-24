@@ -1,11 +1,13 @@
 ---
-import { contactInterests } from '../data/site';
 import { homeText, type Lang } from '../data/home-i18n';
+import { contactInterests } from '../data/site';
+
 const { lang = 'fr' } = Astro.props as { lang?: Lang };
 const f = homeText[lang].contact.form;
 const options = lang === 'ar' ? f.options : contactInterests;
+const action = lang === 'ar' ? '/ar/merci' : '/merci';
 ---
-<form action="/merci" method="get" class="bg-white border border-forest/10 p-6 md:p-10 space-y-5">
+<form action={action} method="get" class="bg-white border border-forest/10 p-6 md:p-10 space-y-5">
   <div class="hidden">
     <label>Ne pas remplir<input type="text" name="societe" tabindex="-1" autocomplete="off" /></label>
   </div>

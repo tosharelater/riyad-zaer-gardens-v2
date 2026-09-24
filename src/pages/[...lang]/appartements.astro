@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import CtaBlock from '../../components/CtaBlock.astro';
+import HousingAidBanner from '../../components/HousingAidBanner.astro';
+import SpecTable from '../../components/SpecTable.astro';
+import NumberedFeatures from '../../components/NumberedFeatures.astro';
+import ThreeWays from '../../components/ThreeWays.astro';
+import PhotoCollage from '../../components/PhotoCollage.astro';
+import { site } from '../../data/site';
+import { pick, type Lang } from '../../data/i18n/helpers';
+import { appartements } from '../../data/i18n/appartements';
+
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: 'ar' } }];
+}
+
+const lang = (Astro.currentLocale ?? 'fr') as Lang;
+const t = pick(appartements, lang);
+const contactHref = lang === 'ar' ? '/ar/contact' : '/contact';
+const projetHref = lang === 'ar' ? '/ar/le-projet' : '/le-projet';
+
+const fill = (s: string) =>
+  s
+    .replaceAll('{location}', site.location)
+    .replaceAll('{priceFrom}', site.priceFrom)
+    .replaceAll('{priceWithAid}', site.priceWithAid);
+
+const finishes = [
+  { label: t.finitions.rows[0], value: t.finitions.sols },
+  { label: t.finitions.rows[1], value: t.finitions.bain },
+  { label: t.finitions.rows[2], value: t.finitions.menuiseries },
+  { label: t.finitions.rows[3], value: t.finitions.volets },
+  { label: t.finitions.rows[4], value: t.finitions.portes },
+  { label: t.finitions.rows[5], value: t.finitions.plafonds },
+  { label: t.finitions.rows[6], value: t.finitions.cuisine },
+  { label: t.finitions.rows[7], value: t.finitions.communes },
+];
+---
+<BaseLayout title={t.meta.title} description={t.meta.description} lang={lang}>
+  <section class="hero relative bg-forest text-cream overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="/gallery/render-6.jpg" alt={t.hero.alt} class="w-full h-full object-cover opacity-40" />
+      <div class="absolute inset-0 bg-gradient-to-t from-forest via-forest/80 to-forest/50"></div>
+    </div>
+    <div class="relative container-page py-24 md:py-32">
+      <Eyebrow label={t.hero.eyebrow} />
+      <h1 class="font-display text-4xl md:text-5xl mt-5 leading-tight max-w-2xl animate-fade-up">{fill(t.hero.h1)}</h1>
+      <div class="divider-gold my-7 animate-fade-up" style="animation-delay:.15s"></div>
+      <p class="max-w-xl text-cream/75 animate-fade-up" style="animation-delay:.25s">{t.hero.p}</p>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page">
+      <div class="max-w-2xl mb-16">
+        <Eyebrow index="01." label={t.typologies.eyebrow} />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-5">{t.typologies.h2}</h2>
+        <p class="text-ink/65">{t.typologies.p}</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8">
+        {t.typologies.items.map((typ, i) => (
+          <div class="group overflow-hidden border border-forest/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
+            <div class="overflow-hidden">
+              <img src={i === 0 ? '/gallery/render-1.jpg' : '/gallery/render-6.jpg'} alt={typ.name} class="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+            </div>
+            <div class="p-7">
+              <div class="flex items-baseline justify-between mb-4">
+                <h3 class="font-display text-2xl text-forest">{typ.name}</h3>
+                <span class="text-sm text-gold font-semibold">{typ.surface}</span>
+              </div>
+              <p class="text-xs uppercase tracking-wide text-ink/40 mb-4">{typ.rooms}</p>
+              <p class="text-sm text-ink/65 leading-relaxed">{typ.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section overflow-hidden">
+    <div class="container-page grid md:grid-cols-2 gap-16 md:gap-24 items-center">
+      <div class="md:pl-8">
+        <PhotoCollage
+          images={['/gallery/render-9.jpg', '/gallery/render-12.jpg', '/gallery/render-1.jpg']}
+          alt={t.inclus.alt}
+          badgeIcon="sparkle"
+          badgeValue={t.inclus.badgeValue}
+          badgeLabel={t.inclus.badgeLabel}
+        />
+      </div>
+      <div>
+        <Eyebrow index="02." label={t.inclus.eyebrow} />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">{t.inclus.h2}</h2>
+        <p class="text-ink/70 leading-relaxed mb-6">{t.inclus.p}</p>
+        <ul class="space-y-3">
+          {t.inclus.items.map((i) => (
+            <li class="flex items-start gap-3 text-sm text-ink/70 border-b border-forest/10 pb-3"><span class="text-gold mt-0.5">✓</span>{i}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="finitions" class="section bg-white scroll-mt-24">
+    <div class="container-page max-w-3xl">
+      <Eyebrow index="03." label={t.finitions.eyebrow} />
+      <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-5">{t.finitions.h2}</h2>
+      <p class="text-ink/65 mb-10">{t.finitions.p}</p>
+      <SpecTable rows={finishes} />
+      <p class="mt-8 text-ink/65">{t.finitions.note}</p>
+      <a href={contactHref} class="btn btn-dark mt-6">{t.finitions.brochure}</a>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page max-w-2xl">
+      <Eyebrow index="04." label={t.prix.eyebrow} />
+      <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">{fill(t.prix.h2)}</h2>
+      <p class="text-ink/65 leading-relaxed mb-10">{fill(t.prix.p)}</p>
+      <div class="grid grid-cols-2 gap-6 mb-10 max-w-sm">
+        <div class="frame-corners p-6 text-center">
+          <p class="text-xs text-ink/45 mb-2 uppercase tracking-wide">{t.prix.sansAide}</p>
+          <p class="font-display text-2xl text-forest" dir="ltr">{site.priceFrom}</p>
+        </div>
+        <div class="frame-corners bg-gold/10 p-6 text-center">
+          <p class="text-xs text-gold mb-2 uppercase tracking-wide">{t.prix.avecAide}</p>
+          <p class="font-display text-2xl text-gold" dir="ltr">{site.priceWithAid}</p>
+        </div>
+      </div>
+      <a href={contactHref} class="btn btn-dark">{t.prix.brochurePrix}</a>
+    </div>
+  </section>
+
+  <HousingAidBanner lang={lang} text={t.banner} />
+
+  <section class="section bg-white">
+    <div class="container-page">
+      <div class="max-w-2xl mb-16">
+        <Eyebrow index="05." label={t.quartier.eyebrow} />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-5">{t.quartier.h2}</h2>
+        <p class="text-ink/65">{t.quartier.p}</p>
+      </div>
+      <NumberedFeatures items={t.quartier.items} />
+      <a href={projetHref} class="inline-block mt-10 text-sm font-semibold text-gold">{t.quartier.lien}</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-page">
+      <Eyebrow index="06." label={t.pourVous.eyebrow} />
+      <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-14">{t.pourVous.h2}</h2>
+      <ThreeWays lang={lang} />
+    </div>
+  </section>
+
+  <CtaBlock lang={lang} title={t.cta.title} text={t.cta.text} />
+</BaseLayout>

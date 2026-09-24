@@ -1,9 +1,11 @@
 ---
-const ways = [
-  { verb: 'Y vivre', body: 'Votre premier logement, prêt à habiter, dans un quartier calme et verdoyant à 20 minutes de Rabat.' },
-  { verb: 'Y investir', body: 'Un bien neuf à louer dans une zone qui se développe, avec un ticket d’entrée maîtrisé.' },
-  { verb: 'Y revenir', body: 'Un pied-à-terre au Maroc, livré fini et sécurisé, prêt à vous accueillir à chaque retour.' },
-];
+import { pick, type Lang } from '../data/i18n/helpers';
+import { homeText } from '../data/home-i18n';
+
+interface Props { lang?: Lang }
+const { lang = 'fr' } = Astro.props;
+const t = pick(homeText, lang);
+const ways = t.ways.items.map(([verb, body]) => ({ verb, body }));
 ---
 <div class="grid md:grid-cols-3 gap-8">
   {ways.map((w) => (

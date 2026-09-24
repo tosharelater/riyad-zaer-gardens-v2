@@ -1,17 +1,21 @@
 ---
+import { pick, type Lang } from '../data/i18n/helpers';
+import { ui } from '../data/i18n/ui';
+
 interface Card { title: string; text: string; href: string }
-interface Props { title?: string; cards: Card[] }
-const { title = 'Aller plus loin', cards } = Astro.props;
+interface Props { lang?: Lang; title?: string; cards: Card[] }
+const { lang = 'fr', title, cards } = Astro.props;
+const u = pick(ui, lang);
 ---
 <section class="py-16 md:py-24 bg-cream">
   <div class="container-page">
-    <h2 class="font-display text-3xl md:text-4xl text-forest mb-8">{title}</h2>
+    <h2 class="font-display text-3xl md:text-4xl text-forest mb-8">{title ?? u.allerPlusLoin}</h2>
     <div class="grid md:grid-cols-3 gap-5">
       {cards.map((c) => (
         <a href={c.href} class="group block p-6 bg-white border border-forest/10 hover:border-gold transition-colors">
           <p class="font-display text-lg text-forest mb-2 group-hover:text-canopy">{c.title}</p>
           <p class="text-sm text-ink/65">{c.text}</p>
-          <span class="inline-block mt-4 text-sm font-semibold text-gold">Découvrir →</span>
+          <span class="inline-block mt-4 text-sm font-semibold text-gold">{u.decouvrir}</span>
         </a>
       ))}
     </div>

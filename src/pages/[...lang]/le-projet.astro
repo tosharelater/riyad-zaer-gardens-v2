@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import CtaBlock from '../../components/CtaBlock.astro';
+import HousingAidBanner from '../../components/HousingAidBanner.astro';
+import NumberedFeatures from '../../components/NumberedFeatures.astro';
+import SpecTable from '../../components/SpecTable.astro';
+import LinkCards from '../../components/LinkCards.astro';
+import IconFeatureGrid from '../../components/IconFeatureGrid.astro';
+import PhotoCollage from '../../components/PhotoCollage.astro';
+import { site } from '../../data/site';
+import { pick, type Lang } from '../../data/i18n/helpers';
+import { projet } from '../../data/i18n/projet';
+
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: 'ar' } }];
+}
+
+const lang = (Astro.currentLocale ?? 'fr') as Lang;
+const t = pick(projet, lang);
+
+// Fill {placeholders} with site values
+const fill = (s: string) =>
+  s
+    .replaceAll('{location}', site.location)
+    .replaceAll('{promoter}', site.promoter)
+    .replaceAll('{architect}', site.architect)
+    .replaceAll('{delivery}', site.delivery)
+    .replaceAll('{distance}', site.distance)
+    .replaceAll('{buildings}', String(site.buildings))
+    .replaceAll('{apartments}', String(site.apartments))
+    .replaceAll('{commercial}', String(site.commercial));
+
+const specs = [
+  { label: t.fiche.rows[0], value: site.promoter },
+  { label: t.fiche.rows[1], value: site.architect },
+  { label: t.fiche.rows[2], value: site.location },
+  { label: t.fiche.rows[3], value: site.address },
+  { label: t.fiche.rows[4], value: t.fiche.standing },
+  { label: t.fiche.rows[5], value: t.fiche.logements },
+  { label: t.fiche.rows[6], value: site.surfaceRange },
+  { label: t.fiche.rows[7], value: t.fiche.commerciaux },
+  { label: t.fiche.rows[8], value: t.fiche.stationnement },
+  { label: t.fiche.rows[9], value: t.fiche.gestion },
+  { label: t.fiche.rows[10], value: t.fiche.eligible },
+  { label: t.fiche.rows[11], value: fill(t.fiche.livraison) },
+];
+---
+<BaseLayout title={t.meta.title} description={t.meta.description} lang={lang}>
+  <section class="hero relative bg-forest text-cream overflow-hidden">
+    <div class="absolute inset-0">
+      <img src="/gallery/render-4.jpg" alt={t.hero.alt} class="w-full h-full object-cover opacity-40" />
+      <div class="absolute inset-0 bg-gradient-to-t from-forest via-forest/80 to-forest/50"></div>
+    </div>
+    <div class="relative container-page py-24 md:py-32">
+      <Eyebrow label={t.hero.eyebrow} />
+      <h1 class="font-display text-4xl md:text-5xl mt-5 leading-tight max-w-2xl animate-fade-up">{fill(t.hero.h1)}</h1>
+      <div class="divider-gold my-7 animate-fade-up" style="animation-delay:.15s"></div>
+      <p class="max-w-xl text-cream/75 animate-fade-up" style="animation-delay:.25s">{fill(t.hero.p)}</p>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page">
+      <div class="max-w-2xl mb-16">
+        <Eyebrow index="01." label={t.conception.eyebrow} />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-5">{t.conception.h2}</h2>
+        <p class="text-ink/65">{t.conception.p}</p>
+      </div>
+      <NumberedFeatures items={t.conception.items} />
+    </div>
+  </section>
+
+  <section class="section overflow-hidden">
+    <div class="container-page grid md:grid-cols-2 gap-16 md:gap-24 items-center">
+      <div class="md:pl-8">
+        <PhotoCollage
+          images={['/gallery/render-1.jpg', '/gallery/render-11.jpg', '/gallery/render-5.jpg']}
+          alt={t.cour.alt}
+          badgeIcon="leaf"
+          badgeValue={t.cour.badgeValue}
+          badgeLabel={t.cour.badgeLabel}
+        />
+      </div>
+      <div>
+        <Eyebrow index="02." label={t.cour.eyebrow} />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">{t.cour.h2}</h2>
+        <p class="text-ink/70 leading-relaxed mb-4">{fill(t.cour.p1)}</p>
+        <p class="text-ink/70 leading-relaxed">{t.cour.p2}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page">
+      <div class="max-w-2xl mx-auto text-center mb-16">
+        <Eyebrow index="03." label={t.equipements.eyebrow} />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-5">{t.equipements.h2}</h2>
+        <p class="text-ink/65">{t.equipements.p}</p>
+      </div>
+      <IconFeatureGrid items={t.equipements.items} variant="centered" />
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page grid md:grid-cols-2 gap-16">
+      <div>
+        <Eyebrow index="04." label={t.gestion.eyebrow} />
+        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">{t.gestion.h2}</h2>
+        <p class="text-ink/65 leading-relaxed">{t.gestion.p}</p>
+      </div>
+      <div>
+        <p class="eyebrow mb-5">{t.gestion.missionsLabel}</p>
+        <ul class="space-y-4">
+          {t.gestion.missions.map((m) => (
+            <li class="flex items-start gap-3 text-sm text-ink/70"><span class="text-gold mt-0.5">✓</span>{m}</li>
+          ))}
+        </ul>
+        <p class="mt-7 text-sm text-ink/50 italic">{t.gestion.note}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-page max-w-3xl">
+      <Eyebrow index="05." label={t.fiche.eyebrow} />
+      <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-10">{t.fiche.h2}</h2>
+      <SpecTable rows={specs} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-page max-w-2xl">
+      <Eyebrow index="06." label={t.tranches.eyebrow} />
+      <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">{t.tranches.h2}</h2>
+      <p class="text-ink/70 leading-relaxed mb-4">{t.tranches.p1}</p>
+      <p class="text-ink/70 leading-relaxed">{t.tranches.p2}</p>
+    </div>
+  </section>
+
+  <HousingAidBanner lang={lang} text={t.banner} />
+
+  <LinkCards
+    lang={lang}
+    cards={[
+      { title: t.cards.appartements[0], text: t.cards.appartements[1], href: lang === 'ar' ? '/ar/appartements' : '/appartements' },
+      { title: t.cards.commerces[0], text: t.cards.commerces[1], href: lang === 'ar' ? '/ar/fonds-de-commerce' : '/fonds-de-commerce' },
+      { title: fill(t.cards.localisation[0]), text: fill(t.cards.localisation[1]), href: lang === 'ar' ? '/ar/localisation' : '/localisation' },
+    ]}
+  />
+
+  <CtaBlock lang={lang} />
+</BaseLayout>

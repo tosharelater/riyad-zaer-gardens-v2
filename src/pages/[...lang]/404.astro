@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { pick, type Lang } from '../../data/i18n/helpers';
+import { misc } from '../../data/i18n/misc';
+
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: 'ar' } }];
+}
+
+const lang = (Astro.currentLocale ?? 'fr') as Lang;
+const t = pick(misc, lang).notFound;
+const homeHref = lang === 'ar' ? '/ar/' : '/';
+const homesHref = lang === 'ar' ? '/ar/appartements' : '/appartements';
+---
+<BaseLayout title={t.title} description={t.h1} lang={lang} noindex>
+  <section class="bg-forest text-cream min-h-[60vh] flex items-center">
+    <div class="container-page py-20 text-center max-w-xl mx-auto">
+      <p class="font-display text-6xl text-gold mb-6">404</p>
+      <h1 class="font-display text-4xl md:text-6xl mb-6">{t.h1}</h1>
+      <p class="text-cream/75 mb-10">{t.p}</p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href={homeHref} class="btn btn-gold">{t.home}</a>
+        <a href={homesHref} class="btn btn-outline text-cream">{t.homes}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

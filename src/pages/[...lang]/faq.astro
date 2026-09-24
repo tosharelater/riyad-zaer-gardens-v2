@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import Accordion from '../../components/Accordion.astro';
+import CtaBlock from '../../components/CtaBlock.astro';
+import { site } from '../../data/site';
+import { pick, type Lang } from '../../data/i18n/helpers';
+import { faq } from '../../data/i18n/faq';
+
+export function getStaticPaths() {
+  return [{ params: { lang: undefined } }, { params: { lang: 'ar' } }];
+}
+
+const lang = (Astro.currentLocale ?? 'fr') as Lang;
+const t = pick(faq, lang);
+
+const fill = (s: string) =>
+  s
+    .replaceAll('{location}', site.location)
+    .replaceAll('{promoter}', site.promoter)
+    .replaceAll('{architect}', site.architect)
+    .replaceAll('{phone}', site.phone)
+    .replaceAll('{priceFrom}', site.priceFrom)
+    .replaceAll('{priceWithAid}', site.priceWithAid)
+    .replaceAll('{commerceSurface}', site.commerceSurface)
+    .replaceAll('{commercePrice}', site.commercePrice)
+    .replaceAll('{delivery}', site.delivery);
+
+const groups = t.groups.map((g) => ({
+  title: g.title,
+  items: g.items.map((i) => ({ q: fill(i.q), a: fill(i.a) })),
+}));
+---
+<BaseLayout title={t.meta.title} description={t.meta.description} lang={lang}>
+  <section class="bg-forest text-cream">
+    <div class="container-page py-16 md:py-20">
+      <Eyebrow label={t.hero.eyebrow} />
+      <h1 class="font-display text-4xl md:text-5xl mt-4 max-w-2xl leading-tight">{t.hero.h1}</h1>
+      <p class="mt-6 max-w-xl text-cream/75">{fill(t.hero.p)}</p>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24">
+    <div class="container-page max-w-3xl space-y-16">
+      {groups.map((g) => (
+        <div>
+          <h2 class="font-display text-3xl md:text-4xl text-forest mb-6">{g.title}</h2>
+          <Accordion items={g.items} />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CtaBlock lang={lang} title={t.cta.title} text={t.cta.text} />
+</BaseLayout>
