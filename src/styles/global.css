@@ -337,3 +337,13 @@ html.lenis, html.lenis body { height: auto; }
 [dir="rtl"] body { font-family: 'Poppins', 'Segoe UI', Tahoma, 'Noto Naskh Arabic', sans-serif; }
 [dir="rtl"] .nav-link::after { left: 100%; right: 0; transition: left 0.35s cubic-bezier(.22,1,.36,1); }
 [dir="rtl"] .nav-link:hover::after, [dir="rtl"] .nav-link.is-active::after { left: 0; }
+
+/* Audrey for main headings and the brand mark; Poppins for everything else */
+h1, h2 {
+  font-family: var(--font-accent);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.12;
+}
+.brand-mark { font-family: var(--font-accent); font-weight: 400; letter-spacing: 0.01em; }
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] .brand-mark { font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif; font-weight: 600; }
