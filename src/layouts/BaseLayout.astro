@@ -4,7 +4,7 @@ import Footer from '../components/Footer.astro';
 import MobileActionBar from '../components/MobileActionBar.astro';
 import '../styles/global.css';
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import type { Lang } from '../data/i18n/helpers';
+import { localeAgnosticPath, type Lang } from '../data/i18n/helpers';
 
 interface Props {
   title: string;
@@ -15,8 +15,7 @@ interface Props {
 
 const { title, description, noindex = false } = Astro.props;
 const lang = (Astro.props.lang ?? Astro.currentLocale ?? 'fr') as Lang;
-const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
-const path = (Astro.url.pathname.slice(baseUrl.length) || '/').replace(/^\/ar(\/|$)/, '/');
+const path = localeAgnosticPath(Astro.url.pathname);
 
 const frUrl = getRelativeLocaleUrl('fr', path);
 const arUrl = getRelativeLocaleUrl('ar', path);
