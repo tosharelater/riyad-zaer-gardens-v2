@@ -5,7 +5,6 @@ export const nav = {
     ['Appartements', '/appartements'],
     ['Fonds de commerce', '/fonds-de-commerce'],
     ['Localisation', '/localisation'],
-    ['Contact', '/contact'],
   ],
   ar: [
     ['الرئيسية', '/ar/'],
@@ -13,7 +12,6 @@ export const nav = {
     ['المساكن', '/ar/appartements'],
     ['المحلات التجارية', '/ar/fonds-de-commerce'],
     ['الموقع', '/ar/localisation'],
-    ['اتصال', '/ar/contact'],
   ],
 } as const;
 

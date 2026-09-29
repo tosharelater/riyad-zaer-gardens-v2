@@ -27,7 +27,6 @@ export const nav = [
   { label: 'Appartements', href: '/appartements' },
   { label: 'Fonds de commerce', href: '/fonds-de-commerce' },
   { label: 'Localisation', href: '/localisation' },
-  { label: 'Contact', href: '/contact' },
 ] as const;
 
 export const footerProject = [

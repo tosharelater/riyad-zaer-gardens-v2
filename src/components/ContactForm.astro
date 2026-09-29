@@ -7,43 +7,41 @@ const f = homeText[lang].contact.form;
 const options = lang === 'ar' ? f.options : contactInterests;
 const action = lang === 'ar' ? '/ar/merci' : '/merci';
 ---
-<form action={action} method="get" class="bg-white border border-forest/10 p-6 md:p-10 space-y-5">
+<form action={action} method="get" class="rz-form space-y-5 p-0 md:p-2">
   <div class="hidden">
     <label>Ne pas remplir<input type="text" name="societe" tabindex="-1" autocomplete="off" /></label>
   </div>
 
   <div>
-    <label for="nom" class="block text-sm font-medium text-ink/70 mb-2">{f.name}</label>
-    <input id="nom" name="nom" type="text" required class="w-full border border-forest/15 px-4 py-3 bg-cream/40 focus:outline-none focus:border-gold" />
+    <label for="nom" class="rz-form__label">{f.name}</label>
+    <input id="nom" name="nom" type="text" required class="rz-form__input" />
   </div>
 
   <div class="grid sm:grid-cols-2 gap-5">
     <div>
-      <label for="telephone" class="block text-sm font-medium text-ink/70 mb-2">{f.phone}</label>
-      <input id="telephone" name="telephone" type="tel" required class="w-full border border-forest/15 px-4 py-3 bg-cream/40 focus:outline-none focus:border-gold" />
+      <label for="telephone" class="rz-form__label">{f.phone}</label>
+      <input id="telephone" name="telephone" type="tel" required class="rz-form__input" />
     </div>
     <div>
-      <label for="email" class="block text-sm font-medium text-ink/70 mb-2">{f.email}</label>
-      <input id="email" name="email" type="email" class="w-full border border-forest/15 px-4 py-3 bg-cream/40 focus:outline-none focus:border-gold" />
+      <label for="email" class="rz-form__label">{f.email}</label>
+      <input id="email" name="email" type="email" class="rz-form__input" />
     </div>
   </div>
 
   <div>
-    <label for="interet" class="block text-sm font-medium text-ink/70 mb-2">{f.project}</label>
-    <select id="interet" name="interet" required class="w-full border border-forest/15 px-4 py-3 bg-cream/40 focus:outline-none focus:border-gold">
+    <label for="interet" class="rz-form__label">{f.project}</label>
+    <select id="interet" name="interet" required class="rz-form__input">
       <option value="">{f.choose}</option>
       {options.map((i) => <option value={i}>{i}</option>)}
     </select>
   </div>
 
   <div>
-    <label for="message" class="block text-sm font-medium text-ink/70 mb-2">{f.message}</label>
-    <textarea id="message" name="message" rows="4" class="w-full border border-forest/15 px-4 py-3 bg-cream/40 focus:outline-none focus:border-gold"></textarea>
+    <label for="message" class="rz-form__label">{f.message}</label>
+    <textarea id="message" name="message" rows="4" class="rz-form__input"></textarea>
   </div>
 
-  <button type="submit" class="btn btn-gold w-full sm:w-auto">{f.send}</button>
+  <button type="submit" class="rz-btn rz-btn--outline rz-btn--wide">{f.send}</button>
 
-  <p class="text-xs text-ink/50">
-    {f.note}
-  </p>
+  <p class="rz-form__note">{f.note}</p>
 </form>

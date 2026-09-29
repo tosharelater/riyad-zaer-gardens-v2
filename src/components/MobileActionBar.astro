@@ -1,21 +1,41 @@
 ---
 import { site } from '../data/site';
-import { pick, type Lang } from '../data/i18n/helpers';
+import type { Lang } from '../data/i18n/helpers';
 
-const { lang = 'fr' } = Astro.props as { lang?: Lang };
+interface Props {
+  lang?: Lang;
+  theme?: 'light' | 'dark';
+}
+const { lang = 'fr', theme = 'light' } = Astro.props;
+const dark = theme === 'dark';
 const m =
   lang === 'ar'
-    ? { call: 'اتصال', wa: 'واتساب', cb: 'نتصل بكم', cbHref: '/ar/contact' }
-    : { call: 'Appeler', wa: 'WhatsApp', cb: 'Être rappelé', cbHref: '/contact' };
+    ? { call: 'اتصال', wa: 'واتساب', cb: 'نتصل بكم', cbHref: dark ? '/ar/#contact' : '/ar/contact' }
+    : { call: 'Appeler', wa: 'WhatsApp', cb: 'Être rappelé', cbHref: dark ? '/#contact' : '/contact' };
 ---
-<div class="fixed bottom-0 inset-x-0 z-50 md:hidden bg-forest text-cream border-t border-white/10 grid grid-cols-3">
-  <a href={`tel:${site.phoneTel}`} class="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium">
-    <span aria-hidden="true">☎</span> {m.call}
+<div class:list={[
+  'fixed bottom-0 inset-x-0 z-50 md:hidden grid grid-cols-3 border-t',
+  dark ? 'bg-black text-white border-white/15' : 'bg-forest text-cream border-white/10',
+]}>
+  <a href={`tel:${site.phoneTel}`} class="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium tracking-wide uppercase">
+    {m.call}
   </a>
-  <a href={site.whatsapp} class="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium border-x border-white/10 text-gold">
-    <span aria-hidden="true">●</span> {m.wa}
+  <a
+    href={site.whatsapp}
+    class:list={[
+      'flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium tracking-wide uppercase border-x',
+      dark ? 'border-white/15' : 'border-white/10 text-gold',
+    ]}
+  >
+    {m.wa}
   </a>
-  <a href={m.cbHref} class="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium bg-gold text-forest">
-    <span aria-hidden="true">✆</span> {m.cb}
+  <a
+    href={m.cbHref}
+    class:list={[
+      'flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium tracking-wide uppercase',
+      dark ? 'bg-white text-black' : 'bg-gold text-forest',
+    ]}
+  >
+    {m.cb}
   </a>
 </div>

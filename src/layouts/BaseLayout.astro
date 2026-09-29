@@ -11,9 +11,10 @@ interface Props {
   description: string;
   noindex?: boolean;
   lang?: Lang;
+  theme?: 'light' | 'dark';
 }
 
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, theme = 'light' } = Astro.props;
 const lang = (Astro.props.lang ?? Astro.currentLocale ?? 'fr') as Lang;
 const path = localeAgnosticPath(Astro.url.pathname);
 
@@ -21,7 +22,7 @@ const frUrl = getRelativeLocaleUrl('fr', path);
 const arUrl = getRelativeLocaleUrl('ar', path);
 ---
 <!doctype html>
-<html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+<html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'} data-theme={theme}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,13 +40,13 @@ const arUrl = getRelativeLocaleUrl('ar', path);
     />
     <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
   </head>
-  <body class="min-h-screen flex flex-col">
-    <Header lang={lang} />
+  <body class:list={['min-h-screen flex flex-col', theme === 'dark' && 'theme-dark']}>
+    <Header lang={lang} theme={theme} />
     <main class="flex-1 pb-20 md:pb-0">
       <slot />
     </main>
-    <Footer lang={lang} />
-    <MobileActionBar lang={lang} />
+    <Footer lang={lang} theme={theme} />
+    <MobileActionBar lang={lang} theme={theme} />
 
     <script>
       const header = document.querySelector('.site-header');
@@ -78,7 +79,6 @@ const arUrl = getRelativeLocaleUrl('ar', path);
       );
       document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-      // Safety net: never leave content permanently hidden.
       setTimeout(() => {
         document.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => el.classList.add('is-visible'));
       }, 1400);

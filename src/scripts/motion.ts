@@ -1,174 +1,196 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger);
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const rtl = document.documentElement.dir === 'rtl';
-const desktop = window.matchMedia('(min-width: 768px)').matches;
+const dark = document.documentElement.getAttribute('data-theme') === 'dark';
 
 if (!reduce) {
   ScrollTrigger.config({ ignoreMobileResize: true });
 
-  // Smooth scrolling
-  const lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
+  const lenis = new Lenis({ lerp: dark ? 0.07 : 0.09, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
 
-  // Hero: background drifts and zooms, content fades as you leave
+  document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      if (!id || id === '#') return;
+      const target = document.querySelector<HTMLElement>(id);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: 0, duration: 1.25 });
+    });
+  });
+
   const hero = document.querySelector<HTMLElement>('[data-hero]');
   if (hero) {
+    const heroVideo = hero.querySelector<HTMLVideoElement>('.rz-hero__video');
+    heroVideo?.play().catch(() => {});
+    gsap.fromTo(
+      '.rz-hero__video, .rz-hero__img',
+      { scale: 1.08 },
+      { scale: 1.02, duration: 3.5, ease: 'power2.out' },
+    );
+    gsap.fromTo(
+      '[data-hero-content] > *',
+      { autoAlpha: 0, y: 28 },
+      { autoAlpha: 1, y: 0, duration: 1.1, stagger: 0.1, delay: 0.2, ease: 'power3.out' },
+    );
     gsap.to('[data-hero-bg]', {
-      yPercent: 18,
-      scale: 1.25,
+      yPercent: 10,
       ease: 'none',
       scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
     });
     gsap.to('[data-hero-content]', {
-      yPercent: -12,
-      opacity: 0,
+      yPercent: -8,
+      autoAlpha: 0,
       ease: 'none',
-      scrollTrigger: { trigger: hero, start: 'top top', end: '70% top', scrub: true },
+      scrollTrigger: { trigger: hero, start: 'top+=18% top', end: '78% top', scrub: true },
+    });
+    gsap.to('.rz-hero__scroll', {
+      autoAlpha: 0,
+      scrollTrigger: { trigger: hero, start: 'top+=10% top', end: '35% top', scrub: true },
     });
   }
 
-  // Pinned sections are created first and in document order so every
-  // later trigger measures against the final layout (fixes early/late pins).
-  document.querySelectorAll<HTMLElement>('[data-grow], [data-hscroll]').forEach((section) => {
-    if (section.hasAttribute('data-grow')) {
-      const frame = section.querySelector<HTMLElement>('[data-grow-frame]');
-      const img = section.querySelector<HTMLElement>('[data-grow-frame] img');
-      const text = section.querySelector<HTMLElement>('[data-grow-text]');
-      if (!frame) return;
-      const tl = gsap.timeline({
-        scrollTrigger: { trigger: section, start: 'top top', end: '+=140%', scrub: 1, pin: true, anticipatePin: 1 },
+  // Keep cinematic videos playing when in view
+  document.querySelectorAll<HTMLVideoElement>('.rz-intro__video, .rz-lifestyle__video, .rz-finishes__video, .rz-location__video').forEach((vid) => {
+    ScrollTrigger.create({
+      trigger: vid,
+      start: 'top 90%',
+      end: 'bottom 10%',
+      onEnter: () => vid.play().catch(() => {}),
+      onEnterBack: () => vid.play().catch(() => {}),
+      onLeave: () => vid.pause(),
+      onLeaveBack: () => vid.pause(),
+    });
+  });
+
+  // Infinite film strip
+  const film = document.querySelector<HTMLElement>('[data-film]');
+  if (film) {
+    gsap.to(film, {
+      x: () => -(film.scrollWidth / 2),
+      duration: 42,
+      ease: 'none',
+      repeat: -1,
+    });
+  }
+
+  // Lifestyle stacked pin + dots
+  const lifestyle = document.querySelector<HTMLElement>('[data-lifestyle]');
+  if (lifestyle) {
+    const slides = [...lifestyle.querySelectorAll<HTMLElement>('[data-lifestyle-slide]')];
+    const dots = [...lifestyle.querySelectorAll<HTMLElement>('[data-lifestyle-dots] span')];
+    if (slides.length > 1) {
+      slides.forEach((slide, i) => {
+        gsap.set(slide, { zIndex: slides.length - i });
+        if (i > 0) gsap.set(slide, { autoAlpha: 0 });
       });
-      tl.fromTo(frame, { clipPath: 'inset(22% 26% 22% 26% round 3rem)' }, { clipPath: 'inset(0% 0% 0% 0% round 0rem)', ease: 'none' }, 0);
-      if (img) tl.fromTo(img, { scale: 1.5 }, { scale: 1, ease: 'none' }, 0);
-      if (text) tl.fromTo(text, { autoAlpha: 0, y: 60 }, { autoAlpha: 1, y: 0, ease: 'none' }, 0.55);
-    } else if (desktop) {
-      const track = section.querySelector<HTMLElement>('[data-hscroll-track]');
-      if (!track) return;
-      const distance = () => Math.max(0, track.scrollWidth - window.innerWidth + 96);
-      gsap.to(track, {
-        x: () => (rtl ? distance() : -distance()),
-        ease: 'none',
+
+      const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: section,
-          pin: true,
-          scrub: 1,
+          trigger: lifestyle,
           start: 'top top',
-          end: () => '+=' + distance(),
-          invalidateOnRefresh: true,
+          end: `+=${slides.length * 95}%`,
+          scrub: 0.55,
+          pin: true,
           anticipatePin: 1,
+          onUpdate: (self) => {
+            const idx = Math.min(slides.length - 1, Math.floor(self.progress * slides.length));
+            dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+          },
         },
       });
+
+      slides.forEach((slide, i) => {
+        if (i === 0) return;
+        const prev = slides[i - 1];
+        tl.to(prev, { autoAlpha: 0, scale: 1.04, duration: 1, ease: 'none' }, i - 1).fromTo(
+          slide,
+          { autoAlpha: 0, scale: 1.07 },
+          { autoAlpha: 1, scale: 1, duration: 1, ease: 'none' },
+          i - 1,
+        );
+      });
     }
-  });
+  }
 
-  // Headings: word-by-word reveal
-  document.querySelectorAll<HTMLElement>('[data-split]').forEach((el) => {
-    const split = new SplitText(el, { type: 'words' });
-    gsap.from(split.words, {
-      yPercent: 60,
-      autoAlpha: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      stagger: 0.06,
-      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-    });
-  });
-
-  // Images: parallax + scale inside their frame
-  document.querySelectorAll<HTMLElement>('[data-parallax]').forEach((frame) => {
-    const img = frame.querySelector('img');
-    if (!img) return;
+  const revealEls = gsap.utils.toArray<HTMLElement>(
+    '.rz-manifesto, .rz-intro__copy, .rz-stat, .rz-section-head, .rz-aid__inner, .rz-way, .rz-location__copy, .rz-location__media, .rz-contact__visual-copy, .rz-contact__form',
+  );
+  revealEls.forEach((el) => {
     gsap.fromTo(
-      img,
-      { yPercent: -9, scale: 1.35 },
+      el,
+      { autoAlpha: 0, y: 40 },
       {
-        yPercent: 9,
-        scale: 1.1,
-        ease: 'none',
-        scrollTrigger: { trigger: frame, start: 'top bottom', end: 'bottom top', scrub: true },
+        autoAlpha: 1,
+        y: 0,
+        duration: 1.05,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
       },
     );
   });
 
-  // Groups: staggered rise
-  document.querySelectorAll<HTMLElement>('[data-stagger]').forEach((group) => {
-    gsap.from(group.children, {
-      y: 50,
-      autoAlpha: 0,
-      duration: 1,
-      ease: 'power3.out',
-      stagger: 0.12,
-      scrollTrigger: { trigger: group, start: 'top 85%', once: true },
-    });
+  gsap.utils.toArray<HTMLElement>('[data-rz-card]').forEach((card) => {
+    gsap.fromTo(
+      card,
+      { autoAlpha: 0, y: 48 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 1,
+        delay: Number(getComputedStyle(card).getPropertyValue('--i') || 0) * 0.12,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' },
+      },
+    );
   });
 
-  // Counters
   document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => {
-    const target = Number(el.dataset.count);
+    const raw = el.dataset.count || el.textContent || '0';
+    const num = parseFloat(raw.replace(/[^\d.]/g, ''));
+    if (!Number.isFinite(num)) return;
     const obj = { v: 0 };
-    gsap.to(obj, {
-      v: target,
-      duration: 1.8,
-      ease: 'power2.out',
-      onUpdate: () => (el.textContent = String(Math.round(obj.v))),
-      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 90%',
+      once: true,
+      onEnter: () => {
+        gsap.to(obj, {
+          v: num,
+          duration: 1.6,
+          ease: 'power2.out',
+          onUpdate: () => {
+            el.textContent = String(Math.round(obj.v));
+          },
+        });
+      },
     });
   });
 
-  // Marquee: text slides sideways as you scroll
-  document.querySelectorAll<HTMLElement>('[data-marquee]').forEach((el) => {
-    const dir = (el.dataset.marquee === 'right' ? 1 : -1) * (rtl ? -1 : 1);
-    gsap.fromTo(
-      el,
-      { xPercent: dir * -12 },
-      {
-        xPercent: dir * 12,
-        ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true },
-      },
-    );
-  });
+  const intro = document.querySelector('.rz-intro');
+  if (intro) {
+    gsap.to('.rz-intro__img', {
+      yPercent: 8,
+      scale: 1.06,
+      ease: 'none',
+      scrollTrigger: { trigger: intro, start: 'top bottom', end: 'bottom top', scrub: true },
+    });
+  }
 
-  // Large panels: start smaller and rounder, settle at full size
-  document.querySelectorAll<HTMLElement>('[data-scale]').forEach((el) => {
-    gsap.fromTo(
-      el,
-      { scale: 0.92, borderRadius: '4rem' },
-      {
-        scale: 1,
-        borderRadius: '2rem',
-        ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top 95%', end: 'top 45%', scrub: true },
-      },
-    );
+  requestAnimationFrame(() => {
+    ScrollTrigger.refresh();
+    revealEls.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+        gsap.set(el, { autoAlpha: 1, y: 0 });
+      }
+    });
   });
-
-  // Tilt in: images start small and slightly rotated, settle flat
-  document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((el, i) => {
-    gsap.fromTo(
-      el,
-      { rotate: (i % 2 ? 1 : -1) * 5, scale: 0.85 },
-      {
-        rotate: 0,
-        scale: 1,
-        ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top 95%', end: 'top 40%', scrub: true },
-      },
-    );
-  });
-
-  // Re-measure once everything (fonts, images) has settled
-  const refresh = () => ScrollTrigger.refresh();
-  ScrollTrigger.sort();
-  window.addEventListener('load', refresh);
-  document.fonts?.ready.then(refresh);
-  setTimeout(refresh, 1200);
 }
