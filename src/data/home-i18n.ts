@@ -103,7 +103,7 @@ const fr = {
   },
   contact: {
     eyebrow: 'Contact',
-    h2: 'Parlons de votre projet',
+    h2: 'Votre projet',
     text: 'Laissez-nous vos coordonnées. Un conseiller vous rappelle pour répondre à vos questions et vous transmettre la brochure du projet.',
     wa: 'Écrire sur WhatsApp',
     form: {
@@ -255,7 +255,7 @@ const ar: typeof fr = {
   },
   contact: {
     eyebrow: 'اتصال',
-    h2: 'لنتحدث عن مشروعكم',
+    h2: 'مشروعكم',
     text: 'اتركوا لنا بياناتكم. يتصل بكم مستشار للإجابة عن أسئلتكم وإرسال كتيب المشروع.',
     wa: 'راسلونا على واتساب',
     form: {

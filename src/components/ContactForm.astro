@@ -7,28 +7,28 @@ const f = homeText[lang].contact.form;
 const options = lang === 'ar' ? f.options : contactInterests;
 const action = lang === 'ar' ? '/ar/merci' : '/merci';
 ---
-<form action={action} method="get" class="rz-form space-y-5 p-0 md:p-2">
+<form action={action} method="get" class="rz-form">
   <div class="hidden">
     <label>Ne pas remplir<input type="text" name="societe" tabindex="-1" autocomplete="off" /></label>
   </div>
 
-  <div>
+  <div class="rz-form__field">
     <label for="nom" class="rz-form__label">{f.name}</label>
     <input id="nom" name="nom" type="text" required class="rz-form__input" />
   </div>
 
-  <div class="grid sm:grid-cols-2 gap-5">
-    <div>
+  <div class="rz-form__row">
+    <div class="rz-form__field">
       <label for="telephone" class="rz-form__label">{f.phone}</label>
       <input id="telephone" name="telephone" type="tel" required class="rz-form__input" />
     </div>
-    <div>
+    <div class="rz-form__field">
       <label for="email" class="rz-form__label">{f.email}</label>
       <input id="email" name="email" type="email" class="rz-form__input" />
     </div>
   </div>
 
-  <div>
+  <div class="rz-form__field">
     <label for="interet" class="rz-form__label">{f.project}</label>
     <select id="interet" name="interet" required class="rz-form__input">
       <option value="">{f.choose}</option>
@@ -36,9 +36,9 @@ const action = lang === 'ar' ? '/ar/merci' : '/merci';
     </select>
   </div>
 
-  <div>
+  <div class="rz-form__field">
     <label for="message" class="rz-form__label">{f.message}</label>
-    <textarea id="message" name="message" rows="4" class="rz-form__input"></textarea>
+    <textarea id="message" name="message" rows="3" class="rz-form__input"></textarea>
   </div>
 
   <button type="submit" class="rz-btn rz-btn--outline rz-btn--wide">{f.send}</button>

@@ -8,12 +8,11 @@ const lang = (Astro.currentLocale ?? 'fr') as Lang;
 const t = homeText[lang];
 const ar = lang === 'ar';
 
-const residences = t.homes.items.map((item, i) => ({
-  img: ['/gallery/render-1.jpg', '/gallery/render-4.jpg', '/gallery/render-8.jpg'][i],
-  title: item[0],
-  line: item[1],
-  href: item[3],
-}));
+const residences = [
+  { img: '/gallery/render-1.jpg', title: t.homes.items[0][0], line: t.homes.items[0][1], href: t.homes.items[0][3] },
+  { img: '/gallery/render-4.jpg', title: t.homes.items[1][0], line: t.homes.items[1][1], href: t.homes.items[1][3] },
+  { img: '/gallery/render-8.jpg', title: t.homes.items[2][0], line: t.homes.items[2][1], href: t.homes.items[2][3] },
+];
 
 const lifestyleSlides = t.why.items.map((item, i) => ({
   img: ['/cinematic/lifestyle.png', '/gallery/render-12.jpg', '/gallery/render-3.jpg', '/gallery/render-7.jpg'][i],
@@ -21,9 +20,10 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
   title: item[0],
   body: item[1],
 }));
+
+const manifesto = t.hero.text;
 ---
 <BaseLayout title={t.htmlTitle} description={t.htmlDesc} lang={lang} theme="dark">
-  <!-- HERO — brand first, almost no copy -->
   <section data-hero id="overview" class="rz-hero">
     <div data-hero-bg class="rz-hero__media">
       <video class="rz-hero__video" autoplay muted loop playsinline preload="auto" poster="/cinematic/hero.png">
@@ -43,17 +43,17 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
         )}
       </p>
       <h1 class="rz-hero__title">{t.hero.h1}</h1>
-      <a href="#contact" class="rz-btn rz-btn--outline">{t.hero.b2}</a>
+      <a href="#projet" class="rz-btn rz-btn--outline">{t.hero.b1}</a>
     </div>
     <div class="rz-hero__scroll" aria-hidden="true"><span></span></div>
   </section>
 
-  <!-- One breath of manifesto -->
   <section class="rz-manifesto">
-    <p class="rz-manifesto__text">{t.projet.p1}</p>
+    <div class="rz-manifesto__ornament" aria-hidden="true"></div>
+    <p class="rz-manifesto__text" data-split>{manifesto}</p>
+    <div class="rz-manifesto__rule" aria-hidden="true"></div>
   </section>
 
-  <!-- Introducing — video + short lockup -->
   <section id="projet" class="rz-intro">
     <div class="rz-intro__media">
       <video class="rz-intro__video" autoplay muted loop playsinline preload="metadata" poster="/cinematic/facade.png">
@@ -72,29 +72,24 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
         )}
       </h2>
       <div class="rz-rule rz-rule--gold"></div>
-      <p class="rz-intro__p">{t.hero.text}</p>
-      <p class="rz-hero__price rz-hero__price--inline">{t.hero.price}</p>
+      <p class="rz-intro__p">{t.projet.p1}</p>
     </div>
   </section>
 
   <section class="rz-enquire">
-    <a href={ar ? '#residences' : '/le-projet'} class="rz-btn rz-btn--outline rz-btn--wide">{t.hero.b1}</a>
+    <a href="#contact" class="rz-btn rz-btn--outline rz-btn--wide">{t.hero.b2}</a>
   </section>
 
-  <!-- Figures — numbers only -->
-  <section class="rz-stats rz-stats--solo">
-    {t.figures.items.map(([v, l]) => (
-      <div class="rz-stat">
-        <p class="rz-stat__value" data-count={v}>{v}</p>
-        <p class="rz-stat__label">{l}</p>
-      </div>
-    ))}
-  </section>
-
-  <!-- Residences — image first, almost no text -->
   <section id="residences" class="rz-residences">
     <header class="rz-section-head rz-section-head--slim">
-      <h2 class="rz-section-title">{t.homes.eyebrow}</h2>
+      <p class="rz-kicker">{t.homes.eyebrow}</p>
+      <h2 class="rz-section-title">
+        {ar ? t.homes.h2 : (
+          <>
+            LES<br />RÉSIDENCES
+          </>
+        )}
+      </h2>
     </header>
     <div class="rz-cards">
       {residences.map((item, i) => (
@@ -111,7 +106,15 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
     </div>
   </section>
 
-  <!-- Why — full-bleed slides, short copy -->
+  <section class="rz-stats rz-stats--solo">
+    {t.figures.items.map(([v, l]) => (
+      <div class="rz-stat">
+        <p class="rz-stat__value" data-count={v}>{v}</p>
+        <p class="rz-stat__label">{l}</p>
+      </div>
+    ))}
+  </section>
+
   <section id="lifestyle" class="rz-lifestyle" data-lifestyle>
     {lifestyleSlides.map((slide, i) => (
       <article class="rz-lifestyle__slide" data-lifestyle-slide>
@@ -135,7 +138,6 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
     </div>
   </section>
 
-  <!-- Ways — three verbs, almost silence -->
   <section class="rz-ways rz-ways--quiet">
     <div class="rz-ways__grid">
       {t.ways.items.map(([title, body]) => (
@@ -147,10 +149,10 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
     </div>
   </section>
 
-  <!-- Aide — compact statement -->
   <section id="aid" class="rz-aid rz-aid--slim">
     <div class="rz-aid__inner">
-      <h2 class="rz-section-title rz-section-title--md">{t.aid.h2}</h2>
+      <p class="rz-kicker">{t.aid.eyebrow}</p>
+      <h2 class="rz-section-title rz-section-title--md">{ar ? t.aid.h2 : <>Aide au<br />logement</>}</h2>
       <div class="rz-aid__compare">
         <div class="rz-aid__col">
           <p class="rz-aid__label">{t.aid.without}</p>
@@ -165,7 +167,6 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
     </div>
   </section>
 
-  <!-- Location — short -->
   <section id="localisation" class="rz-location">
     <div class="rz-location__copy">
       <p class="rz-kicker">{t.loc.eyebrow}</p>
@@ -182,10 +183,9 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
     </div>
   </section>
 
-  <!-- Contact -->
   <section id="contact" class="rz-contact">
     <div class="rz-contact__visual">
-      <img src="/gallery/render-5.jpg" alt="" loading="lazy" />
+      <img src="/gallery/render-5.jpg" alt="" loading="lazy" class="rz-contact__bg" />
       <div class="rz-contact__visual-copy">
         <img src="/logo-nav.png" alt="" width="120" height="80" class="rz-contact__mark" />
         <h2 class="rz-display rz-display--sm">{t.contact.h2}</h2>
