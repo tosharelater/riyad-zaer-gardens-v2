@@ -1,0 +1,23 @@
+---
+// Thin flowing lines framing black sections (the Bugatti Residences signature), drawn here as SVG.
+interface Props {
+  side: 'right' | 'left';
+  id: string;
+}
+const { side, id } = Astro.props;
+const offsets = [0, 34, 68, 102, 136, 170];
+---
+<svg class:list={['lx-curves', `lx-curves--${side}`]} viewBox="0 0 600 900" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" style="stop-color: var(--c-curve)" stop-opacity="0" />
+      <stop offset="0.35" style="stop-color: var(--c-curve)" stop-opacity="0.6" />
+      <stop offset="1" style="stop-color: var(--c-curve)" stop-opacity="0.05" />
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke={`url(#${id})`} stroke-width="1.4">
+    {offsets.map((o) => (
+      <path d={`M${560 - o} -20 C ${120 + o * 0.6} 180, ${60 + o * 0.9} 460, ${260 + o} 620 S ${420 + o * 0.5} 820, ${340 + o * 0.7} 940`} />
+    ))}
+  </g>
+</svg>

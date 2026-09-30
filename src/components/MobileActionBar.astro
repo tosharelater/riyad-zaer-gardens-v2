@@ -10,12 +10,12 @@ const { lang = 'fr', theme = 'light' } = Astro.props;
 const dark = theme === 'dark';
 const m =
   lang === 'ar'
-    ? { call: 'اتصال', wa: 'واتساب', cb: 'نتصل بكم', cbHref: dark ? '/ar/#contact' : '/ar/contact' }
-    : { call: 'Appeler', wa: 'WhatsApp', cb: 'Être rappelé', cbHref: dark ? '/#contact' : '/contact' };
+    ? { call: 'اتصال', wa: 'واتساب', cb: 'نتصل بكم', cbHref: '/ar/contact' }
+    : { call: 'Appeler', wa: 'WhatsApp', cb: 'Être rappelé', cbHref: '/contact' };
 ---
 <div class:list={[
   'fixed bottom-0 inset-x-0 z-50 md:hidden grid grid-cols-3 border-t',
-  dark ? 'bg-black text-white border-white/15' : 'bg-forest text-cream border-white/10',
+  dark ? 'lx-mbar' : 'bg-forest text-cream border-white/10',
 ]}>
   <a href={`tel:${site.phoneTel}`} class="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium tracking-wide uppercase">
     {m.call}
@@ -24,7 +24,7 @@ const m =
     href={site.whatsapp}
     class:list={[
       'flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium tracking-wide uppercase border-x',
-      dark ? 'border-white/15' : 'border-white/10 text-gold',
+      dark ? 'lx-mbar__mid' : 'border-white/10 text-gold',
     ]}
   >
     {m.wa}
@@ -33,7 +33,7 @@ const m =
     href={m.cbHref}
     class:list={[
       'flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium tracking-wide uppercase',
-      dark ? 'bg-white text-black' : 'bg-gold text-forest',
+      dark ? 'lx-mbar__cta' : 'bg-gold text-forest',
     ]}
   >
     {m.cb}

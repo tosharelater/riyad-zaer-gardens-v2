@@ -1,0 +1,10 @@
+---
+import Icon from '../Icon.astro';
+interface Props { items: { icon: string; label: string }[] }
+const { items } = Astro.props;
+---
+<ul class="lx-tiles">
+  {items.map((it) => (
+    <li><Icon name={it.icon} class="lx-tiles__icon" /><span>{it.label}</span></li>
+  ))}
+</ul>

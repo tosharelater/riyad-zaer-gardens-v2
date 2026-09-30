@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import Eyebrow from '../../../components/Eyebrow.astro';
-import CtaBlock from '../../../components/CtaBlock.astro';
+import PageHero from '../../../components/v3/PageHero.astro';
+import Sec from '../../../components/v3/Sec.astro';
+import Cta from '../../../components/v3/Cta.astro';
 import { pick, type Lang } from '../../../data/i18n/helpers';
 import { misc, guides, type Guide } from '../../../data/i18n/misc';
 
@@ -19,20 +20,14 @@ const formatDate = (d: string) =>
   new Date(d).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 <BaseLayout title={`${guide.title} — Riyad Zaer Gardens`} description={guide.excerpt} lang={lang}>
-  <section class="bg-forest text-cream">
-    <div class="container-page py-16 md:py-20 max-w-2xl">
-      <Eyebrow label={pick(misc, lang).guides.eyebrow} />
-      <h1 class="font-display text-4xl md:text-6xl mt-4 leading-tight">{guide.title}</h1>
-      <p class="mt-4 text-sm text-cream/50">{t.published.replace('{date}', formatDate(guide.date))}</p>
-    </div>
-  </section>
+  <PageHero eyebrow={pick(misc, lang).guides.eyebrow} title={guide.title} text={t.published.replace('{date}', formatDate(guide.date))} />
 
-  <section class="py-16 md:py-24">
-    <div class="container-page max-w-2xl space-y-6 text-ink/75 leading-relaxed">
+  <Sec narrow>
+    <div class="lx-prose">
       {guide.body.map((p) => <p>{p}</p>)}
-      <a href={guide.link.href} class="btn btn-dark mt-4">{guide.link.label}</a>
     </div>
-  </section>
+    <a href={guide.link.href} class="lx-btn">{guide.link.label}</a>
+  </Sec>
 
-  <CtaBlock lang={lang} />
+  <Cta lang={lang} />
 </BaseLayout>

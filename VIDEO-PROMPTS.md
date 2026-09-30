@@ -22,11 +22,13 @@ Then wire `<video>` back in `Home.astro` (hero / intro / lifestyle / location).
 
 ---
 
-## 1 — Hero (`public/cinematic/hero.png`)
+## 1 — Hero (reference: `public/gallery/render-5.jpg`, the real building at night)
+
+The home page already plays `public/cinematic/hero.mp4` when it exists and shows `render-5.jpg` until then. Keep the façade exactly as in the reference: same floors, windows and ground-floor shops.
 
 **Prompt:**
 ```
-Cinematic aerial push-in toward a modern Moroccan mid-rise residential complex at blue hour, warm interior lights glowing in glass façades, palm trees gently swaying in light wind, soft landscape lighting on gardens, deep indigo sky, photoreal architecture, luxury real-estate film, slow elegant camera move, no text, no watermark, no logos, no shaky cam
+Very slow cinematic push-in toward this exact modern Moroccan six-storey residential building at blue hour, warm interior lights glowing in glass façades, palm trees gently swaying in light wind, soft landscape lighting on gardens, deep indigo sky, photoreal architecture, luxury real-estate film, slow elegant camera move, no text, no watermark, no logos, no shaky cam
 ```
 
 **Negative:**

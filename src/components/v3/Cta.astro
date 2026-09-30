@@ -1,0 +1,28 @@
+---
+import Curves from '../Curves.astro';
+import { site } from '../../data/site';
+import { pick, type Lang } from '../../data/i18n/helpers';
+import { ui } from '../../data/i18n/ui';
+interface Props { lang?: Lang; title?: string; text?: string }
+const { lang = 'fr', title, text } = Astro.props;
+const u = pick(ui, lang);
+const ar = lang === 'ar';
+const contactHref = ar ? '/ar/contact' : '/contact';
+---
+<section class="lx-cta">
+  <Curves side="right" id="curves-cta" />
+  <div class="lx-wrap lx-cta__grid">
+    <div>
+      <h2 class="lx-h2">{title ?? (ar ? 'لنتحدث عن مشروعكم' : 'Parlons de votre projet')}</h2>
+      {text && <p class="lx-stext">{text}</p>}
+      <div class="lx-actions">
+        <a href={contactHref} class="lx-btn lx-btn--solid">{u.etreRappele}</a>
+        <a href={site.whatsapp} class="lx-btn">{u.whatsapp}</a>
+      </div>
+    </div>
+    <a href={`tel:${site.phoneTel}`} class="lx-cta__phone">
+      <span>{u.appelezNous}</span>
+      <strong dir="ltr">{site.phone}</strong>
+    </a>
+  </div>
+</section>

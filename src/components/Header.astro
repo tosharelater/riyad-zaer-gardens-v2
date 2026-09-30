@@ -17,63 +17,46 @@ const switchHref = lang === 'ar'
   ? getRelativeLocaleUrl('fr', pagePath)
   : getRelativeLocaleUrl('ar', pagePath);
 const contactHref = getRelativeLocaleUrl(lang, '/contact');
+// On the home page the form is on the page itself
+const callbackHref = currentPath === '/' || currentPath === '/ar' ? '#contact' : contactHref;
 const dark = theme === 'dark';
 
-const navItems = dark
-  ? (lang === 'ar'
-      ? [
-          ['نظرة عامة', '/ar/#overview'],
-          ['المساكن', '/ar/#residences'],
-          ['نمط الحياة', '/ar/#lifestyle'],
-          ['الموقع', '/ar/#localisation'],
-        ]
-      : [
-          ['Aperçu', '/#overview'],
-          ['Résidences', '/#residences'],
-          ['Lifestyle', '/#lifestyle'],
-          ['Localisation', '/#localisation'],
-        ])
-  : pick(nav, lang).filter(([label]) => !/contact/i.test(label));
+const navItems = pick(nav, lang).filter(([label]) => !/contact/i.test(label));
 ---
 {dark ? (
-  <header class="site-header site-header--dark">
-    <div class="site-header__bar">
-      <a href={homeHref} class="site-header__logo" aria-label={lang === 'ar' ? 'رياض زعير غاردنز' : 'Riyad Zaer Gardens'}>
-        <img
-          src="/logo-nav.png"
-          alt=""
-          width="200"
-          height="132"
-          class="site-header__logo-img site-header__logo-img--dark"
-        />
+  <header class="lx-header" data-lx-header>
+    <div class="lx-header__bar">
+      <a href={homeHref} class="lx-header__logo" aria-label={lang === 'ar' ? 'رياض زعير غاردنز' : 'Riyad Zaer Gardens'}>
+        <img src="/brand/logo-green.png" alt="" width="720" height="468" class="lx-logo-on-light" />
+        <img src="/brand/logo-light.png" alt="" width="720" height="468" class="lx-logo-on-dark" />
         <span class="sr-only">{lang === 'ar' ? 'رياض زعير غاردنز' : 'Riyad Zaer Gardens'} — {byText}</span>
       </a>
 
-      <nav class="site-header__nav">
+      <nav class="lx-header__nav" aria-label={lang === 'ar' ? 'القائمة الرئيسية' : 'Navigation principale'}>
         {navItems.map(([label, href]) => (
-          <a href={href} class="site-header__link">{label}</a>
+          <a href={href}>{label}</a>
         ))}
       </nav>
 
-      <div class="site-header__actions">
-        <a href={switchHref} class="site-header__lang" hreflang={lang === 'ar' ? 'fr' : 'ar'}>{sw.label}</a>
-        <a href="#contact" class="rz-btn rz-btn--outline rz-btn--sm">
+      <div class="lx-header__actions">
+        <a href={switchHref} class="lx-header__lang" hreflang={lang === 'ar' ? 'fr' : 'ar'}>{sw.label}</a>
+        <a href={callbackHref} class="lx-btn lx-btn--sm">
           {lang === 'ar' ? 'تسجيل الاهتمام' : 'Être rappelé'}
         </a>
       </div>
 
-      <button id="menu-toggle" class="site-header__burger" aria-label={lang === 'ar' ? 'فتح القائمة' : 'Ouvrir le menu'} aria-expanded="false">
-        <span></span><span></span><span></span>
+      <button id="menu-toggle" class="lx-header__burger" aria-label={lang === 'ar' ? 'فتح القائمة' : 'Ouvrir le menu'} aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span>
       </button>
     </div>
 
-    <div id="mobile-menu" class="site-header__mobile hidden">
+    <div id="mobile-menu" class="lx-header__mobile hidden">
       <nav>
         {navItems.map(([label, href]) => (
           <a href={href}>{label}</a>
         ))}
         <a href={switchHref} hreflang={lang === 'ar' ? 'fr' : 'ar'}>{sw.label}</a>
-        <a href="#contact" class="rz-btn rz-btn--outline">{lang === 'ar' ? 'تسجيل الاهتمام' : 'Être rappelé'}</a>
+        <a href={callbackHref} class="lx-btn">{lang === 'ar' ? 'تسجيل الاهتمام' : 'Être rappelé'}</a>
       </nav>
     </div>
   </header>

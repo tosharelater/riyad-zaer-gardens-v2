@@ -11,36 +11,45 @@ const { lang = 'fr', theme = 'light' } = Astro.props;
 const f = pick(footer, lang);
 const dark = theme === 'dark';
 ---
-<footer class:list={[dark ? 'rz-footer' : 'bg-forest text-cream/80 pt-16 pb-8']}>
-  {dark ? (
-    <div class="rz-footer__inner">
-      <div class="rz-footer__brand">
-        <img src="/logo-nav.png" alt={lang === 'ar' ? 'رياض زعير غاردنز' : 'Riyad Zaer Gardens'} width="140" height="92" class="rz-footer__logo" />
-        <p class="rz-footer__by">{lang === 'ar' ? 'من لا مانوسا' : 'BY LA MANOUSSA'}</p>
-        <p class="rz-footer__slogan">{f.slogan}</p>
+{dark ? (
+  <footer class="lx-footer">
+    <div class="lx-footer__grid">
+      <div class="lx-footer__brand">
+        <img src="/brand/logo-light.png" alt={lang === 'ar' ? 'رياض زعير غاردنز' : 'Riyad Zaer Gardens'} width="720" height="468" class="lx-logo-on-dark" />
+        <p>{f.slogan}</p>
+        <p class="lx-footer__by">{lang === 'ar' ? 'من لا مانوسا' : 'By La Manoussa'}</p>
       </div>
-      <div class="rz-footer__col">
-        <p class="rz-footer__label">{f.reach}</p>
+      <div class="lx-footer__col">
+        <h3>{f.reach}</h3>
         <ul>
           <li><a href={`tel:${site.phoneTel}`} dir="ltr">{site.phone}</a></li>
           <li><a href={site.whatsapp}>{f.wa}</a></li>
           <li>{f.address}</li>
         </ul>
       </div>
-      <div class="rz-footer__col">
-        <p class="rz-footer__label">{f.project}</p>
+      <div class="lx-footer__col">
+        <h3>{f.project}</h3>
         <ul>
           {f.projectLinks.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
         </ul>
       </div>
-      <div class="rz-footer__col">
-        <p class="rz-footer__label">{f.info}</p>
+      <div class="lx-footer__col">
+        <h3>{f.info}</h3>
         <ul>
           {f.infoLinks.map(([label, href]) => <li><a href={href}>{label}</a></li>)}
         </ul>
       </div>
     </div>
-  ) : (
+    <div class="lx-footer__bottom">
+      <p>{f.copy}</p>
+      <p>
+        <a href={f.legal[1]}>{f.legal[0]}</a>
+        <a href={f.privacy[1]}>{f.privacy[0]}</a>
+      </p>
+    </div>
+  </footer>
+) : (
+<footer class="bg-forest text-cream/80 pt-16 pb-8">
     <div class="container-page grid gap-12 md:grid-cols-4">
       <div>
         <p class="brand-mark text-2xl text-cream">{lang === 'ar' ? 'رياض زعير غاردنز' : 'Riyad Zaer Gardens'}</p>
@@ -70,12 +79,12 @@ const dark = theme === 'dark';
         </ul>
       </div>
     </div>
-  )}
-  <div class:list={[dark ? 'rz-footer__bottom' : 'container-page mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-cream/50']}>
+  <div class="container-page mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-cream/50">
     <p>{f.copy}</p>
     <div class="flex gap-4">
-      <a href={f.legal[1]} class={dark ? undefined : 'hover:text-gold transition-colors'}>{f.legal[0]}</a>
-      <a href={f.privacy[1]} class={dark ? undefined : 'hover:text-gold transition-colors'}>{f.privacy[0]}</a>
+      <a href={f.legal[1]} class="hover:text-gold transition-colors">{f.legal[0]}</a>
+      <a href={f.privacy[1]} class="hover:text-gold transition-colors">{f.privacy[0]}</a>
     </div>
   </div>
 </footer>
+)}

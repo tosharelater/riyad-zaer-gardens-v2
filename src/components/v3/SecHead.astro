@@ -1,0 +1,15 @@
+---
+interface Props {
+  index?: string;
+  kicker?: string;
+  title: string;
+  text?: string;
+  center?: boolean;
+}
+const { index, kicker, title, text, center = false } = Astro.props;
+---
+<header class:list={['lx-shead', center && 'lx-shead--center']}>
+  {kicker && <p class="lx-kick">{index && <span class="lx-kick__n">{index.replace(/\.$/, '')}</span>}{kicker}</p>}
+  <h2 class="lx-h2">{title}</h2>
+  {text && <p class="lx-stext">{text}</p>}
+</header>

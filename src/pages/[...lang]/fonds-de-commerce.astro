@@ -1,11 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Eyebrow from '../../components/Eyebrow.astro';
-import CtaBlock from '../../components/CtaBlock.astro';
-import SpecTable from '../../components/SpecTable.astro';
-import NumberedFeatures from '../../components/NumberedFeatures.astro';
-import LinkCards from '../../components/LinkCards.astro';
-import PhotoCollage from '../../components/PhotoCollage.astro';
+import PageHero from '../../components/v3/PageHero.astro';
+import Sec from '../../components/v3/Sec.astro';
+import SecHead from '../../components/v3/SecHead.astro';
+import Split from '../../components/v3/Split.astro';
+import SpecList from '../../components/v3/SpecList.astro';
+import Numbered from '../../components/v3/Numbered.astro';
+import LinkRow from '../../components/v3/LinkRow.astro';
+import Cta from '../../components/v3/Cta.astro';
 import { site } from '../../data/site';
 import { pick, type Lang } from '../../data/i18n/helpers';
 import { fonds } from '../../data/i18n/fonds';
@@ -37,59 +39,28 @@ const specs = [
 ];
 ---
 <BaseLayout title={t.meta.title} description={t.meta.description} lang={lang}>
-  <section class="hero relative bg-forest text-cream overflow-hidden">
-    <div class="absolute inset-0">
-      <img src="/gallery/render-8.jpg" alt={t.hero.alt} class="w-full h-full object-cover opacity-40" />
-      <div class="absolute inset-0 bg-gradient-to-t from-forest via-forest/80 to-forest/50"></div>
-    </div>
-    <div class="relative container-page py-24 md:py-32">
-      <Eyebrow label={t.hero.eyebrow} />
-      <h1 class="font-display text-4xl md:text-5xl mt-5 leading-tight max-w-2xl animate-fade-up">{fill(t.hero.h1)}</h1>
-      <div class="divider-gold my-7 animate-fade-up" style="animation-delay:.15s"></div>
-      <p class="max-w-xl text-cream/75 animate-fade-up" style="animation-delay:.25s">{t.hero.p}</p>
-    </div>
-  </section>
+  <PageHero eyebrow={t.hero.eyebrow} title={fill(t.hero.h1)} text={t.hero.p} img="/gallery/render-8.jpg" alt={t.hero.alt} />
 
-  <section class="section bg-white overflow-hidden">
-    <div class="container-page grid md:grid-cols-2 gap-16 md:gap-24 items-center">
-      <div>
-        <Eyebrow index="01." label={t.offre.eyebrow} />
-        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-8">{t.offre.h2}</h2>
-        <SpecTable rows={specs} />
-        <p class="text-ink/70 leading-relaxed mt-8">{t.offre.p}</p>
-      </div>
-      <div class="md:pr-8">
-        <PhotoCollage
-          images={['/gallery/render-8.jpg', '/gallery/render-6.jpg', '/gallery/render-12.jpg']}
-          alt={t.offre.alt}
-          badgeIcon="store"
-          badgeValue={t.offre.badgeValue}
-          badgeLabel={t.offre.badgeLabel}
-        />
-      </div>
-    </div>
-  </section>
+  <Sec>
+    <Split img="/gallery/render-5.jpg" alt={t.offre.alt}>
+      <SecHead index="01" kicker={t.offre.eyebrow} title={t.offre.h2} />
+      <SpecList rows={specs} />
+      <p class="lx-p lx-p--muted">{t.offre.p}</p>
+    </Split>
+  </Sec>
 
-  <section class="section">
-    <div class="container-page">
-      <div class="max-w-2xl mb-16">
-        <Eyebrow index="02." label={t.emplacement.eyebrow} />
-        <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-5">{t.emplacement.h2}</h2>
-      </div>
-      <NumberedFeatures items={t.emplacement.items.map((i) => ({ title: i.title, body: fill(i.body) }))} />
-    </div>
-  </section>
+  <Sec tone="alt">
+    <SecHead index="02" kicker={t.emplacement.eyebrow} title={t.emplacement.h2} />
+    <Numbered items={t.emplacement.items.map((i) => ({ title: i.title, body: fill(i.body) }))} />
+  </Sec>
 
-  <section class="section bg-white">
-    <div class="container-page max-w-2xl">
-      <Eyebrow index="03." label={t.investisseurs.eyebrow} />
-      <h2 class="font-display text-4xl md:text-6xl text-forest mt-4 mb-6">{t.investisseurs.h2}</h2>
-      <p class="text-ink/65 leading-relaxed mb-4">{t.investisseurs.p1}</p>
-      <p class="text-ink/65 leading-relaxed">{t.investisseurs.p2}</p>
-    </div>
-  </section>
+  <Sec tone="light" narrow>
+    <SecHead index="03" kicker={t.investisseurs.eyebrow} title={t.investisseurs.h2} />
+    <p class="lx-p">{t.investisseurs.p1}</p>
+    <p class="lx-p lx-p--muted">{t.investisseurs.p2}</p>
+  </Sec>
 
-  <LinkCards
+  <LinkRow
     lang={lang}
     cards={[
       { title: fill(t.cards.projet[0]), text: fill(t.cards.projet[1]), href: lang === 'ar' ? '/ar/le-projet' : '/le-projet' },
@@ -97,5 +68,5 @@ const specs = [
     ]}
   />
 
-  <CtaBlock lang={lang} title={t.cta.title} text={t.cta.text} />
+  <Cta lang={lang} title={t.cta.title} text={t.cta.text} />
 </BaseLayout>

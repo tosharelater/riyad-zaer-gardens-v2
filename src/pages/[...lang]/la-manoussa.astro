@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Eyebrow from '../../components/Eyebrow.astro';
-import CtaBlock from '../../components/CtaBlock.astro';
+import PageHero from '../../components/v3/PageHero.astro';
+import Sec from '../../components/v3/Sec.astro';
+import SecHead from '../../components/v3/SecHead.astro';
+import Cta from '../../components/v3/Cta.astro';
 import { site } from '../../data/site';
 import { pick, type Lang } from '../../data/i18n/helpers';
 import { manoussa } from '../../data/i18n/manoussa';
@@ -25,32 +27,20 @@ const fill = (s: string) =>
     .replaceAll('{commercial}', String(site.commercial));
 ---
 <BaseLayout title={t.meta.title} description={t.meta.description} lang={lang}>
-  <section class="bg-forest text-cream">
-    <div class="container-page py-16 md:py-20">
-      <Eyebrow label={t.hero.eyebrow} />
-      <h1 class="font-display text-4xl md:text-5xl mt-4 max-w-2xl leading-tight">{fill(t.hero.h1)}</h1>
-      <p class="mt-6 max-w-xl text-cream/75" set:html={fill(t.hero.p)} />
-    </div>
-  </section>
+  <PageHero eyebrow={t.hero.eyebrow} title={fill(t.hero.h1)} text={fill(t.hero.p)} />
 
-  <section class="py-16 md:py-24 bg-white">
-    <div class="container-page max-w-3xl">
-      <Eyebrow index="01." label={t.approche.eyebrow} />
-      <h2 class="font-display text-3xl md:text-4xl text-forest mt-3 mb-5">{t.approche.h2}</h2>
-      <p class="text-ink/70 leading-relaxed">{fill(t.approche.p)}</p>
-    </div>
-  </section>
+  <Sec narrow>
+    <SecHead index="01" kicker={t.approche.eyebrow} title={t.approche.h2} text={fill(t.approche.p)} />
+  </Sec>
 
-  <section class="py-16 md:py-24">
-    <div class="container-page max-w-3xl">
-      <Eyebrow index="02." label={t.projets.eyebrow} />
-      <h2 class="font-display text-3xl md:text-4xl text-forest mt-3 mb-8">{t.projets.h2}</h2>
-      <a href={projetHref} class="block border border-forest/10 p-6 hover:border-gold transition-colors">
-        <h3 class="font-display text-xl text-forest mb-2">{t.projets.cardTitle}</h3>
-        <p class="text-sm text-ink/65 leading-relaxed">{fill(t.projets.cardText)}</p>
-      </a>
-    </div>
-  </section>
+  <Sec tone="alt" narrow>
+    <SecHead index="02" kicker={t.projets.eyebrow} title={t.projets.h2} />
+    <a href={projetHref} class="lx-link lx-link--wide">
+      <h3>{t.projets.cardTitle}</h3>
+      <p>{fill(t.projets.cardText)}</p>
+      <span class="lx-link__go" aria-hidden="true">→</span>
+    </a>
+  </Sec>
 
-  <CtaBlock lang={lang} title={t.cta.title} text={t.cta.text} />
+  <Cta lang={lang} title={t.cta.title} text={t.cta.text} />
 </BaseLayout>

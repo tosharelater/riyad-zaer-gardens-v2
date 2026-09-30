@@ -3,6 +3,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MobileActionBar from '../components/MobileActionBar.astro';
 import '../styles/global.css';
+import '../styles/v3.css';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { localeAgnosticPath, type Lang } from '../data/i18n/helpers';
 
@@ -14,7 +15,7 @@ interface Props {
   theme?: 'light' | 'dark';
 }
 
-const { title, description, noindex = false, theme = 'light' } = Astro.props;
+const { title, description, noindex = false, theme = 'dark' } = Astro.props;
 const lang = (Astro.props.lang ?? Astro.currentLocale ?? 'fr') as Lang;
 const path = localeAgnosticPath(Astro.url.pathname);
 
@@ -38,17 +39,72 @@ const arUrl = getRelativeLocaleUrl('ar', path);
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
       rel="stylesheet"
     />
+    {theme === 'dark' && (
+      <link
+        href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@300;400;500&family=Almarai:wght@400;700;800&display=swap"
+        rel="stylesheet"
+      />
+    )}
     <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+    <script is:inline>
+      // Palette switch for review: default is white and cream with green moments; ?palette=marque (all green), ?palette=noir (Bugatti black), ?palette=blanc to return. Kept for the visit.
+      try {
+        var q = new URLSearchParams(location.search).get('palette');
+        if (q) sessionStorage.setItem('rz-palette', q);
+        var pal = q || sessionStorage.getItem('rz-palette');
+        if (pal === 'noir' || pal === 'marque') document.documentElement.dataset.palette = pal;
+      } catch (e) {}
+    </script>
+    <script is:inline>
+      // Arriving from a curtain transition: start covered, motion below lifts it.
+      try {
+        if (sessionStorage.getItem('pt') === '1') {
+          document.documentElement.classList.add('pt-arrive');
+          sessionStorage.removeItem('pt');
+        }
+      } catch (e) {}
+    </script>
   </head>
-  <body class:list={['min-h-screen flex flex-col', theme === 'dark' && 'theme-dark']}>
+  <body class:list={['min-h-screen flex flex-col', theme === 'dark' && 'theme-dark v3']}>
     <Header lang={lang} theme={theme} />
     <main class="flex-1 pb-20 md:pb-0">
       <slot />
     </main>
     <Footer lang={lang} theme={theme} />
     <MobileActionBar lang={lang} theme={theme} />
+    <div class="pt-curtain" aria-hidden="true">
+      <img src="/brand/logo-light.png" alt="" width="720" height="468" />
+    </div>
 
     <script>
+      // Page transition: a black curtain with the logo covers the page, then lifts on the next one.
+      const root = document.documentElement;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (root.classList.contains('pt-arrive')) {
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            root.classList.add('pt-out');
+            window.setTimeout(() => root.classList.remove('pt-arrive', 'pt-out'), 1100);
+          }),
+        );
+      }
+      document.addEventListener('click', (e) => {
+        const a = (e.target as Element | null)?.closest?.('a');
+        if (!a || reduceMotion || e.defaultPrevented || e.button !== 0) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if ((a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+        const url = new URL(a.href, location.href);
+        if (url.origin !== location.origin || !/^https?:$/.test(url.protocol)) return;
+        if (url.pathname === location.pathname && url.search === location.search) return;
+        e.preventDefault();
+        root.classList.add('pt-leave');
+        try { sessionStorage.setItem('pt', '1'); } catch {}
+        window.setTimeout(() => (location.href = url.href), 750);
+      });
+      window.addEventListener('pageshow', (e) => {
+        if (e.persisted) root.classList.remove('pt-leave', 'pt-arrive', 'pt-out');
+      });
+
       const header = document.querySelector('.site-header');
       const onScroll = () => {
         if (!header) return;
@@ -83,5 +139,6 @@ const arUrl = getRelativeLocaleUrl('ar', path);
         document.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => el.classList.add('is-visible'));
       }, 1400);
     </script>
+    {theme === 'dark' && <script>import '../scripts/motion';</script>}
   </body>
 </html>

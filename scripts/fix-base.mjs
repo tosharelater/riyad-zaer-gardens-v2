@@ -8,10 +8,11 @@ if (!base) process.exit(0);
 const walk = (dir) =>
   readdirSync(dir).flatMap((f) => {
     const p = join(dir, f);
-    return statSync(p).isDirectory() ? walk(p) : p.endsWith('.html') ? [p] : [];
+    return statSync(p).isDirectory() ? walk(p) : /\.(html|css)$/.test(p) ? [p] : [];
   });
 
-const re = /(\s(?:href|src|action|poster)=")\/(?!\/)/g;
+// HTML attributes, and url(...) in built CSS (fonts referenced from stylesheets)
+const re = /(\s(?:href|src|action|poster)="|url\(['"]?)\/(?!\/)/g;
 for (const file of walk('dist')) {
   const html = readFileSync(file, 'utf8');
   const out = html.replace(re, (m, attr, offset) => {

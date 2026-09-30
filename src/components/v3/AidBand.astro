@@ -1,0 +1,23 @@
+---
+import { site } from '../../data/site';
+import { pick, type Lang } from '../../data/i18n/helpers';
+import { ui } from '../../data/i18n/ui';
+interface Props { lang?: Lang; text?: string }
+const { lang = 'fr', text } = Astro.props;
+const u = pick(ui, lang);
+const ar = lang === 'ar';
+const contactHref = ar ? '/ar/contact' : '/contact';
+---
+<section class="lx-aidband">
+  <div class="lx-wrap lx-aidband__grid">
+    <div>
+      <h2 class="lx-h3">{u.aideTitre}</h2>
+      {text && <p class="lx-stext">{text}</p>}
+    </div>
+    <div class="lx-aidband__prices">
+      <p><span>{ar ? 'بدون دعم' : 'Sans aide'}</span><s dir="ltr">{site.priceFrom}</s></p>
+      <p><span>{ar ? 'مع دعم السكن' : "Avec l'aide"}</span><strong dir="ltr">{site.priceWithAid}</strong></p>
+    </div>
+    <a href={contactHref} class="lx-btn">{u.verifierEligibilite}</a>
+  </div>
+</section>

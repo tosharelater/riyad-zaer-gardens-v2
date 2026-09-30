@@ -1,0 +1,13 @@
+---
+interface Props { items: { title: string; body: string }[] }
+const { items } = Astro.props;
+---
+<ol class="lx-num">
+  {items.map((it, i) => (
+    <li>
+      <span class="lx-num__n" dir="ltr">{String(i + 1).padStart(2, '0')}</span>
+      <h3>{it.title}</h3>
+      <p>{it.body}</p>
+    </li>
+  ))}
+</ol>

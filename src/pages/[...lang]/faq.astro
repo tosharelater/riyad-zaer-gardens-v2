@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Eyebrow from '../../components/Eyebrow.astro';
-import Accordion from '../../components/Accordion.astro';
-import CtaBlock from '../../components/CtaBlock.astro';
+import PageHero from '../../components/v3/PageHero.astro';
+import Sec from '../../components/v3/Sec.astro';
+import Faq from '../../components/v3/Faq.astro';
+import Cta from '../../components/v3/Cta.astro';
 import { site } from '../../data/site';
 import { pick, type Lang } from '../../data/i18n/helpers';
 import { faq } from '../../data/i18n/faq';
@@ -32,24 +33,16 @@ const groups = t.groups.map((g) => ({
 }));
 ---
 <BaseLayout title={t.meta.title} description={t.meta.description} lang={lang}>
-  <section class="bg-forest text-cream">
-    <div class="container-page py-16 md:py-20">
-      <Eyebrow label={t.hero.eyebrow} />
-      <h1 class="font-display text-4xl md:text-5xl mt-4 max-w-2xl leading-tight">{t.hero.h1}</h1>
-      <p class="mt-6 max-w-xl text-cream/75">{fill(t.hero.p)}</p>
-    </div>
-  </section>
+  <PageHero eyebrow={t.hero.eyebrow} title={t.hero.h1} text={fill(t.hero.p)} />
 
-  <section class="py-16 md:py-24">
-    <div class="container-page max-w-3xl space-y-16">
-      {groups.map((g) => (
-        <div>
-          <h2 class="font-display text-3xl md:text-4xl text-forest mb-6">{g.title}</h2>
-          <Accordion items={g.items} />
-        </div>
-      ))}
-    </div>
-  </section>
+  <Sec narrow>
+    {groups.map((g) => (
+      <div class="lx-faqgroup">
+        <h2 class="lx-h3">{g.title}</h2>
+        <Faq items={g.items} />
+      </div>
+    ))}
+  </Sec>
 
-  <CtaBlock lang={lang} title={t.cta.title} text={t.cta.text} />
+  <Cta lang={lang} title={t.cta.title} text={t.cta.text} />
 </BaseLayout>

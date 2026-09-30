@@ -1,0 +1,14 @@
+---
+// Section shell. tone: base (brand green / black), alt (a shade lighter), light (cream / white).
+interface Props {
+  tone?: 'base' | 'alt' | 'light';
+  id?: string;
+  narrow?: boolean;
+}
+const { tone = 'base', id, narrow = false } = Astro.props;
+---
+<section id={id} class:list={['lx-sec', `lx-sec--${tone}`]}>
+  <div class:list={['lx-wrap', narrow && 'lx-wrap--narrow']}>
+    <slot />
+  </div>
+</section>

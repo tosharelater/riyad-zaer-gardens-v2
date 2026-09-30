@@ -1,0 +1,13 @@
+---
+// Text beside a tall image that runs to the page edge.
+interface Props {
+  img: string;
+  alt?: string;
+  reverse?: boolean;
+}
+const { img, alt = '', reverse = false } = Astro.props;
+---
+<div class:list={['lx-split2', reverse && 'lx-split2--rev']}>
+  <div class="lx-split2__copy"><slot /></div>
+  <figure class="lx-split2__media"><img src={img} alt={alt} loading="lazy" /></figure>
+</div>

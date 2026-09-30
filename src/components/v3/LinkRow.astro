@@ -1,0 +1,21 @@
+---
+import { pick, type Lang } from '../../data/i18n/helpers';
+import { ui } from '../../data/i18n/ui';
+interface Props { lang?: Lang; cards: { title: string; text: string; href: string }[] }
+const { lang = 'fr', cards } = Astro.props;
+const u = pick(ui, lang);
+---
+<section class="lx-sec lx-sec--alt lx-sec--tight">
+  <div class="lx-wrap">
+    <p class="lx-kick">{u.allerPlusLoin}</p>
+    <div class="lx-links">
+      {cards.map((c) => (
+        <a href={c.href} class="lx-link">
+          <h3>{c.title}</h3>
+          <p>{c.text}</p>
+          <span class="lx-link__go" aria-hidden="true">{u.decouvrir}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

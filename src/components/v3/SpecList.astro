@@ -1,0 +1,7 @@
+---
+interface Props { rows: { label: string; value: string }[] }
+const { rows } = Astro.props;
+---
+<dl class="lx-speclist">
+  {rows.map((r) => (<div><dt>{r.label}</dt><dd>{r.value}</dd></div>))}
+</dl>

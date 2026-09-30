@@ -1,176 +1,199 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactForm from './ContactForm.astro';
+import Curves from './Curves.astro';
 import { site } from '../data/site';
 import { homeText, type Lang } from '../data/home-i18n';
+import { pick } from '../data/i18n/helpers';
+import { localisation } from '../data/i18n/localisation';
 
 const lang = (Astro.currentLocale ?? 'fr') as Lang;
 const t = homeText[lang];
 const ar = lang === 'ar';
-
-const cards = [
-  { img: '/gallery/render-1.jpg', title: t.homes.items[0][0], line: t.homes.items[0][1], href: t.homes.items[0][3] },
-  { img: '/gallery/render-6.jpg', title: t.homes.items[1][0], line: t.homes.items[1][1], href: t.homes.items[1][3] },
-  { img: '/gallery/render-8.jpg', title: t.homes.items[2][0], line: t.homes.items[2][1], href: t.homes.items[2][3] },
+const href = (path: string) => getRelativeLocaleUrl(lang, path);
+const access = pick(localisation, lang).acces.items.slice(0, 3);
+const heroFacts = [t.reassure[0], t.reassure[1], t.reassure[2], t.reassure[5]];
+const gallery = [
+  { img: '/gallery/render-5.jpg', wide: true },
+  { img: '/gallery/render-1.jpg' },
+  { img: '/gallery/render-6.jpg', wide: true },
+  { img: '/gallery/render-3.jpg' },
+  { img: '/gallery/render-12.jpg', wide: true },
+  { img: '/gallery/render-9.jpg' },
+  { img: '/gallery/render-11.jpg', wide: true },
+  { img: '/gallery/render-2.jpg' },
 ];
 
-const slides = t.why.items.map((item, i) => ({
-  img: ['/gallery/render-12.jpg', '/gallery/render-3.jpg', '/gallery/render-7.jpg', '/gallery/render-11.jpg'][i],
-  title: item[0],
-  body: item[1],
+const cards = [
+  { img: '/gallery/render-3.jpg', title: t.homes.items[0][0], line: t.homes.items[0][1], href: href('/appartements') },
+  { img: '/gallery/render-12.jpg', title: t.homes.items[1][0], line: t.homes.items[1][1], href: '#aid' },
+  { img: '/gallery/render-8.jpg', title: t.homes.items[2][0], line: t.homes.items[2][1], href: href('/fonds-de-commerce') },
+];
+
+const slides = t.why.items.map(([title, body], i) => ({
+  title,
+  body,
+  ...[
+    { img: '/gallery/render-1.jpg', pos: 'center' },
+    { img: '/gallery/render-6.jpg', pos: 'center' },
+    { img: '/gallery/render-9.jpg', pos: 'center' },
+    { img: '/gallery/render-11.jpg', pos: 'center' },
+  ][i],
 }));
 ---
-<BaseLayout title={t.htmlTitle} description={t.htmlDesc} lang={lang} theme="dark">
-  <!-- 1. HERO — Bugatti pattern: kicker + line + brand + one CTA -->
-  <section data-hero id="overview" class="bz-hero">
-    <div data-hero-bg class="bz-hero__media">
-      <img src="/cinematic/hero.png" alt={t.hero.alt} class="bz-hero__img" />
-      <div class="bz-hero__veil"></div>
+<BaseLayout title={t.htmlTitle} description={t.htmlDesc} lang={lang}>
+  <!-- Hero -->
+  <section data-hero id="overview" class="lx-hero">
+    <div class="lx-hero__media" data-hero-media>
+      <img src="/gallery/render-5.jpg" alt={t.hero.alt} class="lx-hero__img" fetchpriority="high" />
+      <!-- Plays once public/cinematic/hero.mp4 exists; the render stays visible until then. -->
+      <video class="lx-hero__video" data-hero-video muted loop playsinline preload="metadata" poster="/gallery/render-5.jpg" aria-hidden="true">
+        <source src="/cinematic/hero.mp4" type="video/mp4" />
+      </video>
     </div>
-    <div data-hero-content class="bz-hero__copy">
-      <p class="bz-hero__kicker">{t.hero.eyebrow}</p>
-      <h1 class="bz-hero__line">{t.hero.h1}</h1>
-      <p class="bz-hero__brand">
-        {ar ? t.brand : (<>RIYAD ZAER<br /><span>GARDENS</span></>)}
-      </p>
-      <a href="#projet" class="rz-btn rz-btn--outline">{t.hero.b1}</a>
+    <div class="lx-hero__copy">
+      <p class="lx-hero__kicker">{t.hero.eyebrow}<br />{t.hero.h1}</p>
+      <h1 class="lx-hero__title">{ar ? t.brand : (<>Riyad Zaer<br />Gardens</>)}</h1>
+      <div class="lx-actions">
+        <a href={href('/le-projet')} class="lx-btn lx-btn--solid lx-btn--wide">{t.hero.b1}</a>
+        <a href="#contact" class="lx-btn lx-btn--wide">{t.hero.b2}</a>
+      </div>
     </div>
+    <ul class="lx-herobar">
+      {heroFacts.map((f) => <li>{f}</li>)}
+    </ul>
   </section>
 
-  <!-- 2. MANIFESTO -->
-  <section class="bz-manifesto">
-    <p class="bz-manifesto__text">{t.hero.text}</p>
+  <!-- Statement framed by lines -->
+  <section class="lx-statement">
+    <Curves side="right" id="curves-a" />
+    <Curves side="left" id="curves-b" />
+    <p>{t.hero.text}</p>
   </section>
 
-  <!-- 3. INTRODUCING -->
-  <section id="projet" class="bz-intro">
-    <div class="bz-intro__media">
-      <img src="/gallery/render-4.jpg" alt="" class="bz-intro__img" />
-      <div class="bz-intro__veil"></div>
+  <!-- Introducing: copy and key figures beside the aerial view -->
+  <section id="projet" class="lx-intro">
+    <div class="lx-intro__copy">
+      <p class="lx-kick">{t.projet.eyebrow}</p>
+      <h2 class="lx-display">{ar ? t.brand : (<>Riyad Zaer<br />Gardens</>)}</h2>
+      <span class="lx-rule" aria-hidden="true"></span>
+      <p class="lx-body">{t.projet.p1}</p>
+      <dl class="lx-figs">
+        {t.figures.items.map(([v, l]) => (<div><dt class="lx-figure__n">{v}</dt><dd>{l}</dd></div>))}
+      </dl>
+      <a href={href('/le-projet')} class="lx-btn">{t.projet.btn}</a>
     </div>
-    <div class="bz-intro__copy">
-      <p class="bz-kicker">{t.projet.eyebrow}</p>
-      <h2 class="bz-brand">
-        {ar ? t.brand : (<>RIYAD ZAER<br /><span>GARDENS</span></>)}
-      </h2>
-      <div class="bz-rule"></div>
-      <p class="bz-lead">{t.projet.p1}</p>
-      <p class="bz-lead bz-lead--soft">{t.projet.p2}</p>
-      <a href={t.projet.btnHref} class="rz-btn rz-btn--outline">{t.projet.btn}</a>
-    </div>
+    <figure class="lx-intro__media">
+      <img src="/gallery/render-4.jpg" alt="" loading="lazy" />
+    </figure>
   </section>
 
-  <!-- 4. ENQUIRE -->
-  <section class="bz-enquire">
-    <a href="#contact" class="rz-btn rz-btn--outline rz-btn--wide">{t.hero.b2}</a>
-  </section>
-
-  <!-- 5. RESIDENCES -->
-  <section id="residences" class="bz-residences">
-    <header class="bz-head">
-      <h2 class="bz-title">{ar ? t.homes.h2 : (<>Les<br />Résidences</>)}</h2>
-      <p class="bz-sub">{t.homes.text}</p>
+  <!-- The residences -->
+  <section id="residences" class="lx-residences">
+    <header class="lx-heading">
+      <h2 class="lx-display">{t.homes.eyebrow}</h2>
+      <p class="lx-lead">{t.hero.price}</p>
     </header>
-    <div class="bz-cards">
-      {cards.map((c, i) => (
-        <article class="bz-card" data-rz-card style={`--i:${i}`}>
-          <a href={c.href} class="bz-card__media">
-            <img src={c.img} alt={c.title} loading="lazy" />
+    <div class="lx-cards">
+      {cards.map((c) => (
+        <article class="lx-card">
+          <a href={c.href} class="lx-card__media" tabindex="-1" aria-hidden="true">
+            <img src={c.img} alt="" loading="lazy" />
           </a>
-          <h3 class="bz-card__title">{c.title}</h3>
-          <p class="bz-card__line">{c.line}</p>
-          <a href={c.href} class="bz-card__more">{t.homes.more}</a>
+          <h3 class="lx-card__title">{c.title}</h3>
+          <p class="lx-card__line">{c.line}</p>
+          <a href={c.href} class="lx-btn lx-btn--solid lx-btn--sm">{t.homes.more}</a>
         </article>
       ))}
     </div>
   </section>
 
-  <!-- 6. FIGURES -->
-  <section class="bz-figures">
-    {t.figures.items.map(([v, l]) => (
-      <div class="bz-figure">
-        <p class="bz-figure__n" data-count={v}>{v}</p>
-        <p class="bz-figure__l">{l}</p>
-      </div>
-    ))}
-  </section>
-
-  <!-- 7. LIFESTYLE -->
-  <section id="lifestyle" class="bz-life" data-lifestyle>
-    {slides.map((s) => (
-      <article class="bz-life__slide" data-lifestyle-slide>
-        <img src={s.img} alt="" loading="lazy" class="bz-life__img" />
-        <div class="bz-life__veil"></div>
-        <div class="bz-life__copy">
-          <h2 class="bz-life__title">{s.title}</h2>
-          <div class="bz-rule"></div>
-          <p class="bz-life__body">{s.body}</p>
-        </div>
-      </article>
-    ))}
-    <div class="bz-life__dots" data-lifestyle-dots aria-hidden="true">
-      {slides.map((_, i) => <span class:list={[i === 0 && 'is-active']}></span>)}
-    </div>
-  </section>
-
-  <!-- 8. WAYS -->
-  <section class="bz-ways">
-    {t.ways.items.map(([title, body]) => (
-      <article class="bz-way">
-        <h3 class="bz-way__title">{title}</h3>
-        <p class="bz-way__body">{body}</p>
-      </article>
-    ))}
-  </section>
-
-  <!-- 9. AID -->
-  <section id="aid" class="bz-aid">
-    <p class="bz-kicker">{t.aid.eyebrow}</p>
-    <h2 class="bz-title bz-title--md">{t.aid.h2}</h2>
-    <p class="bz-sub bz-sub--center">{t.aid.text}</p>
-    <div class="bz-aid__row">
-      <div class="bz-aid__cell">
-        <p class="bz-aid__label">{t.aid.without}</p>
-        <p class="bz-aid__val">{t.aid.withoutVal}</p>
-      </div>
-      <div class="bz-aid__cell bz-aid__cell--hl">
-        <p class="bz-aid__label">{t.aid.withAid}</p>
-        <p class="bz-aid__val">{t.aid.withVal}</p>
+  <!-- Gallery: drag or use the arrows -->
+  <section class="lx-gallery" aria-label={ar ? 'معرض الصور' : 'Galerie'} data-gallery>
+    <div class="lx-gallery__head">
+      <h2 class="lx-h2">{ar ? 'معرض الصور' : 'Galerie'}</h2>
+      <div class="lx-gallery__nav">
+        <span class="lx-gallery__count" dir="ltr"><b data-gallery-index>01</b> / {String(gallery.length).padStart(2, '0')}</span>
+        <button type="button" class="lx-arrow" data-gallery-prev aria-label={ar ? 'السابق' : 'Précédent'}>←</button>
+        <button type="button" class="lx-arrow" data-gallery-next aria-label={ar ? 'التالي' : 'Suivant'}>→</button>
       </div>
     </div>
-    <a href="#contact" class="rz-btn rz-btn--outline">{t.aid.btn}</a>
+    <ul class="lx-gallery__track" data-gallery-track>
+      {gallery.map((g) => (
+        <li class:list={['lx-gallery__item', g.wide && 'is-wide']}><img src={g.img} alt="" loading="lazy" draggable="false" /></li>
+      ))}
+    </ul>
   </section>
 
-  <!-- 10. LOCATION -->
-  <section id="localisation" class="bz-loc">
-    <div class="bz-loc__copy">
-      <p class="bz-kicker">{t.loc.eyebrow}</p>
-      <h2 class="bz-title bz-title--left">{t.loc.h2}</h2>
-      <div class="bz-rule"></div>
-      <p class="bz-lead">{t.loc.text}</p>
-      {!ar && <a href="/localisation" class="rz-btn rz-btn--outline">{t.loc.btn}</a>}
-    </div>
-    <div class="bz-loc__media">
-      <img src="/gallery/render-11.jpg" alt={t.loc.alt} loading="lazy" />
-    </div>
-  </section>
-
-  <!-- 11. CONTACT -->
-  <section id="contact" class="bz-contact">
-    <div class="bz-contact__visual">
-      <img src="/gallery/render-2.jpg" alt="" loading="lazy" class="bz-contact__bg" />
-      <div class="bz-contact__overlay">
-        <h2 class="bz-brand bz-brand--sm">{t.contact.h2}</h2>
-        <p class="bz-lead">{t.contact.text}</p>
-        <a href={`tel:${site.phoneTel}`} class="bz-phone" dir="ltr">{site.phone}</a>
+  <!-- Lifestyle: pinned full-bleed story -->
+  <section id="lifestyle">
+    <div class="lx-carousel" data-story>
+      {slides.map((s, i) => (
+        <article class="lx-slide" data-slide>
+          <img src={s.img} alt="" loading={i === 0 ? 'eager' : 'lazy'} style={`object-position:${s.pos}`} />
+          <div class="lx-slide__copy">
+            <p class="lx-slide__index" dir="ltr">{String(i + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}</p>
+            <h2 class="lx-slide__title">{s.title}</h2>
+            <span class="lx-rule" aria-hidden="true"></span>
+            <p class="lx-slide__body">{s.body}</p>
+          </div>
+        </article>
+      ))}
+      <div class="lx-carousel__nav" aria-hidden="true">
+        {slides.map((_, i) => (
+          <span class:list={['lx-dot', i === 0 && 'is-active']} data-dot={i}></span>
+        ))}
       </div>
     </div>
-    <div class="bz-contact__form">
-      <ContactForm lang={lang} />
+  </section>
+
+  <!-- Location: address, sentence and access over the photo -->
+  <section id="localisation" class="lx-band">
+    <img src="/gallery/render-7.jpg" alt={t.loc.alt} loading="lazy" />
+    <div class="lx-band__copy">
+      <p class="lx-kick">{t.hero.eyebrow}</p>
+      <h2 class="lx-display">{t.loc.h2}</h2>
+      <p class="lx-band__text">{t.loc.text}</p>
+      <a href={href('/localisation')} class="lx-btn">{t.loc.btn}</a>
+    </div>
+    <ul class="lx-band__access">
+      {access.map((it) => (<li><h3>{it.title}</h3><p>{it.body}</p></li>))}
+    </ul>
+  </section>
+
+  <!-- Housing aid: title beside a price card -->
+  <section id="aid" class="lx-aid2">
+    <div>
+      <p class="lx-kick">{t.aid.eyebrow}</p>
+      <h2 class="lx-h2">{t.aid.h2}</h2>
+      <p class="lx-stext">{t.aid.note}</p>
+    </div>
+    <div class="lx-pricecard">
+      <p><span>{t.aid.without}</span><s>{t.aid.withoutVal}</s></p>
+      <p><span>{t.aid.withAid}</span><strong>{t.aid.withVal}</strong></p>
+      <a href="#contact" class="lx-btn lx-btn--solid">{t.aid.btn}</a>
     </div>
   </section>
+
+  <!-- Register: pitch and direct lines beside the form -->
+  <section id="contact" class="lx-contact lx-dark">
+    <Curves side="right" id="curves-d" />
+    <div class="lx-contact__grid">
+      <div class="lx-contact__pitch">
+        <h2 class="lx-display">{t.contact.h2}</h2>
+        <p class="lx-body">{t.contact.text}</p>
+        <a href={`tel:${site.phoneTel}`} class="lx-contact__phone" dir="ltr">{site.phone}</a>
+        <a href={site.whatsapp} class="lx-more">{t.contact.wa}</a>
+      </div>
+      <div class="lx-contact__form">
+        <ContactForm lang={lang} />
+      </div>
+    </div>
+  </section>
+
+  <!-- render-10 carries thumbnail strips in its lower quarter: cropped from the top -->
+  <div class="lx-closing" aria-hidden="true">
+    <img src="/gallery/render-10.jpg" alt="" loading="lazy" />
+  </div>
 </BaseLayout>
-
-<script>
-  import '../scripts/motion';
-</script>

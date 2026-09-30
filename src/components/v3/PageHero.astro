@@ -1,0 +1,26 @@
+---
+// Page opener: full-bleed image with the title set low, or a black band framed by curves.
+import Curves from '../Curves.astro';
+interface Props {
+  eyebrow?: string;
+  title: string;
+  text?: string;
+  img?: string;
+  alt?: string;
+}
+const { eyebrow, title, text, img, alt = '' } = Astro.props;
+---
+<section class:list={['lx-phero', !img && 'lx-phero--plain']} data-hero>
+  {img ? (
+    <div class="lx-phero__media" data-hero-media>
+      <img src={img} alt={alt} fetchpriority="high" />
+    </div>
+  ) : (
+    <Curves side="right" id="curves-phero" />
+  )}
+  <div class="lx-phero__copy">
+    {eyebrow && <p class="lx-kick">{eyebrow}</p>}
+    <h1 class="lx-phero__title">{title}</h1>
+    {text && <p class="lx-phero__text" set:html={text} />}
+  </div>
+</section>
