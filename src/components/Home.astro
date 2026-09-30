@@ -8,215 +8,164 @@ const lang = (Astro.currentLocale ?? 'fr') as Lang;
 const t = homeText[lang];
 const ar = lang === 'ar';
 
-const residences = [
-  { img: '/gallery/render-1.jpg', title: t.homes.items[0][0], line: t.homes.items[0][1], body: t.homes.items[0][2], href: t.homes.items[0][3] },
-  { img: '/gallery/render-4.jpg', title: t.homes.items[1][0], line: t.homes.items[1][1], body: t.homes.items[1][2], href: t.homes.items[1][3] },
-  { img: '/gallery/render-8.jpg', title: t.homes.items[2][0], line: t.homes.items[2][1], body: t.homes.items[2][2], href: t.homes.items[2][3] },
+const cards = [
+  { img: '/gallery/render-1.jpg', title: t.homes.items[0][0], line: t.homes.items[0][1], href: t.homes.items[0][3] },
+  { img: '/gallery/render-6.jpg', title: t.homes.items[1][0], line: t.homes.items[1][1], href: t.homes.items[1][3] },
+  { img: '/gallery/render-8.jpg', title: t.homes.items[2][0], line: t.homes.items[2][1], href: t.homes.items[2][3] },
 ];
 
-const lifestyleSlides = t.why.items.map((item, i) => ({
-  img: ['/cinematic/lifestyle.png', '/gallery/render-12.jpg', '/gallery/render-3.jpg', '/gallery/render-7.jpg'][i],
+const slides = t.why.items.map((item, i) => ({
+  img: ['/gallery/render-12.jpg', '/gallery/render-3.jpg', '/gallery/render-7.jpg', '/gallery/render-11.jpg'][i],
   title: item[0],
   body: item[1],
 }));
 ---
 <BaseLayout title={t.htmlTitle} description={t.htmlDesc} lang={lang} theme="dark">
-  <section data-hero id="overview" class="rz-hero">
-    <div data-hero-bg class="rz-hero__media">
-      <img src="/cinematic/hero.png" alt={t.hero.alt} class="rz-hero__img" />
-      <div class="rz-hero__veil"></div>
-      <div class="rz-hero__grain" aria-hidden="true"></div>
+  <!-- 1. HERO — Bugatti pattern: kicker + line + brand + one CTA -->
+  <section data-hero id="overview" class="bz-hero">
+    <div data-hero-bg class="bz-hero__media">
+      <img src="/cinematic/hero.png" alt={t.hero.alt} class="bz-hero__img" />
+      <div class="bz-hero__veil"></div>
     </div>
-    <div data-hero-content class="rz-hero__content">
-      <p class="rz-hero__eyebrow">{t.hero.eyebrow}</p>
-      <p class="rz-hero__brand">
-        {ar ? t.brand : (
-          <>
-            RIYAD ZAER<br /><span class="rz-hero__title-gold">GARDENS</span>
-          </>
-        )}
+    <div data-hero-content class="bz-hero__copy">
+      <p class="bz-hero__kicker">{t.hero.eyebrow}</p>
+      <h1 class="bz-hero__line">{t.hero.h1}</h1>
+      <p class="bz-hero__brand">
+        {ar ? t.brand : (<>RIYAD ZAER<br /><span>GARDENS</span></>)}
       </p>
-      <h1 class="rz-hero__title">{t.hero.h1}</h1>
-      <p class="rz-hero__text">{t.hero.text}</p>
-      <p class="rz-hero__price">{t.hero.price}</p>
-      <div class="rz-hero__ctas">
-        <a href={t.projet.btnHref} class="rz-btn rz-btn--outline">{t.hero.b1}</a>
-        <a href="#contact" class="rz-btn rz-btn--ghost">{t.hero.b2}</a>
-      </div>
-    </div>
-    <div class="rz-hero__scroll" aria-hidden="true"><span></span></div>
-  </section>
-
-  <section class="rz-reassure" aria-label={ar ? 'نقاط رئيسية' : 'Points clés'}>
-    <div class="rz-reassure__track">
-      {[...t.reassure, ...t.reassure].map((item) => (
-        <span class="rz-reassure__item">{item}</span>
-      ))}
+      <a href="#projet" class="rz-btn rz-btn--outline">{t.hero.b1}</a>
     </div>
   </section>
 
-  <section id="projet" class="rz-intro">
-    <div class="rz-intro__media">
-      <img src="/cinematic/facade.png" alt="" class="rz-intro__img" />
-      <div class="rz-intro__veil"></div>
+  <!-- 2. MANIFESTO -->
+  <section class="bz-manifesto">
+    <p class="bz-manifesto__text">{t.hero.text}</p>
+  </section>
+
+  <!-- 3. INTRODUCING -->
+  <section id="projet" class="bz-intro">
+    <div class="bz-intro__media">
+      <img src="/gallery/render-4.jpg" alt="" class="bz-intro__img" />
+      <div class="bz-intro__veil"></div>
     </div>
-    <div class="rz-intro__copy">
-      <p class="rz-kicker">{t.projet.eyebrow}</p>
-      <h2 class="rz-display">
-        {ar ? t.projet.h2 : (
-          <>
-            Un quartier<br /><span class="rz-gold">complet</span>
-          </>
-        )}
+    <div class="bz-intro__copy">
+      <p class="bz-kicker">{t.projet.eyebrow}</p>
+      <h2 class="bz-brand">
+        {ar ? t.brand : (<>RIYAD ZAER<br /><span>GARDENS</span></>)}
       </h2>
-      <div class="rz-rule rz-rule--gold"></div>
-      <p class="rz-intro__p">{t.projet.p1}</p>
-      <p class="rz-intro__p rz-intro__p--muted">{t.projet.p2}</p>
-      <ul class="rz-amenities">
-        {t.projet.amenities.map((a) => <li>{a}</li>)}
-      </ul>
+      <div class="bz-rule"></div>
+      <p class="bz-lead">{t.projet.p1}</p>
+      <p class="bz-lead bz-lead--soft">{t.projet.p2}</p>
       <a href={t.projet.btnHref} class="rz-btn rz-btn--outline">{t.projet.btn}</a>
     </div>
   </section>
 
-  <section class="rz-stats rz-stats--solo" aria-label={t.figures.h2}>
-    <header class="rz-section-head rz-section-head--slim rz-section-head--figures">
-      <h2 class="rz-section-title rz-section-title--md">{t.figures.h2}</h2>
-      <p class="rz-section-desc">{t.figures.text}</p>
-    </header>
-    <div class="rz-stats__grid">
-      {t.figures.items.map(([v, l]) => (
-        <div class="rz-stat">
-          <p class="rz-stat__value" data-count={v}>{v}</p>
-          <p class="rz-stat__label">{l}</p>
-        </div>
-      ))}
-    </div>
+  <!-- 4. ENQUIRE -->
+  <section class="bz-enquire">
+    <a href="#contact" class="rz-btn rz-btn--outline rz-btn--wide">{t.hero.b2}</a>
   </section>
 
-  <section id="residences" class="rz-residences">
-    <header class="rz-section-head">
-      <p class="rz-kicker">{t.homes.eyebrow}</p>
-      <h2 class="rz-section-title">{t.homes.h2}</h2>
-      <p class="rz-section-desc">{t.homes.text}</p>
+  <!-- 5. RESIDENCES -->
+  <section id="residences" class="bz-residences">
+    <header class="bz-head">
+      <h2 class="bz-title">{ar ? t.homes.h2 : (<>Les<br />Résidences</>)}</h2>
+      <p class="bz-sub">{t.homes.text}</p>
     </header>
-    <div class="rz-cards">
-      {residences.map((item, i) => (
-        <article class="rz-card" data-rz-card style={`--i:${i}`}>
-          <a href={item.href} class="rz-card__media">
-            <img src={item.img} alt={item.title} loading="lazy" />
-            <span class="rz-card__shine" aria-hidden="true"></span>
+    <div class="bz-cards">
+      {cards.map((c, i) => (
+        <article class="bz-card" data-rz-card style={`--i:${i}`}>
+          <a href={c.href} class="bz-card__media">
+            <img src={c.img} alt={c.title} loading="lazy" />
           </a>
-          <div class="rz-card__meta">
-            <p class="rz-card__tag">{item.line}</p>
-            <h3 class="rz-card__title">{item.title}</h3>
-            <p class="rz-card__body">{item.body}</p>
-            <a href={item.href} class="rz-card__link">{t.homes.more}</a>
-          </div>
+          <h3 class="bz-card__title">{c.title}</h3>
+          <p class="bz-card__line">{c.line}</p>
+          <a href={c.href} class="bz-card__more">{t.homes.more}</a>
         </article>
       ))}
     </div>
-    <div class="rz-residences__actions">
-      <a href={ar ? '/ar/#residences' : '/appartements'} class="rz-btn rz-btn--outline">{t.homes.aptBtn}</a>
-      <a href={ar ? '/ar/#residences' : '/fonds-de-commerce'} class="rz-btn rz-btn--ghost">{t.homes.comBtn}</a>
-    </div>
   </section>
 
-  <section id="lifestyle" class="rz-lifestyle" data-lifestyle>
-    {lifestyleSlides.map((slide) => (
-      <article class="rz-lifestyle__slide" data-lifestyle-slide>
-        <img src={slide.img} alt="" loading="lazy" class="rz-lifestyle__img" />
-        <div class="rz-lifestyle__veil"></div>
-        <div class="rz-lifestyle__copy">
-          <p class="rz-kicker">{t.why.eyebrow}</p>
-          <h2 class="rz-lifestyle__title">{slide.title}</h2>
-          <div class="rz-rule rz-rule--gold"></div>
-          <p class="rz-lifestyle__body">{slide.body}</p>
+  <!-- 6. FIGURES -->
+  <section class="bz-figures">
+    {t.figures.items.map(([v, l]) => (
+      <div class="bz-figure">
+        <p class="bz-figure__n" data-count={v}>{v}</p>
+        <p class="bz-figure__l">{l}</p>
+      </div>
+    ))}
+  </section>
+
+  <!-- 7. LIFESTYLE -->
+  <section id="lifestyle" class="bz-life" data-lifestyle>
+    {slides.map((s) => (
+      <article class="bz-life__slide" data-lifestyle-slide>
+        <img src={s.img} alt="" loading="lazy" class="bz-life__img" />
+        <div class="bz-life__veil"></div>
+        <div class="bz-life__copy">
+          <h2 class="bz-life__title">{s.title}</h2>
+          <div class="bz-rule"></div>
+          <p class="bz-life__body">{s.body}</p>
         </div>
       </article>
     ))}
-    <div class="rz-lifestyle__dots" data-lifestyle-dots aria-hidden="true">
-      {lifestyleSlides.map((_, i) => <span class:list={[i === 0 && 'is-active']}></span>)}
+    <div class="bz-life__dots" data-lifestyle-dots aria-hidden="true">
+      {slides.map((_, i) => <span class:list={[i === 0 && 'is-active']}></span>)}
     </div>
   </section>
 
-  <section class="rz-finishes">
-    <div class="rz-finishes__copy">
-      <h2 class="rz-section-title rz-section-title--left rz-section-title--md">{t.finishes.h2}</h2>
-      <div class="rz-rule rz-rule--gold"></div>
-      <p class="rz-location__text">{t.finishes.text}</p>
-      <div class="rz-finishes__grid">
-        {t.finishes.items.map(([k, v]) => (
-          <div class="rz-finish">
-            <p class="rz-finish__k">{k}</p>
-            <p class="rz-finish__v">{v}</p>
-          </div>
-        ))}
+  <!-- 8. WAYS -->
+  <section class="bz-ways">
+    {t.ways.items.map(([title, body]) => (
+      <article class="bz-way">
+        <h3 class="bz-way__title">{title}</h3>
+        <p class="bz-way__body">{body}</p>
+      </article>
+    ))}
+  </section>
+
+  <!-- 9. AID -->
+  <section id="aid" class="bz-aid">
+    <p class="bz-kicker">{t.aid.eyebrow}</p>
+    <h2 class="bz-title bz-title--md">{t.aid.h2}</h2>
+    <p class="bz-sub bz-sub--center">{t.aid.text}</p>
+    <div class="bz-aid__row">
+      <div class="bz-aid__cell">
+        <p class="bz-aid__label">{t.aid.without}</p>
+        <p class="bz-aid__val">{t.aid.withoutVal}</p>
+      </div>
+      <div class="bz-aid__cell bz-aid__cell--hl">
+        <p class="bz-aid__label">{t.aid.withAid}</p>
+        <p class="bz-aid__val">{t.aid.withVal}</p>
       </div>
     </div>
-    <div class="rz-finishes__media">
-      <img src="/gallery/render-6.jpg" alt="" loading="lazy" />
-    </div>
+    <a href="#contact" class="rz-btn rz-btn--outline">{t.aid.btn}</a>
   </section>
 
-  <section class="rz-ways rz-ways--quiet">
-    <header class="rz-section-head rz-section-head--slim">
-      <h2 class="rz-section-title">{t.ways.h2}</h2>
-    </header>
-    <div class="rz-ways__grid">
-      {t.ways.items.map(([title, body]) => (
-        <article class="rz-way">
-          <h3 class="rz-way__title">{title}</h3>
-          <p class="rz-way__body">{body}</p>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section id="aid" class="rz-aid rz-aid--slim">
-    <div class="rz-aid__inner">
-      <p class="rz-kicker">{t.aid.eyebrow}</p>
-      <h2 class="rz-section-title rz-section-title--md">{t.aid.h2}</h2>
-      <p class="rz-aid__text">{t.aid.text}</p>
-      <div class="rz-aid__compare">
-        <div class="rz-aid__col">
-          <p class="rz-aid__label">{t.aid.without}</p>
-          <p class="rz-aid__val">{t.aid.withoutVal}</p>
-        </div>
-        <div class="rz-aid__col rz-aid__col--hl">
-          <p class="rz-aid__label">{t.aid.withAid}</p>
-          <p class="rz-aid__val">{t.aid.withVal}</p>
-        </div>
-      </div>
-      <a href="#contact" class="rz-btn rz-btn--outline">{t.aid.btn}</a>
-    </div>
-  </section>
-
-  <section id="localisation" class="rz-location">
-    <div class="rz-location__copy">
-      <p class="rz-kicker">{t.loc.eyebrow}</p>
-      <h2 class="rz-section-title rz-section-title--left">{t.loc.h2}</h2>
-      <div class="rz-rule rz-rule--gold"></div>
-      <p class="rz-location__text">{t.loc.text}</p>
+  <!-- 10. LOCATION -->
+  <section id="localisation" class="bz-loc">
+    <div class="bz-loc__copy">
+      <p class="bz-kicker">{t.loc.eyebrow}</p>
+      <h2 class="bz-title bz-title--left">{t.loc.h2}</h2>
+      <div class="bz-rule"></div>
+      <p class="bz-lead">{t.loc.text}</p>
       {!ar && <a href="/localisation" class="rz-btn rz-btn--outline">{t.loc.btn}</a>}
     </div>
-    <div class="rz-location__media">
+    <div class="bz-loc__media">
       <img src="/gallery/render-11.jpg" alt={t.loc.alt} loading="lazy" />
-      <div class="rz-location__frame" aria-hidden="true"></div>
     </div>
   </section>
 
-  <section id="contact" class="rz-contact">
-    <div class="rz-contact__visual">
-      <img src="/gallery/render-5.jpg" alt="" loading="lazy" class="rz-contact__bg" />
-      <div class="rz-contact__visual-copy">
-        <img src="/logo-nav.png" alt="" width="120" height="80" class="rz-contact__mark" />
-        <h2 class="rz-display rz-display--sm">{t.contact.h2}</h2>
-        <p>{t.contact.text}</p>
-        <a href={`tel:${site.phoneTel}`} class="rz-phone" dir="ltr">{site.phone}</a>
+  <!-- 11. CONTACT -->
+  <section id="contact" class="bz-contact">
+    <div class="bz-contact__visual">
+      <img src="/gallery/render-2.jpg" alt="" loading="lazy" class="bz-contact__bg" />
+      <div class="bz-contact__overlay">
+        <h2 class="bz-brand bz-brand--sm">{t.contact.h2}</h2>
+        <p class="bz-lead">{t.contact.text}</p>
+        <a href={`tel:${site.phoneTel}`} class="bz-phone" dir="ltr">{site.phone}</a>
       </div>
     </div>
-    <div class="rz-contact__form">
+    <div class="bz-contact__form">
       <ContactForm lang={lang} />
     </div>
   </section>
