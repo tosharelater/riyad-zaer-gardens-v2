@@ -9,14 +9,13 @@ const t = homeText[lang];
 const ar = lang === 'ar';
 
 const residences = [
-  { img: '/gallery/render-1.jpg', title: t.homes.items[0][0], line: t.homes.items[0][1], href: t.homes.items[0][3] },
-  { img: '/gallery/render-4.jpg', title: t.homes.items[1][0], line: t.homes.items[1][1], href: t.homes.items[1][3] },
-  { img: '/gallery/render-8.jpg', title: t.homes.items[2][0], line: t.homes.items[2][1], href: t.homes.items[2][3] },
+  { img: '/gallery/render-1.jpg', title: t.homes.items[0][0], line: t.homes.items[0][1], body: t.homes.items[0][2], href: t.homes.items[0][3] },
+  { img: '/gallery/render-4.jpg', title: t.homes.items[1][0], line: t.homes.items[1][1], body: t.homes.items[1][2], href: t.homes.items[1][3] },
+  { img: '/gallery/render-8.jpg', title: t.homes.items[2][0], line: t.homes.items[2][1], body: t.homes.items[2][2], href: t.homes.items[2][3] },
 ];
 
 const lifestyleSlides = t.why.items.map((item, i) => ({
   img: ['/cinematic/lifestyle.png', '/gallery/render-12.jpg', '/gallery/render-3.jpg', '/gallery/render-7.jpg'][i],
-  video: i === 0 ? '/cinematic/lifestyle.mp4' : undefined,
   title: item[0],
   body: item[1],
 }));
@@ -24,10 +23,7 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
 <BaseLayout title={t.htmlTitle} description={t.htmlDesc} lang={lang} theme="dark">
   <section data-hero id="overview" class="rz-hero">
     <div data-hero-bg class="rz-hero__media">
-      <video class="rz-hero__video" autoplay muted loop playsinline preload="auto" poster="/cinematic/hero.png">
-        <source src="/cinematic/hero.mp4" type="video/mp4" />
-      </video>
-      <img src="/cinematic/hero.png" alt={t.hero.alt} class="rz-hero__img rz-hero__img--fallback" />
+      <img src="/cinematic/hero.png" alt={t.hero.alt} class="rz-hero__img" />
       <div class="rz-hero__veil"></div>
       <div class="rz-hero__grain" aria-hidden="true"></div>
     </div>
@@ -41,51 +37,68 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
         )}
       </p>
       <h1 class="rz-hero__title">{t.hero.h1}</h1>
-      <a href="#projet" class="rz-btn rz-btn--outline">{t.hero.b1}</a>
+      <p class="rz-hero__text">{t.hero.text}</p>
+      <p class="rz-hero__price">{t.hero.price}</p>
+      <div class="rz-hero__ctas">
+        <a href={t.projet.btnHref} class="rz-btn rz-btn--outline">{t.hero.b1}</a>
+        <a href="#contact" class="rz-btn rz-btn--ghost">{t.hero.b2}</a>
+      </div>
     </div>
     <div class="rz-hero__scroll" aria-hidden="true"><span></span></div>
   </section>
 
-  <section class="rz-manifesto">
-    <div class="rz-manifesto__ornament" aria-hidden="true"></div>
-    <p class="rz-manifesto__text">{t.hero.text}</p>
+  <section class="rz-reassure" aria-label={ar ? 'نقاط رئيسية' : 'Points clés'}>
+    <div class="rz-reassure__track">
+      {[...t.reassure, ...t.reassure].map((item) => (
+        <span class="rz-reassure__item">{item}</span>
+      ))}
+    </div>
   </section>
 
   <section id="projet" class="rz-intro">
     <div class="rz-intro__media">
-      <video class="rz-intro__video" autoplay muted loop playsinline preload="metadata" poster="/cinematic/facade.png">
-        <source src="/cinematic/facade.mp4" type="video/mp4" />
-      </video>
-      <img src="/cinematic/facade.png" alt="" class="rz-intro__img rz-intro__img--fallback" />
+      <img src="/cinematic/facade.png" alt="" class="rz-intro__img" />
       <div class="rz-intro__veil"></div>
     </div>
     <div class="rz-intro__copy">
       <p class="rz-kicker">{t.projet.eyebrow}</p>
       <h2 class="rz-display">
-        {ar ? t.brand : (
+        {ar ? t.projet.h2 : (
           <>
-            RIYAD ZAER<br /><span class="rz-gold">GARDENS</span>
+            Un quartier<br /><span class="rz-gold">complet</span>
           </>
         )}
       </h2>
       <div class="rz-rule rz-rule--gold"></div>
       <p class="rz-intro__p">{t.projet.p1}</p>
+      <p class="rz-intro__p rz-intro__p--muted">{t.projet.p2}</p>
+      <ul class="rz-amenities">
+        {t.projet.amenities.map((a) => <li>{a}</li>)}
+      </ul>
+      <a href={t.projet.btnHref} class="rz-btn rz-btn--outline">{t.projet.btn}</a>
     </div>
   </section>
 
-  <section class="rz-enquire">
-    <a href="#contact" class="rz-btn rz-btn--outline rz-btn--wide">{t.hero.b2}</a>
+  <section class="rz-stats rz-stats--solo" aria-label={t.figures.h2}>
+    <header class="rz-section-head rz-section-head--slim rz-section-head--figures">
+      <h2 class="rz-section-title rz-section-title--md">{t.figures.h2}</h2>
+      <p class="rz-section-desc">{t.figures.text}</p>
+    </header>
+    <div class="rz-stats__grid">
+      {t.figures.items.map(([v, l]) => (
+        <div class="rz-stat">
+          <p class="rz-stat__value" data-count={v}>{v}</p>
+          <p class="rz-stat__label">{l}</p>
+        </div>
+      ))}
+    </div>
   </section>
 
   <section id="residences" class="rz-residences">
-    <header class="rz-section-head rz-section-head--slim">
-      <h2 class="rz-section-title">
-        {ar ? t.homes.h2 : (
-          <>
-            LES<br />RÉSIDENCES
-          </>
-        )}
-      </h2>
+    <header class="rz-section-head">
+      <p class="rz-kicker">{t.homes.eyebrow}</p>
+      <h2 class="rz-section-title">{t.homes.h2}</h2>
+      <p class="rz-section-desc">{t.homes.text}</p>
     </header>
     <div class="rz-cards">
       {residences.map((item, i) => (
@@ -95,36 +108,27 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
             <span class="rz-card__shine" aria-hidden="true"></span>
           </a>
           <div class="rz-card__meta">
-            <h3 class="rz-card__title">{item.title}</h3>
             <p class="rz-card__tag">{item.line}</p>
+            <h3 class="rz-card__title">{item.title}</h3>
+            <p class="rz-card__body">{item.body}</p>
             <a href={item.href} class="rz-card__link">{t.homes.more}</a>
           </div>
         </article>
       ))}
     </div>
-  </section>
-
-  <section class="rz-stats rz-stats--solo">
-    {t.figures.items.map(([v, l]) => (
-      <div class="rz-stat">
-        <p class="rz-stat__value" data-count={v}>{v}</p>
-        <p class="rz-stat__label">{l}</p>
-      </div>
-    ))}
+    <div class="rz-residences__actions">
+      <a href={ar ? '/ar/#residences' : '/appartements'} class="rz-btn rz-btn--outline">{t.homes.aptBtn}</a>
+      <a href={ar ? '/ar/#residences' : '/fonds-de-commerce'} class="rz-btn rz-btn--ghost">{t.homes.comBtn}</a>
+    </div>
   </section>
 
   <section id="lifestyle" class="rz-lifestyle" data-lifestyle>
     {lifestyleSlides.map((slide) => (
       <article class="rz-lifestyle__slide" data-lifestyle-slide>
-        {slide.video ? (
-          <video class="rz-lifestyle__video" autoplay muted loop playsinline preload="metadata" poster={slide.img}>
-            <source src={slide.video} type="video/mp4" />
-          </video>
-        ) : (
-          <img src={slide.img} alt="" loading="lazy" class="rz-lifestyle__img" />
-        )}
+        <img src={slide.img} alt="" loading="lazy" class="rz-lifestyle__img" />
         <div class="rz-lifestyle__veil"></div>
         <div class="rz-lifestyle__copy">
+          <p class="rz-kicker">{t.why.eyebrow}</p>
           <h2 class="rz-lifestyle__title">{slide.title}</h2>
           <div class="rz-rule rz-rule--gold"></div>
           <p class="rz-lifestyle__body">{slide.body}</p>
@@ -136,7 +140,29 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
     </div>
   </section>
 
+  <section class="rz-finishes">
+    <div class="rz-finishes__copy">
+      <h2 class="rz-section-title rz-section-title--left rz-section-title--md">{t.finishes.h2}</h2>
+      <div class="rz-rule rz-rule--gold"></div>
+      <p class="rz-location__text">{t.finishes.text}</p>
+      <div class="rz-finishes__grid">
+        {t.finishes.items.map(([k, v]) => (
+          <div class="rz-finish">
+            <p class="rz-finish__k">{k}</p>
+            <p class="rz-finish__v">{v}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="rz-finishes__media">
+      <img src="/gallery/render-6.jpg" alt="" loading="lazy" />
+    </div>
+  </section>
+
   <section class="rz-ways rz-ways--quiet">
+    <header class="rz-section-head rz-section-head--slim">
+      <h2 class="rz-section-title">{t.ways.h2}</h2>
+    </header>
     <div class="rz-ways__grid">
       {t.ways.items.map(([title, body]) => (
         <article class="rz-way">
@@ -150,7 +176,8 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
   <section id="aid" class="rz-aid rz-aid--slim">
     <div class="rz-aid__inner">
       <p class="rz-kicker">{t.aid.eyebrow}</p>
-      <h2 class="rz-section-title rz-section-title--md">{ar ? t.aid.h2 : <>Aide au<br />logement</>}</h2>
+      <h2 class="rz-section-title rz-section-title--md">{t.aid.h2}</h2>
+      <p class="rz-aid__text">{t.aid.text}</p>
       <div class="rz-aid__compare">
         <div class="rz-aid__col">
           <p class="rz-aid__label">{t.aid.without}</p>
@@ -174,9 +201,7 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
       {!ar && <a href="/localisation" class="rz-btn rz-btn--outline">{t.loc.btn}</a>}
     </div>
     <div class="rz-location__media">
-      <video class="rz-location__video" autoplay muted loop playsinline preload="metadata" poster="/gallery/render-11.jpg">
-        <source src="/cinematic/courtyard.mp4" type="video/mp4" />
-      </video>
+      <img src="/gallery/render-11.jpg" alt={t.loc.alt} loading="lazy" />
       <div class="rz-location__frame" aria-hidden="true"></div>
     </div>
   </section>
@@ -187,6 +212,7 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
       <div class="rz-contact__visual-copy">
         <img src="/logo-nav.png" alt="" width="120" height="80" class="rz-contact__mark" />
         <h2 class="rz-display rz-display--sm">{t.contact.h2}</h2>
+        <p>{t.contact.text}</p>
         <a href={`tel:${site.phoneTel}`} class="rz-phone" dir="ltr">{site.phone}</a>
       </div>
     </div>

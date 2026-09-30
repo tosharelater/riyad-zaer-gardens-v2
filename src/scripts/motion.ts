@@ -28,15 +28,15 @@ if (!reduce) {
 
   const hero = document.querySelector<HTMLElement>('[data-hero]');
   if (hero) {
-    hero.querySelector<HTMLVideoElement>('.rz-hero__video')?.play().catch(() => {});
-
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.fromTo('.rz-hero__video, .rz-hero__img', { scale: 1.12 }, { scale: 1.02, duration: 4.2, ease: 'power2.out' }, 0)
+    tl.fromTo('.rz-hero__img', { scale: 1.12 }, { scale: 1.02, duration: 4.2, ease: 'power2.out' }, 0)
       .fromTo('.rz-hero__eyebrow', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.9 }, 0.35)
       .fromTo('.rz-hero__brand', { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0, duration: 1.15 }, 0.5)
-      .fromTo('.rz-hero__title', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.9 }, 0.75)
-      .fromTo('.rz-hero__content .rz-btn', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.95)
-      .fromTo('.rz-hero__scroll', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 1.2);
+      .fromTo('.rz-hero__title', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.9 }, 0.7)
+      .fromTo('.rz-hero__text', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: 0.85 }, 0.85)
+      .fromTo('.rz-hero__price', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.75 }, 1.0)
+      .fromTo('.rz-hero__ctas', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 1.1)
+      .fromTo('.rz-hero__scroll', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 1.35);
 
     gsap.to('[data-hero-bg]', {
       yPercent: 12,
@@ -44,24 +44,12 @@ if (!reduce) {
       scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
     });
     gsap.to('[data-hero-content]', {
-      yPercent: -12,
+      yPercent: -10,
       autoAlpha: 0,
       ease: 'none',
       scrollTrigger: { trigger: hero, start: 'top+=12% top', end: '72% top', scrub: true },
     });
   }
-
-  document.querySelectorAll<HTMLVideoElement>('.rz-intro__video, .rz-lifestyle__video, .rz-location__video').forEach((vid) => {
-    ScrollTrigger.create({
-      trigger: vid.closest('section') || vid,
-      start: 'top 85%',
-      end: 'bottom 15%',
-      onEnter: () => vid.play().catch(() => {}),
-      onEnterBack: () => vid.play().catch(() => {}),
-      onLeave: () => vid.pause(),
-      onLeaveBack: () => vid.pause(),
-    });
-  });
 
   const lifestyle = document.querySelector<HTMLElement>('[data-lifestyle]');
   if (lifestyle) {
@@ -101,19 +89,23 @@ if (!reduce) {
     }
   }
 
-  gsap.utils.toArray<HTMLElement>('.rz-manifesto__ornament, .rz-manifesto__text, .rz-manifesto__rule, .rz-intro__copy, .rz-section-head, .rz-stat, .rz-aid__inner, .rz-way, .rz-location__copy, .rz-contact__visual-copy, .rz-contact__form').forEach((el) => {
-    gsap.fromTo(
-      el,
-      { autoAlpha: 0, y: 40 },
-      {
-        autoAlpha: 1,
-        y: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
-      },
-    );
-  });
+  gsap.utils
+    .toArray<HTMLElement>(
+      '.rz-intro__copy, .rz-section-head, .rz-stat, .rz-aid__inner, .rz-way, .rz-finishes__copy, .rz-location__copy, .rz-contact__visual-copy, .rz-contact__form, .rz-residences__actions',
+    )
+    .forEach((el) => {
+      gsap.fromTo(
+        el,
+        { autoAlpha: 0, y: 40 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+        },
+      );
+    });
 
   gsap.utils.toArray<HTMLElement>('[data-rz-card]').forEach((card) => {
     const i = Number(getComputedStyle(card).getPropertyValue('--i') || 0);
@@ -155,7 +147,7 @@ if (!reduce) {
 
   const intro = document.querySelector('.rz-intro');
   if (intro) {
-    gsap.to('.rz-intro__video, .rz-intro__img', {
+    gsap.to('.rz-intro__img', {
       yPercent: 8,
       scale: 1.05,
       ease: 'none',
