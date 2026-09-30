@@ -10,7 +10,7 @@ const fr = {
   hero: {
     eyebrow: 'Aïn Aouda · à 20 minutes de Rabat',
     h1: 'Nouveau pôle urbain à Rabat',
-    text: "Riyad Zaer Gardens réunit des appartements F3 et F4 et des fonds de commerce dans un quartier neuf et verdoyant, sur l'Avenue Mohammed VI.",
+    text: "Appartements F3 et F4, et fonds de commerce, dans un quartier neuf sur l'Avenue Mohammed VI.",
     price: 'Appartements à partir de 420 000 DH',
     b1: 'Découvrir le projet',
     b2: 'Être rappelé',
@@ -36,7 +36,7 @@ const fr = {
   projet: {
     eyebrow: 'Le projet',
     h2: 'Un quartier complet, pas seulement des immeubles',
-    p1: "Riyad Zaer Gardens est un projet immobilier de moyen standing développé par La Manoussa à Aïn Aouda. Les immeubles s'organisent autour d'une cour centrale plantée, avec des commerces en rez-de-chaussée.",
+    p1: "Un projet de moyen standing à Aïn Aouda, organisé autour d'une cour centrale plantée.",
     p2: "Le stationnement est enterré : deux niveaux de sous-sol accueillent les voitures et les locaux techniques. L'espace extérieur reste ainsi dégagé et rendu aux résidents.",
     amenities: [
       'Ascenseur dans chaque immeuble',
@@ -55,21 +55,21 @@ const fr = {
     sub: "Le projet s'installe dans une zone qui se développe vite, à la jonction entre la ville et la nature.",
     alt: 'Allées plantées du quartier',
     items: [
-      ["Un cœur d'îlot végétalisé", "Les immeubles s'organisent autour d'une cour centrale plantée, calme et réservée aux résidents. Elle apporte de la lumière et de l'air aux appartements, et de la fraîcheur en été."],
-      ['À 20 minutes de Rabat', "Sur l'Avenue Mohammed VI, avec un accès direct à l'autoroute et aux axes qui mènent à Rabat, Témara et Salé."],
-      ['Des appartements livrés finis', "Les logements sont livrés avec leurs finitions. Vous n'avez pas de travaux à prévoir avant d'emménager."],
-      ['Un prix juste', "Un logement de moyen standing à un prix accessible, encore réduit par l'aide au logement."],
+      ["Un cœur d'îlot végétalisé", 'Cour centrale plantée, calme et réservée aux résidents.'],
+      ['À 20 minutes de Rabat', "Avenue Mohammed VI, accès direct à l'autoroute."],
+      ['Des appartements livrés finis', "Finitions incluses. Aucun travaux avant d'emménager."],
+      ['Un prix juste', "Moyen standing accessible, encore réduit par l'aide au logement."],
     ],
   },
   homes: {
     eyebrow: 'Les résidences',
     h2: 'Des appartements F3 et F4 de 65 à 86 m²',
     text: 'Deux typologies sont proposées : des F3 et des F4, de 65 à 86 m². Des surfaces pensées pour être faciles à vivre, que ce soit pour un premier achat ou pour louer. Les appartements sont livrés finis, avec balcon ou terrasse selon le lot.',
-    more: 'En savoir plus →',
+    more: 'Découvrir',
     items: [
-      ['Appartements F3 et F4', 'De 65 à 86 m²', 'Typologies pensées pour le quotidien. Livrés finis, avec balcon ou terrasse selon le lot.', '/appartements'],
-      ['À partir de 420 000 DH', "Avec l'aide au logement", 'Selon votre situation, un appartement peut démarrer à 350 000 DH au lieu de 420 000 DH.', '/appartements'],
-      ['49 fonds de commerce', 'De 13 à 30 m²', "En rez-de-chaussée sur l'Avenue Mohammed VI, à partir de 15 000 DH le m².", '/fonds-de-commerce'],
+      ['F3 & F4', '65 à 86 m²', 'Typologies pensées pour le quotidien. Livrés finis, avec balcon ou terrasse selon le lot.', '/appartements'],
+      ['420 000 DH', "Avec l'aide au logement", 'Selon votre situation, un appartement peut démarrer à 350 000 DH au lieu de 420 000 DH.', '/appartements'],
+      ['Fonds de commerce', '13 à 30 m²', "En rez-de-chaussée sur l'Avenue Mohammed VI, à partir de 15 000 DH le m².", '/fonds-de-commerce'],
     ],
     aptBtn: 'Voir les appartements',
     comBtn: 'Voir les fonds de commerce',
@@ -87,9 +87,9 @@ const fr = {
   ways: {
     h2: "Trois façons d'être à Riyad Zaer Gardens",
     items: [
-      ['Y vivre', 'Votre premier logement, prêt à habiter, dans un quartier calme et verdoyant à 20 minutes de Rabat.'],
-      ['Y investir', "Un bien neuf à louer dans une zone qui se développe, avec un ticket d'entrée maîtrisé."],
-      ['Y revenir', 'Un pied-à-terre au Maroc, livré fini et sécurisé, prêt à vous accueillir à chaque retour.'],
+      ['Y vivre', 'Premier logement, prêt à habiter, à 20 minutes de Rabat.'],
+      ['Y investir', "Bien neuf à louer, dans une zone qui se développe."],
+      ['Y revenir', 'Pied-à-terre livré fini, prêt à chaque retour.'],
     ],
   },
   finishes: {
@@ -122,7 +122,7 @@ const fr = {
     eyebrow: 'Localisation',
     h2: 'Km 25, Avenue Mohammed VI',
     alt: 'Avenue Mohammed VI, Aïn Aouda',
-    text: "Le projet se situe à Aïn Aouda, sur l'Avenue Mohammed VI, à 20 minutes de Rabat par l'autoroute. Une pharmacie, un cabinet vétérinaire et des commerces de proximité sont déjà installés dans le quartier.",
+    text: "Aïn Aouda, Avenue Mohammed VI — 20 minutes de Rabat.",
     btn: 'Voir la localisation',
   },
   footer: {
@@ -162,7 +162,7 @@ const ar: typeof fr = {
   hero: {
     eyebrow: 'عين عودة · على بعد 20 دقيقة من الرباط',
     h1: 'قطب حضري جديد بالرباط',
-    text: 'يجمع رياض زعير غاردنز شققاً من نوعي F3 وF4 ومحلات تجارية في حي جديد وأخضر، على شارع محمد السادس.',
+    text: 'شقق F3 وF4 ومحلات تجارية، في حي جديد على شارع محمد السادس.',
     price: 'شقق ابتداءً من 420 000 درهم',
     b1: 'اكتشفوا المشروع',
     b2: 'نتصل بكم',
@@ -188,7 +188,7 @@ const ar: typeof fr = {
   projet: {
     eyebrow: 'المشروع',
     h2: 'حي متكامل، وليس مجرد عمارات',
-    p1: 'رياض زعير غاردنز مشروع عقاري متوسط الرقي تطوره لا مانوسا بعين عودة. تنتظم العمارات حول فناء مركزي مغروس، مع محلات تجارية في الطابق الأرضي.',
+    p1: 'مشروع متوسط الرقي بعين عودة، منظم حول فناء مركزي مغروس.',
     p2: 'الموقف تحت الأرض: مستويان يستقبلان السيارات والمحلات التقنية. تبقى المساحة الخارجية مفتوحة ومُخصَّصة للسكان.',
     amenities: [
       'مصعد في كل عمارة',
@@ -207,21 +207,21 @@ const ar: typeof fr = {
     sub: 'يقع المشروع في منطقة تتطور بسرعة، عند ملتقى المدينة والطبيعة.',
     alt: 'ممرات مغروسة بالحي',
     items: [
-      ['فناء أخضر في قلب الإقامة', 'تنتظم العمارات حول فناء مركزي مغروس، هادئ ومخصص للسكان. يمنح الشقق الضوء والهواء، والبرودة في الصيف.'],
-      ['على بعد 20 دقيقة من الرباط', 'على شارع محمد السادس، مع ولوج مباشر إلى الطريق السيار والمحاور نحو الرباط وتمارة وسلا.'],
-      ['شقق تُسلَّم منتهية', 'تُسلَّم المساكن بتشطيباتها. لا أعمال تنتظركم قبل الانتقال.'],
-      ['سعر منصف', 'سكن متوسط الرقي بسعر في المتناول، ينخفض أكثر مع دعم السكن.'],
+      ['فناء أخضر في قلب الإقامة', 'فناء مركزي مغروس، هادئ ومخصص للسكان.'],
+      ['على بعد 20 دقيقة من الرباط', 'شارع محمد السادس، ولوج مباشر إلى الطريق السيار.'],
+      ['شقق تُسلَّم منتهية', 'تشطيبات مشمولة. لا أعمال قبل الانتقال.'],
+      ['سعر منصف', 'متوسط الرقي في المتناول، ينخفض أكثر مع دعم السكن.'],
     ],
   },
   homes: {
     eyebrow: 'المساكن',
     h2: 'شقق F3 وF4 من 65 إلى 86 م²',
     text: 'نوعان معروضان: F3 وF4، من 65 إلى 86 م². مساحات سهلة العيش، لأول شراء أو للكراء. تُسلَّم الشقق منتهية، مع شرفة أو تراس حسب الوحدة.',
-    more: 'اعرفوا المزيد ←',
+    more: 'اكتشفوا',
     items: [
-      ['شقق F3 وF4', 'من 65 إلى 86 م²', 'وحدات مصممة لليومي. تُسلَّم منتهية، مع شرفة أو تراس حسب الوحدة.', '/ar/#residences'],
-      ['ابتداءً من 420 000 درهم', 'مع دعم السكن', 'حسب وضعيتكم، يمكن أن تبدأ الشقة من 350 000 درهم بدل 420 000 درهم.', '/ar/#aid'],
-      ['49 محلاً تجارياً', 'من 13 إلى 30 م²', 'في الطابق الأرضي على شارع محمد السادس، ابتداءً من 15 000 درهم للمتر المربع.', '/ar/#residences'],
+      ['F3 وF4', '65 إلى 86 م²', 'وحدات مصممة لليومي. تُسلَّم منتهية، مع شرفة أو تراس حسب الوحدة.', '/ar/#residences'],
+      ['420 000 درهم', 'مع دعم السكن', 'حسب وضعيتكم، يمكن أن تبدأ الشقة من 350 000 درهم بدل 420 000 درهم.', '/ar/#aid'],
+      ['محلات تجارية', '13 إلى 30 م²', 'في الطابق الأرضي على شارع محمد السادس، ابتداءً من 15 000 درهم للمتر المربع.', '/ar/#residences'],
     ],
     aptBtn: 'شاهدوا الشقق',
     comBtn: 'شاهدوا المحلات',
@@ -239,9 +239,9 @@ const ar: typeof fr = {
   ways: {
     h2: 'ثلاث طرق لتكونوا في رياض زعير غاردنز',
     items: [
-      ['للسكن', 'مسكنكم الأول، جاهز للسكن، في حي هادئ وأخضر على بعد 20 دقيقة من الرباط.'],
-      ['للاستثمار', 'عقار جديد للكراء في منطقة تتوسع، بتكلفة دخول محسوبة.'],
-      ['للعودة', 'موطئ قدم في المغرب، منتهٍ ومؤمَّن، جاهز لاستقبالكم في كل عودة.'],
+      ['للسكن', 'مسكنكم الأول، جاهز للسكن، على بعد 20 دقيقة من الرباط.'],
+      ['للاستثمار', 'عقار جديد للكراء في منطقة تتوسع.'],
+      ['للعودة', 'موطئ قدم منتهٍ، جاهز في كل عودة.'],
     ],
   },
   finishes: {
@@ -274,7 +274,7 @@ const ar: typeof fr = {
     eyebrow: 'الموقع',
     h2: 'الكيلومتر 25، شارع محمد السادس',
     alt: 'شارع محمد السادس، عين عودة',
-    text: 'يقع المشروع بعين عودة، على شارع محمد السادس، على بعد 20 دقيقة من الرباط عبر الطريق السيار. توجد بالحي صيدلية وعيادة بيطرية ومحلات قرب.',
+    text: 'عين عودة، شارع محمد السادس — 20 دقيقة من الرباط.',
     btn: 'اكتشفوا الموقع',
   },
   footer: {

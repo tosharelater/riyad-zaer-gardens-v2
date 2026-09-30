@@ -2194,18 +2194,18 @@ html[data-theme='dark'] {
     linear-gradient(90deg, rgb(0 0 0 / 0.55) 0%, rgb(0 0 0 / 0.15) 48%, transparent 70%);
 }
 .rz-hero__content {
-  padding: 0 5vw 9vh;
+  padding: 0 5vw 11vh;
   max-width: 52rem;
 }
 .rz-hero__eyebrow {
-  margin: 0 0 1.15rem;
+  margin: 0 0 1.5rem;
   font-size: 0.78rem;
   letter-spacing: 0.38em;
   color: var(--color-gold);
   font-weight: 400;
 }
 .rz-hero__brand {
-  margin: 0 0 1.1rem;
+  margin: 0 0 1.65rem;
   font-size: clamp(3.2rem, 1.4rem + 8vw, 7.5rem);
   line-height: 0.9;
   letter-spacing: 0.04em;
@@ -2215,7 +2215,7 @@ html[data-theme='dark'] {
   letter-spacing: 0.12em;
 }
 .rz-hero__title {
-  margin: 0 0 2.25rem;
+  margin: 0 0 2.75rem;
   font-size: clamp(0.95rem, 0.8rem + 0.7vw, 1.25rem);
   letter-spacing: 0.28em;
   font-weight: 300;
@@ -2496,3 +2496,221 @@ html[data-theme='dark'] {
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   Breath pass ? give every section room to land
+   ========================================================================== */
+
+.rz-manifesto {
+  padding: clamp(9rem, 18vw, 14rem) 12vw;
+}
+.rz-manifesto__text {
+  max-width: 28rem;
+  font-size: clamp(1.2rem, 1rem + 0.55vw, 1.45rem);
+  line-height: 1.85;
+  letter-spacing: 0.02em;
+}
+.rz-manifesto__ornament {
+  margin-bottom: 3rem;
+}
+
+.rz-intro__copy {
+  padding: 8rem 7vw;
+  max-width: 34rem;
+}
+.rz-intro__p {
+  max-width: 26rem;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  opacity: 0.82;
+}
+.rz-rule {
+  margin: 2rem 0 2.25rem;
+}
+
+.rz-enquire {
+  padding: 7rem 5vw 8rem;
+}
+
+.rz-residences {
+  padding: 9rem 0 7rem;
+}
+.rz-section-head--slim {
+  margin-bottom: 5rem;
+}
+.rz-cards {
+  gap: 3.5rem 2.75rem;
+  max-width: 1360px;
+  padding-inline: 4vw;
+}
+@media (min-width: 900px) {
+  .rz-cards {
+    gap: 3.5rem 2.5rem;
+  }
+}
+.rz-card__media {
+  aspect-ratio: 3 / 3.9;
+  margin-bottom: 0;
+}
+.rz-card__meta {
+  padding: 2rem 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+.rz-card__title {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+}
+.rz-card__tag {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: rgb(255 255 255 / 0.48);
+}
+.rz-card__link {
+  margin-top: 0.85rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+}
+
+.rz-stats--solo {
+  padding: 8rem 6vw;
+  gap: 3.5rem 2rem;
+}
+.rz-stat {
+  padding-top: 1.75rem;
+}
+.rz-stat__label {
+  margin-top: 1.15rem;
+  letter-spacing: 0.24em;
+}
+
+.rz-lifestyle__copy {
+  padding: 0 6vw 14vh;
+  max-width: 26rem;
+}
+.rz-lifestyle__title {
+  margin-bottom: 0;
+  font-size: clamp(2rem, 1.1rem + 3.2vw, 3.6rem);
+  line-height: 1.08;
+}
+.rz-lifestyle__body {
+  display: block;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+  max-width: 28ch;
+  margin-top: 0;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  opacity: 0.78;
+}
+.rz-lifestyle .rz-rule {
+  margin: 1.5rem 0 1.35rem;
+}
+
+.rz-ways--quiet {
+  padding: 9rem 7vw 8rem;
+}
+.rz-ways--quiet .rz-ways__grid {
+  margin-top: 0;
+  gap: 3.5rem 4rem;
+  max-width: 1080px;
+}
+.rz-ways--quiet .rz-way {
+  border-top: 1px solid var(--color-gold);
+  padding-top: 2.25rem;
+}
+.rz-ways--quiet .rz-way__title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(2rem, 1.3rem + 2.2vw, 3.2rem);
+}
+.rz-ways--quiet .rz-way__body {
+  opacity: 0.72;
+  max-height: none;
+  overflow: visible;
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.75;
+  max-width: 28ch;
+}
+
+.rz-aid--slim {
+  padding: 9rem 6vw;
+}
+.rz-aid--slim .rz-section-title {
+  margin-bottom: 3rem;
+}
+.rz-aid__compare {
+  max-width: 30rem;
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+.rz-aid__col {
+  padding: 1.75rem 1.25rem;
+}
+
+.rz-location {
+  min-height: 90svh;
+}
+.rz-location__copy {
+  padding: 7rem 6.5vw;
+  gap: 1.75rem;
+}
+.rz-location__text {
+  max-width: 24rem;
+  margin: 0 0 2.25rem;
+  font-size: 1.08rem;
+  line-height: 1.8;
+  opacity: 0.8;
+}
+
+.rz-contact__visual-copy {
+  padding: 5.5rem 6vw 6rem;
+  gap: 1.15rem;
+}
+.rz-contact__form {
+  padding: 5.5rem 6vw;
+}
+.theme-dark .rz-form {
+  gap: 1.65rem;
+  max-width: 28rem;
+}
+.theme-dark .rz-form__row {
+  gap: 1.65rem;
+}
+
+@media (max-width: 768px) {
+  .rz-manifesto {
+    padding: 6.5rem 8vw;
+  }
+  .rz-intro__copy {
+    padding: 5.5rem 7vw;
+  }
+  .rz-residences {
+    padding: 6.5rem 0 5rem;
+  }
+  .rz-section-head--slim {
+    margin-bottom: 3.25rem;
+  }
+  .rz-cards {
+    gap: 3.25rem;
+  }
+  .rz-ways--quiet {
+    padding: 6.5rem 7vw;
+  }
+  .rz-ways--quiet .rz-ways__grid {
+    gap: 2.75rem;
+  }
+  .rz-aid--slim {
+    padding: 6.5rem 6vw;
+  }
+  .rz-location__copy {
+    padding: 5rem 7vw;
+  }
+}
+

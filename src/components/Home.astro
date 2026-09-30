@@ -20,8 +20,6 @@ const lifestyleSlides = t.why.items.map((item, i) => ({
   title: item[0],
   body: item[1],
 }));
-
-const manifesto = t.hero.text;
 ---
 <BaseLayout title={t.htmlTitle} description={t.htmlDesc} lang={lang} theme="dark">
   <section data-hero id="overview" class="rz-hero">
@@ -50,8 +48,7 @@ const manifesto = t.hero.text;
 
   <section class="rz-manifesto">
     <div class="rz-manifesto__ornament" aria-hidden="true"></div>
-    <p class="rz-manifesto__text" data-split>{manifesto}</p>
-    <div class="rz-manifesto__rule" aria-hidden="true"></div>
+    <p class="rz-manifesto__text">{t.hero.text}</p>
   </section>
 
   <section id="projet" class="rz-intro">
@@ -82,7 +79,6 @@ const manifesto = t.hero.text;
 
   <section id="residences" class="rz-residences">
     <header class="rz-section-head rz-section-head--slim">
-      <p class="rz-kicker">{t.homes.eyebrow}</p>
       <h2 class="rz-section-title">
         {ar ? t.homes.h2 : (
           <>
@@ -98,9 +94,11 @@ const manifesto = t.hero.text;
             <img src={item.img} alt={item.title} loading="lazy" />
             <span class="rz-card__shine" aria-hidden="true"></span>
           </a>
-          <h3 class="rz-card__title">{item.title}</h3>
-          <p class="rz-card__tag">{item.line}</p>
-          <a href={item.href} class="rz-card__link">{t.homes.more}</a>
+          <div class="rz-card__meta">
+            <h3 class="rz-card__title">{item.title}</h3>
+            <p class="rz-card__tag">{item.line}</p>
+            <a href={item.href} class="rz-card__link">{t.homes.more}</a>
+          </div>
         </article>
       ))}
     </div>
@@ -116,7 +114,7 @@ const manifesto = t.hero.text;
   </section>
 
   <section id="lifestyle" class="rz-lifestyle" data-lifestyle>
-    {lifestyleSlides.map((slide, i) => (
+    {lifestyleSlides.map((slide) => (
       <article class="rz-lifestyle__slide" data-lifestyle-slide>
         {slide.video ? (
           <video class="rz-lifestyle__video" autoplay muted loop playsinline preload="metadata" poster={slide.img}>
